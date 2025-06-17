@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* LG EI Headline */
+
+@font-face {
+  font-family: 'LG EI Headline Bold';
+  src: url('/public/font/LG-EI-Headline-otf/LGEIHeadline-Bold.otf') format('woff2');
+}
+
+@font-face {
+  font-family: 'LG EI Headline Light';
+  src: url('/public/font/LG-EI-Headline-otf/LGEIHeadline-Light.otf') format('woff2');
+}
+
+@font-face {
+  font-family: 'LG EI Headline Regular';
+  src: url('/public/font/LG-EI-Headline-otf/LGEIHeadline-Regular.otf') format('woff2');
+}
+
+@font-face {
+  font-family: 'LG EI Headline Semibold';
+  src: url('/public/font/LG-EI-Headline-otf/LGEIHeadline-Semibold.otf') format('woff2');
+}
+
+@font-face {
+  font-family: 'LG EI Headline Thin';
+  src: url('/public/font/LG-EI-Headline-otf/LGEIHeadline-Thin.otf') format('woff2');
+}
+
+* {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'LG EI Headline Regular';
+}
+
+body {
+  width: 80%;
+  height: 100%;
+  margin: auto;
+}
