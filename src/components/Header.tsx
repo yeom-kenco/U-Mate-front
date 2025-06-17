@@ -36,7 +36,7 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
         ) : (
           <nav className="flex items-center gap-2">
             <Link
-              to="/mypage"
+              to="/"
               className="flex items-center justify-end text-gray-700 hover:text-pink-500 transition-colors"
             >
               <FiUser className="w-7 h-7" />
