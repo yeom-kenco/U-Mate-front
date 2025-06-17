@@ -1,13 +1,15 @@
-import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Default from '../default';
 
-const router = createHashRouter([
-  {
-    element: <Default />,
-    children: [{}],
-  },
-]);
+const Router = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Default />}>
+        <Route path="mypage" element={<div>마이페이지</div>} />
+        <Route path="notifications" element={<div>알림</div>} />
+      </Route>
+    </Routes>
+  );
+};
 
-export default function Router() {
-  return <RouterProvider router={router} />;
-}
+export default Router;

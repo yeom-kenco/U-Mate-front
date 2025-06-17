@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import Header from './components/Header.tsx';
+import Header from './components/Header';
 import { Outlet } from 'react-router-dom';
-import Footer from './components/Footer.tsx';
+import Footer from './components/Footer';
 
 const Default = () => {
   return (
