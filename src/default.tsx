@@ -8,7 +8,7 @@ const Default = () => {
   return (
     <>
       <Header />
-      <div className="w-[80%] mx-auto">
+      <div className="w-[90%] mx-auto">
         <Outlet />
       </div>
       <Footer />
