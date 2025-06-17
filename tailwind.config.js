@@ -17,14 +17,14 @@ export default {
 
       fontSize: {
         // text-[지정명]
-        xs: '10px',
-        s: '12px',
-        sm: '14px',
-        m: '16px',
-        lm: '18px',
-        lg: '24px',
-        xl: '32px',
-        xxl: '36px',
+        xs: '0.625rem', // 10px
+        s: '0.75rem', // 12px
+        sm: '0.875rem', // 14px
+        m: '1rem', // 기본값(16px)
+        lm: '1.125rem', // 18px
+        lg: '1.5rem', // 24px
+        xl: '2rem', // 32px
+        xxl: '2.25rem', //36px
       },
     },
   },
