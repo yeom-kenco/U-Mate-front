@@ -8,7 +8,7 @@ const Default = () => {
   return (
     <>
       <Header showBackButton={false} showSearch={true} />
-      <LoginBanner type="default" onClick={() => console.log('로그인 페이지로 이동')} />
+      <LoginBanner type="default" />
       <div className="w-[90%] mx-auto">
         <Outlet />
       </div>

@@ -7,6 +7,7 @@ import Button from '../components/Button';
 import BenefitDropBar from '../components/BenefitDropBar';
 import { benefitList } from '../data/benefits';
 import PricingPage from '../pages/PricingPage';
+import LoginPage from '../pages/LoginPage';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
         element: <TermsOfUsePage />,
       },
       { path: 'pricing', element: <PricingPage /> },
+      { path: '/login', element: <LoginPage /> },
     ],
   },
 ]);
