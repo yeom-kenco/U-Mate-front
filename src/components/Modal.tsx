@@ -10,9 +10,10 @@ type ModalProps = {
   children?: React.ReactNode;
   onClose?: () => void;
   onConfirm?: () => void;
-  showButtons?: boolean; // 버튼 표시 여부
-  leftButtonText?: string; // 왼쪽 버튼 텍스트
-  rightButtonText?: string; // 오른쪽 버튼 텍스트
+  showButtons?: boolean;
+  leftButtonText?: string;
+  rightButtonText?: string;
+  closeOnOutsideClick?: boolean; // 외부 클릭 시 닫기 여부
 };
 
 const SIZE_CLASSES: Record<NonNullable<ModalProps['size']>, string> = {
@@ -31,6 +32,7 @@ const Modal = ({
   leftButtonText = '',
   rightButtonText = '',
   showButtons = false,
+  closeOnOutsideClick = true, // 기본값: 외부 클릭 시 닫힘
 }: ModalProps) => {
   const modalRoot = document.getElementById('modal-root');
   if (!modalRoot) return null;
@@ -38,9 +40,15 @@ const Modal = ({
   const shouldRenderButtons = showButtons && (leftButtonText || rightButtonText);
 
   return createPortal(
-    <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center">
-      <div className={`bg-white rounded-2xl shadow-lg w-full ${SIZE_CLASSES[size]}`}>
-        {/* X 버튼: s 사이즈에는 렌더링하지 않음 */}
+    <div
+      className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center"
+      onClick={closeOnOutsideClick ? onClose : undefined} // 외부 클릭 감지
+    >
+      <div
+        className={`bg-white rounded-2xl shadow-lg w-full ${SIZE_CLASSES[size]}`}
+        onClick={(e) => e.stopPropagation()} // 내부 클릭은 닫기 방지
+      >
+        {/* X 버튼: s 사이즈는 제외 */}
         {size !== 's' && (
           <div className="flex justify-end mb-2">
             <button onClick={onClose} aria-label="닫기">
@@ -49,16 +57,16 @@ const Modal = ({
           </div>
         )}
 
-        {/* Header */}
+        {/* 헤더 */}
         <div className="text-center mb-5">
           <h2 className="text-m font-bold">{title}</h2>
           {subtitle && <p className="text-sm text-zinc-400 mt-1">{subtitle}</p>}
         </div>
 
-        {/* Content */}
+        {/* 콘텐츠 */}
         <div>{children}</div>
 
-        {/* Footer Buttons */}
+        {/* 버튼 영역 */}
         {shouldRenderButtons && (
           <div className="flex gap-2 mt-6 justify-center">
             {leftButtonText && (

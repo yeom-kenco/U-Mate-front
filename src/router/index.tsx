@@ -21,8 +21,8 @@ const TempPage = () => {
         showButtons
         leftButtonText="취소"
         rightButtonText="삭제하기"
-        onClose
-        onConfirm
+        onClose={() => console.log('닫기')}
+        onConfirm={() => console.log('삭제')}
       ></Modal>
     </div>
   );
