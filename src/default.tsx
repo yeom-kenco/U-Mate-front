@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Header from './components/Header.tsx';
+import Header from './components/Header';
 import { Outlet } from 'react-router-dom';
 import Footer from './components/Footer.tsx';
 import ChatbotButton from './components/ChatbotButton.tsx';
@@ -8,7 +7,9 @@ const Default = () => {
   return (
     <>
       <Header />
-      <Outlet />
+      <div className="w-[90%] mx-auto">
+        <Outlet />
+      </div>
       <Footer />
       <ChatbotButton />
     </>
