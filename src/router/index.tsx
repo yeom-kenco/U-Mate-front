@@ -3,16 +3,19 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Default from '../default';
 import ChatbotMain from '../pages/ChatbotMain';
 import TermsOfUsePage from '../pages/TermsOfUsePage';
-import PricingPage from '../pages/PricingPage';
-import LoginBanner from '../components/Loginbanner';
+import BenefitDropBar from '../components/BenefitDropBar';
+import { benefitList } from '../data/benefits';
 
-// Footer 테스트용 임시 페이지
-const TempPage = () => (
-  <div>
-    <LoginBanner type="default" />
-    <LoginBanner type="chatbot" />
-  </div>
-);
+// 테스트용 임시 페이지
+const TempPage = () => {
+  return (
+    <div className="py-10">
+      <BenefitDropBar label="할인 혜택" indexes={[0, 1, 2, 3, 4]} data={benefitList} />
+      <BenefitDropBar label="기본 혜택" indexes={[5, 6, 7, 8, 9]} data={benefitList} />
+    </div>
+  );
+};
+
 
 const router = createBrowserRouter([
   {
