@@ -1,13 +1,21 @@
 // router/index.tsx
-import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Default from '../default';
 import ChatbotMain from '../pages/ChatbotMain';
 import TermsOfUsePage from '../pages/TermsOfUsePage';
+import BenefitList from '../components/BenefitList';
 
-// Footer 테스트용 임시 페이지
-const TempPage = () => <div>Footer 테스트용 페이지입니다</div>;
+// 테스트용 임시 페이지
+const TempPage = () => {
+  return (
+    <div className="py-10">
+      <h1 className="text-xl font-bold mb-4">혜택 리스트</h1>
+      <BenefitList />
+    </div>
+  );
+};
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     element: <Default />,
     children: [
