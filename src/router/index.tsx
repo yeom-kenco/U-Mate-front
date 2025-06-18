@@ -4,61 +4,21 @@ import Default from '../default';
 import ChatbotMain from '../pages/ChatbotMain';
 import TermsOfUsePage from '../pages/TermsOfUsePage';
 import Button from '../components/Button';
-import PricingPage from '../pages/PricingPage';
-import LoginBanner from '../components/Loginbanner';
+import BenefitDropBar from '../components/BenefitDropBar';
+import { benefitList } from '../data/benefits';
 
-// Footer 테스트용 임시 페이지
-const TempPage = () => (
-  <div>
+// 테스트용 임시 페이지
+const TempPage = () => {
+  return (
+    <div className="py-10">
+      <BenefitDropBar label="할인 혜택" indexes={[0, 1, 2, 3, 4]} data={benefitList} />
+      <BenefitDropBar label="기본 혜택" indexes={[5, 6, 7, 8, 9]} data={benefitList} />
+    </div>
     <Button variant="outline" color="gray" size="s">
       outline
     </Button>
-    <Button variant="outline" color="pink" size="m">
-      outline
-    </Button>
-    <Button variant="outline" color="violet" size="lg">
-      outline
-    </Button>
-    <Button variant="outline" color="pink" size="xl">
-      outline
-    </Button>
-    <br />
-    <br />
-    <Button variant="fill" color="pink" size="s">
-      fill
-    </Button>
-    <Button variant="fill" color="violet" size="m">
-      fill
-    </Button>
-    <Button variant="fill" color="gray" size="lg">
-      fill
-    </Button>
-    <Button variant="fill" color="pink" size="xl">
-      fill
-    </Button>
-    <br />
-    <br />
-    <Button variant="ghost" color="pink" size="s">
-      ghost
-    </Button>
-    <Button variant="ghost" color="gray" size="m">
-      ghost
-    </Button>
-    <Button variant="ghost" color="violet" size="lg">
-      ghost
-    </Button>
-    <Button variant="ghost" color="black" size="xl">
-      ghost
-    </Button>
-    <br />
-    <br />
-    <Button variant="special" size="lg">
-      고객센터 전화걸기
-    </Button>
-    <LoginBanner type="default" />
-    <LoginBanner type="chatbot" />
-  </div>
-);
+  );
+};
 
 const router = createBrowserRouter([
   {
