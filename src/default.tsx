@@ -11,7 +11,6 @@ const Default = () => {
       <div className="w-[90%] mx-auto">
         <Outlet />
       </div>
-      <PricingPage />
       <Footer />
       <ChatbotButton />
     </>
