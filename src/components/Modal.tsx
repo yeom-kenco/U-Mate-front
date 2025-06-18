@@ -45,7 +45,7 @@ const Modal = ({
       onClick={closeOnOutsideClick ? onClose : undefined} // 외부 클릭 감지
     >
       <div
-        className={`bg-white rounded-2xl shadow-lg w-full ${SIZE_CLASSES[size]}`}
+        className={`bg-white rounded-2xl shadow-lg ${SIZE_CLASSES[size]}`}
         onClick={(e) => e.stopPropagation()} // 내부 클릭은 닫기 방지
       >
         {/* X 버튼: s 사이즈는 제외 */}
@@ -64,7 +64,9 @@ const Modal = ({
         </div>
 
         {/* 콘텐츠 */}
-        <div>{children}</div>
+        <div className={children ? 'max-h-[50vh] overflow-y-auto scrollbar-hide' : ''}>
+          {children}
+        </div>
 
         {/* 버튼 영역 */}
         {shouldRenderButtons && (

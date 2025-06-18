@@ -15,9 +15,9 @@ const TempPage = () => {
       <BenefitDropBar label="할인 혜택" indexes={[0, 1, 2, 3, 4]} data={benefitList} />
       <BenefitDropBar label="기본 혜택" indexes={[5, 6, 7, 8, 9]} data={benefitList} />
       <Modal
-        title="정말로 삭제하시겠습니까?"
+        title="정말 삭제하시겠습니까?"
         subtitle="삭제한 리뷰는 다시 되돌릴 수 없어요. 🥲"
-        size="m"
+        size="s"
         showButtons
         leftButtonText="취소"
         rightButtonText="삭제하기"
