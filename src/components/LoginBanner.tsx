@@ -28,7 +28,7 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
           <br /> <span className="text-pink-500">멤버십 혜택!</span> 놓치지마세요 😀
         </>
       ),
-      container: 'bg-white text-black rounded-2xl border border-zinc-200 shadow px-4 py-6',
+      container: 'bg-white text-black rounded-2xl border border-zinc-200 shadow px-5 py-9',
       button: { variant: 'outline' as const, color: 'gray' as const },
     },
     mainGradient: {
@@ -38,7 +38,7 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
           <br /> 혜택을 더 자세히 확인할 수 있어요
         </>
       ),
-      container: 'bg-primary text-white rounded-2xl px-4 py-6',
+      container: 'bg-primary text-white rounded-2xl px-5 py-9',
       button: { variant: 'outline' as const, color: 'white' as const },
     },
   };
