@@ -4,8 +4,8 @@ import SortList from '../components/BottomSheet/SortList';
 import { SlArrowDown } from 'react-icons/sl';
 import AgeRangeList from '../components/BottomSheet/AgeRangeList';
 const PricingPage = () => {
-  const [sortopen, setSortOpen] = useState(false);
-  const [ageopen, setAgeOpen] = useState(false);
+  const [sortopen, setSortOpen] = useState(false); // 정렬 시트 토글
+  const [ageopen, setAgeOpen] = useState(false); // 연령 시트 토글
   const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
   const [ageRanges, SetAgeRanges] = useState(''); // 선택된 연령 기준
 

@@ -41,7 +41,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
           ' relative w-full max-w-screen bg-white z-[999] dark:bg-neutral-900 rounded-t-[20px] shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500',
           isOpen ? 'translate-y-0' : 'translate-y-full'
         )}
-        style={{ height }}
+        style={{ height }} // 받아온 height로 높이 bottomSheet 높이 지정
       >
         {/* Handle */}
         <div className="pt-3 pb-[15px] flex justify-center items-center">
