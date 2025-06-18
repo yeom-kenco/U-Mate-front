@@ -12,7 +12,8 @@ interface ShortcutCardProps {
 const ShortcutCard: React.FC<ShortcutCardProps> = ({ icon, title, description, onClick }) => {
   return (
     <div
-      className="bg-purple-100 relative rounded-3xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition cursor-pointer w-[317px] h-[370px]"
+      className="bg-purple-100 relative rounded-3xl shadow-md p-6 flex flex-col items-center text-center
+             transition transform duration-150 active:scale-95 hover:shadow-lg cursor-pointer w-[317px] h-[380px]"
       onClick={onClick}
     >
       <div className="mb-4">{icon}</div>
