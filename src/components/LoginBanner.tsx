@@ -6,7 +6,7 @@ type LoginBannerProps = {
 const LoginBanner = ({ message, onClick }: LoginBannerProps) => {
   return (
     <div
-      className={`w-full flex justify-between items-center gap-2 px-2 py-3 rounded text-white bg-primary`}
+      className={`w-full flex justify-between items-center gap-2 px-2 py-3 text-white bg-primary`}
     >
       <span className="text-s font-normal mt-[2px]">{message}</span>
       <button
