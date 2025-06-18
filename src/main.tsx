@@ -5,12 +5,12 @@ import Router from './router';
 import './index.css';
 import { store } from './store/store';
 import Default from './default.tsx';
+import { BrowserRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* <Provider store={store}>
+    <Provider store={store}>
       <Router />
-    </Provider> */}
-    <Default />
+    </Provider>
   </StrictMode>
 );

@@ -1,9 +1,11 @@
 // router/index.tsx
-import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Default from '../default';
 import ChatbotMain from '../pages/ChatbotMain';
 import TermsOfUsePage from '../pages/TermsOfUsePage';
 import Button from '../components/Button';
+import PricingPage from '../pages/PricingPage';
+import LoginBanner from '../components/Loginbanner';
 
 // Footer 테스트용 임시 페이지
 const TempPage = () => (
@@ -53,10 +55,12 @@ const TempPage = () => (
     <Button variant="special" size="lg">
       고객센터 전화걸기
     </Button>
+    <LoginBanner type="default" />
+    <LoginBanner type="chatbot" />
   </div>
 );
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     element: <Default />,
     children: [
@@ -69,6 +73,7 @@ const router = createHashRouter([
         path: '/terms',
         element: <TermsOfUsePage />,
       },
+      { path: 'pricing', element: <PricingPage /> },
     ],
   },
 ]);
