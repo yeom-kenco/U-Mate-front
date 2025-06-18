@@ -8,8 +8,9 @@ import Default from './default.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Provider store={store}>
+    {/* <Provider store={store}>
       <Router />
-    </Provider>
+    </Provider> */}
+    <Default />
   </StrictMode>
 );

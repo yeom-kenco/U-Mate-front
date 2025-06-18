@@ -10,7 +10,7 @@ interface HeaderProps {
   title?: string;
 }
 
-const Header = ({ showBackButton = false, showSearch = false, title = '요금제' }: HeaderProps) => {
+const Header = ({ showBackButton = false, showSearch = true, title = '요금제' }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); //햄버거 토글
 
   return (
