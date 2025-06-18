@@ -10,7 +10,7 @@ interface HeaderProps {
   title?: string;
 }
 
-const Header = ({ showBackButton = false, showSearch = true, title = '요금제' }: HeaderProps) => {
+const Header = ({ showBackButton = false, showSearch = false, title = '요금제' }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); //햄버거 토글
 
   return (
@@ -36,7 +36,7 @@ const Header = ({ showBackButton = false, showSearch = true, title = '요금제'
         ) : (
           <nav className="flex items-center gap-2">
             <Link
-              to="/"
+              to="/pricing"
               className="flex items-center justify-end text-gray-700 hover:text-pink-500 transition-colors"
             >
               <FiUser className="w-7 h-7" />
