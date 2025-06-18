@@ -5,6 +5,7 @@ import ChatbotMain from '../pages/ChatbotMain';
 import TermsOfUsePage from '../pages/TermsOfUsePage';
 import BenefitDropBar from '../components/BenefitDropBar';
 import { benefitList } from '../data/benefits';
+import PricingPage from '../pages/PricingPage';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -15,7 +16,6 @@ const TempPage = () => {
     </div>
   );
 };
-
 
 const router = createBrowserRouter([
   {
