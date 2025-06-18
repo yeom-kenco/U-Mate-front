@@ -8,6 +8,7 @@ import BenefitDropBar from '../components/BenefitDropBar';
 import { benefitList } from '../data/benefits';
 import PricingPage from '../pages/PricingPage';
 import LoginPage from '../pages/LoginPage';
+import LoginBanner from '../components/LoginBanner';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -18,6 +19,8 @@ const TempPage = () => {
       <Button variant="outline" color="gray" size="s">
         outline
       </Button>
+      <LoginBanner type="mainGradient" />
+      <LoginBanner type="mainWhite" />
     </div>
   );
 };
