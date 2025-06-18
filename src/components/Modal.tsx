@@ -19,7 +19,6 @@ type ModalProps = {
 const SIZE_CLASSES: Record<NonNullable<ModalProps['size']>, string> = {
   s: 'w-[85%] max-w-sm px-5 py-7',
   m: 'w-[95%] max-w-sm p-6',
-  lg: 'w-[95%] max-w-xl pt-9 px-5 pb-8',
 };
 
 const Modal = ({
@@ -50,7 +49,7 @@ const Modal = ({
       >
         {/* X 버튼: s 사이즈는 제외 */}
         {size !== 's' && (
-          <div className="flex justify-end mb-2">
+          <div className="flex justify-end mr-[-6px] mb-2">
             <button onClick={onClose} aria-label="닫기">
               <IoCloseOutline className="text-2xl text-zinc-400 hover:text-black" />
             </button>
