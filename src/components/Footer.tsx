@@ -17,7 +17,7 @@ const Footer = () => {
         </p>
         <p className="mb-1">
           <a
-            href="https://github.com/username1"
+            href="https://github.com/khwww"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline hover:text-inherit"
@@ -26,7 +26,7 @@ const Footer = () => {
           </a>{' '}
           |{' '}
           <a
-            href="https://github.com/khwww"
+            href="https://github.com/nas7062"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline hover:text-inherit"
@@ -35,7 +35,7 @@ const Footer = () => {
           </a>{' '}
           |{' '}
           <a
-            href="https://github.com/nas7062"
+            href="https://github.com/sejinbaek"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline hover:text-inherit"
@@ -44,7 +44,7 @@ const Footer = () => {
           </a>{' '}
           |{' '}
           <a
-            href="https://github.com/sejinbaek"
+            href="https://github.com/yeom-kenco"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline hover:text-inherit"
@@ -53,7 +53,7 @@ const Footer = () => {
           </a>{' '}
           |{' '}
           <a
-            href="https://github.com/yeom-kenco"
+            href="https://github.com/seungwoo505"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline hover:text-inherit"
