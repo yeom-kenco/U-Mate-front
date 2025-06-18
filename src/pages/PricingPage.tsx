@@ -42,7 +42,7 @@ const PricingPage = () => {
         name="5G 프리미어 에센셜"
         description="데이터 무제한 테더링+쉐어링 70GB"
         price="월 85,000원"
-        discountedPrice="58,500원"
+        discountedPrice="월 58,500원"
         rating={{ score: 3.0, count: 15 }}
         size="small"
         onCompareClick={() => console.log('비교')}
@@ -53,7 +53,7 @@ const PricingPage = () => {
         name="5G 프리미어 에센셜"
         description="데이터 무제한 테더링+쉐어링 70GB"
         price="월 85,000원"
-        discountedPrice="58,500원"
+        discountedPrice="월 58,500원"
         rating={{ score: 3.0, count: 15 }}
         size="large"
         onCompareClick={() => console.log('비교')}
