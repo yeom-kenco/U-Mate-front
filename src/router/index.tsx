@@ -6,7 +6,6 @@ import BenefitDropBar from '../components/BenefitDropBar';
 import { benefitList } from '../data/benefits';
 import PricingPage from '../pages/PricingPage';
 import Modal from '../components/Modal';
-import Button from '../components/Button';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
