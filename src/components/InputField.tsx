@@ -39,7 +39,7 @@ const InputField: React.FC<InputFieldProps> = ({
       {label && (
         <label
           className={clsx(
-            'text-s ',
+            'text-s mb-[-5px]',
             variant === 'line' ? 'text-gray-400' : 'text-gray-600 font-medium'
           )}
         >
@@ -49,7 +49,7 @@ const InputField: React.FC<InputFieldProps> = ({
       {/*wrapper 영역 focus시 색 변경 */}
       <div
         className={clsx(
-          'flex items-center border-zinc-200 transition duration-200 focus-within:border-black',
+          'flex mb-4 items-center border-zinc-200 transition duration-200 focus-within:border-black',
           inputWrapperClass
         )}
       >
@@ -61,14 +61,14 @@ const InputField: React.FC<InputFieldProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           className={clsx(
-            'flex-1 text-sm outline-none',
+            'flex-1 text-sm outline-none placeholder:font-semibold placeholder-[#A9B3C2]',
             variant === 'line' ? 'bg-transparent' : 'bg-white'
           )}
         />
         {eyeIcon && <div className="ml-2">{eyeIcon}</div>}
         {suffixButton && <div className="ml-2">{suffixButton}</div>}
       </div>
-      {/*erroe영역*/}
+      {/*error영역*/}
       {error && <p className="text-xs text-pink-500 mt-1">{error}</p>}
     </div>
   );
