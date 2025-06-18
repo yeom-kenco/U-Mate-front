@@ -29,7 +29,7 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
         </>
       ),
       container:
-        'bg-white text-black rounded-2xl border border-zinc-200 drop-shadow-[0_0px_12px_rgba(0,0,0,0.08)] px-5 py-9 max-[380px]:py-6',
+        'bg-white text-black rounded-2xl border border-zinc-200 drop-shadow-[0_0px_12px_rgba(0,0,0,0.08)] px-5 py-9 max-[400px]:py-6',
       button: { variant: 'outline' as const, color: 'gray' as const },
     },
     mainGradient: {
@@ -39,7 +39,7 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
           <br /> 혜택을 더 자세히 확인할 수 있어요
         </>
       ),
-      container: 'bg-primary text-white rounded-2xl px-5 py-9 max-[380px]:py-6',
+      container: 'bg-primary text-white rounded-2xl px-5 py-9 max-[400px]:py-6',
       button: { variant: 'outline' as const, color: 'white' as const },
     },
   };
@@ -48,7 +48,7 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
 
   return (
     <div className={`w-full flex justify-between items-center gap-2 px-3 py-3 ${container}`}>
-      <span className="text-sm font-normal mt-[2px] max-[380px]:text-xs">{message}</span>
+      <span className="text-sm font-normal mt-[2px] max-[400px]:text-xs">{message}</span>
       <Button onClick={handleLoginClick} variant={button.variant} color={button.color}>
         로그인
       </Button>
