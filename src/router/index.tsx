@@ -18,7 +18,16 @@ const TempPage = () => {
       <Button variant="outline" color="gray" size="s">
         outline
       </Button>
-      <ChatBubble from="bot" message="안녕하세요 이거 왜 세로죠?" time="16:00" />
+      <ChatBubble
+        from="bot"
+        message="ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ?"
+        time="16:00"
+      />
+      <ChatBubble
+        from="user"
+        message="ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ?"
+        time="16:00"
+      />
     </div>
   );
 };
