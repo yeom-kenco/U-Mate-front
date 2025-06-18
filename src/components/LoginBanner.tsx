@@ -1,3 +1,5 @@
+import Button from './Button';
+
 type LoginBannerProps = {
   type: 'default' | 'chatbot';
   onClick: () => void;
@@ -13,13 +15,10 @@ const LoginBanner = ({ type, onClick }: LoginBannerProps) => {
     <div
       className={`w-full flex justify-between items-center gap-2 px-3 py-3 text-white bg-primary`}
     >
-      <span className="text-sm font-normal mt-[2px]">{message}</span>
-      <button
-        onClick={onClick}
-        className="text-sm border font-normal whitespace-nowrap border-white text-white w-fit px-2 py-1 rounded-lg"
-      >
-        <span className="mt-[2px] inline-block">로그인</span>
-      </button>
+      <span className="text-sm font-normal mt-[2px] max-[400px]:text-xs">{message}</span>
+      <Button variant="outline" color="white" onClick={onClick}>
+        로그인
+      </Button>
     </div>
   );
 };
