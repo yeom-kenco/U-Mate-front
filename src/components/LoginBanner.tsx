@@ -29,7 +29,7 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
         </>
       ),
       container:
-        'bg-white text-black rounded-2xl border border-zinc-200 drop-shadow-[0_0px_12px_rgba(0,0,0,0.08)] px-5 py-9',
+        'bg-white text-black rounded-2xl border border-zinc-200 drop-shadow-[0_0px_12px_rgba(0,0,0,0.08)] px-5 py-9 max-[400px]:py-6',
       button: { variant: 'outline' as const, color: 'gray' as const },
     },
     mainGradient: {
@@ -39,7 +39,7 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
           <br /> 혜택을 더 자세히 확인할 수 있어요
         </>
       ),
-      container: 'bg-primary text-white rounded-2xl px-5 py-9',
+      container: 'bg-primary text-white rounded-2xl px-5 py-9 max-[400px]:py-6',
       button: { variant: 'outline' as const, color: 'white' as const },
     },
   };
