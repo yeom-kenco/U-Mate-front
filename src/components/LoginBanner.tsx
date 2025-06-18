@@ -29,7 +29,7 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
         </>
       ),
       container:
-        'bg-white text-black rounded-2xl border border-zinc-200 drop-shadow-[0_0px_12px_rgba(0,0,0,0.08)] px-5 py-9 max-[380]:py-6',
+        'bg-white text-black rounded-2xl border border-zinc-200 drop-shadow-[0_0px_12px_rgba(0,0,0,0.08)] px-5 py-9 max-[380px]:py-6',
       button: { variant: 'outline' as const, color: 'gray' as const },
     },
     mainGradient: {
