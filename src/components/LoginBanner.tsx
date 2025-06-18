@@ -1,0 +1,31 @@
+type LoginBannerProps = {
+  type: 'default' | 'chatbot';
+  onClick: () => void;
+};
+
+const LoginBanner = ({ type, onClick }: LoginBannerProps) => {
+  const message =
+    type === 'chatbot'
+      ? '로그인하고 현재 가입조건을 이용하세요'
+      : '로그인하고 고객님만을 위한 대화를 시작해보세요';
+
+  return (
+    <div
+      className={`w-full flex justify-between items-center gap-2 px-3 py-3 text-white bg-primary`}
+    >
+      <span className="text-sm font-normal mt-[2px]">{message}</span>
+      <button
+        onClick={onClick}
+        className="text-sm border font-normal whitespace-nowrap border-white text-white w-fit px-2 py-1 rounded-lg"
+      >
+        <span className="mt-[2px] inline-block">로그인</span>
+      </button>
+    </div>
+  );
+};
+
+export default LoginBanner;
+
+// 사용 예시
+// <LoginBanner type="default" />
+// <LoginBanner type="chatbot" />
