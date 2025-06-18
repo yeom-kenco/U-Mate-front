@@ -44,7 +44,7 @@ const Modal = ({
       onClick={closeOnOutsideClick ? onClose : undefined} // 외부 클릭 감지
     >
       <div
-        className={`bg-white rounded-2xl shadow-lg ${SIZE_CLASSES[size]}`}
+        className={`bg-white rounded-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.25) ${SIZE_CLASSES[size]}`}
         onClick={(e) => e.stopPropagation()} // 내부 클릭은 닫기 방지
       >
         {/* X 버튼: s 사이즈는 제외 */}
