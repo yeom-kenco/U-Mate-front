@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import BenefitItem from './BenefitItem';
 import type { BenefitItem as BenefitItemType } from '../data/benefits';
-import { FiChevronDown, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiChevronRight } from 'react-icons/fi';
 
 interface BenefitDropProps {
   label: string;
