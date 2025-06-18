@@ -1,6 +1,7 @@
 // router/index.tsx
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import Default from '../default';
+import ChatbotMain from '../pages/ChatbotMain';
 import TermsOfUsePage from '../pages/TermsOfUsePage';
 
 // Footer 테스트용 임시 페이지
@@ -14,6 +15,7 @@ const router = createHashRouter([
         path: '/',
         element: <TempPage />, // ✅ Outlet 채우기
       },
+      { path: 'chatbot', element: <ChatbotMain /> },
       {
         path: '/terms',
         element: <TermsOfUsePage />,
