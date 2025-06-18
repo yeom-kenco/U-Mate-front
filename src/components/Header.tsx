@@ -10,19 +10,19 @@ interface HeaderProps {
   title?: string;
 }
 
-const Header = ({ showBackButton = false, showSearch = true, title = '요금제' }: HeaderProps) => {
+const Header = ({ showBackButton = false, showSearch = false, title = '요금제' }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); //햄버거 토글
 
   return (
-    <header className=" w-full h-16  flex justify-center items-center  ">
-      <div className="relative container mx-auto  h-full flex items-center justify-between border-solid border-2 border-red-400">
+    <header className=" w-full h-16  flex justify-center items-center px-5 py-6">
+      <div className="relative container mx-auto  h-full flex items-center justify-between ">
         {showBackButton ? (
           <div className="flex items-center ">
             <SlArrowLeft className="w-6 h-6 " />
             <span className="text-lm w-20 h-6">{title}</span>
           </div>
         ) : (
-          <div className="flex items-center justify-center relative top-2 ">
+          <div className="flex items-center justify-center relative ">
             <Link to="/" className="text-xl font-bold">
               <span className="text-pink-500">U:</span>
               <span className="text-xl font-bold">Mate</span>
@@ -36,7 +36,7 @@ const Header = ({ showBackButton = false, showSearch = true, title = '요금제'
         ) : (
           <nav className="flex items-center gap-2">
             <Link
-              to="/"
+              to="/pricing"
               className="flex items-center justify-end text-gray-700 hover:text-pink-500 transition-colors"
             >
               <FiUser className="w-7 h-7" />

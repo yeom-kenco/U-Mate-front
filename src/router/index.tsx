@@ -16,6 +16,7 @@ const TempPage = () => {
   );
 };
 
+
 const router = createBrowserRouter([
   {
     element: <Default />,
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
         path: '/terms',
         element: <TermsOfUsePage />,
       },
+      { path: 'pricing', element: <PricingPage /> },
     ],
   },
 ]);
