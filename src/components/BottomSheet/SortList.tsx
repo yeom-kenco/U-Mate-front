@@ -10,12 +10,12 @@ const sortLists = ['인기순', '높은 가격순', '낮은 가격순', '리뷰 
 
 const SortList: React.FC<SortListProps> = ({ onSelect, selected }) => {
   return (
-    <ul className="flex flex-col px-3 py-3 text-sm">
-      <p className="text-bold text-lg">정렬 기준</p>
+    <ul className="flex flex-col px-3 py-2  gap-1">
+      <p className="font-bold  text-lg">정렬 기준</p>
       {sortLists.map((sort) => (
         <li
           key={sort}
-          className={`py-2 cursor-pointer ${
+          className={`py-2 cursor-pointer text-sm ${
             selected === sort ? 'text-gray-900 font-bold' : 'text-gray-700'
           }`}
           onClick={() => onSelect(sort)}

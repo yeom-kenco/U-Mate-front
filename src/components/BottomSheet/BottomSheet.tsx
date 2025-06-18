@@ -25,7 +25,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
   if (!visible && !isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-center items-end">
+    <div className="fixed inset-0 z-50 flex justify-center items-end ">
       {/* Backdrop */}
       <div
         className={clsx(
@@ -38,7 +38,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
       {/* Bottom Sheet */}
       <div
         className={clsx(
-          ' relative w-full max-w-screen bg-white dark:bg-neutral-900 rounded-t-[20px] shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500',
+          ' relative w-full max-w-screen bg-white z-[999] dark:bg-neutral-900 rounded-t-[20px] shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500',
           isOpen ? 'translate-y-0' : 'translate-y-full'
         )}
         style={{ height }}
@@ -49,7 +49,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto px-[18px] pb-[34px] flex flex-col gap-7">
+        <div className="flex-1 overflow-y-hidden px-[18px] pb-[34px] flex flex-col gap-7 scrollbar-hidden">
           {children}
         </div>
       </div>
