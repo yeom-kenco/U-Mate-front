@@ -4,6 +4,8 @@ import SortList from '../components/BottomSheet/SortList';
 import { SlArrowDown } from 'react-icons/sl';
 import AgeRangeList from '../components/BottomSheet/AgeRangeList';
 import InputField from '../components/InputField';
+import BenefitCard from '../components/BenefitCard';
+
 const PricingPage = () => {
   const [sortopen, setSortOpen] = useState(false); // 정렬 시트 토글
   const [ageopen, setAgeOpen] = useState(false); // 연령 시트 토글
@@ -33,6 +35,11 @@ const PricingPage = () => {
       </div>
       <InputField label="이름" required placeholder="이름을 입력해주세요" />
       <InputField variant="box" label="비밀번호" placeholder="비밀번호를 입력해주세요" />
+      <BenefitCard
+        img="/images/chatbot/chatbot-main.png"
+        title="OTT 서비스"
+        descript="다양한 할인 혜택  다양한 할인 혜택  "
+      />
       <BottomSheet isOpen={sortopen} onClose={() => setSortOpen(false)} height="300px">
         <SortList onSelect={handleSortSelect} selected={isSorted} />
       </BottomSheet>

@@ -1,0 +1,81 @@
+import { MdCall } from 'react-icons/md';
+import React from 'react';
+
+type ButtonProps = {
+  variant?: 'fill' | 'outline' | 'ghost' | 'special';
+  color?: 'pink' | 'gray' | 'violet' | 'black';
+  size?: 's' | 'm' | 'lg' | 'xl';
+  onClick?: () => void;
+  children: React.ReactNode;
+  className?: string;
+  disabled?: boolean;
+};
+
+const Button = ({
+  variant = 'fill',
+  color = 'pink',
+  size = 'm',
+  onClick,
+  children,
+  className = '',
+  disabled = false,
+}: ButtonProps) => {
+  // 스타일 정의
+  const variantMap = {
+    fill: {
+      pink: 'bg-pink-500 text-white hover:bg-pink-400 active:bg-pink-600',
+      gray: 'bg-zinc-100 text-zinc-400 hover:bg-zinc-300 active:bg-gray-400',
+      violet: 'bg-violet-100 text-black hover:bg-violet-50',
+    },
+    outline: {
+      pink: 'border border-pink-500 text-pink-500 hover:bg-pink-50 focus:bg-pink-100',
+      gray: 'border border-zinc-200 text-black hover:bg-zinc-100 focus:bg-zinc-200',
+      violet: 'border border-violet-200 text-violet-400 hover:bg-violet-50',
+    },
+    ghost: {
+      pink: 'text-pink-500 hover:bg-pink-50',
+      gray: 'text-zinc-400 hover:bg-gray-100',
+      violet: 'text-violet-700 hover:bg-violet-50',
+      black: 'text-black',
+    },
+  };
+
+  const specialStyle = 'bg-diagonal text-violet-700 shadow-md';
+
+  // 사이즈별 스타일
+  const sizeMap = {
+    s: 'text-xs px-3 h-8 min-w-14',
+    m: 'text-sm px-4 h-9 min-w-20',
+    lg: 'text-m px-5 h-11 min-w-16',
+    xl: 'text-m px-6 h-14 min-w-24',
+  };
+
+  // 둥근 모서리 설정
+  const borderRadius = size === 's' || variant === 'special' ? 'rounded-3xl' : 'rounded-lg';
+
+  // 비활성화 상태 스타일
+  const disabledStyle = 'bg-zinc-200 text-white cursor-not-allowed pointer-events-none';
+
+  // 최종 스타일 조합
+  const variantStyle = variant === 'special' ? specialStyle : variantMap[variant]?.[color] || '';
+
+  const composedClassName = [
+    'inline-flex items-center justify-center font-medium transition',
+    borderRadius,
+    sizeMap[size],
+    variantStyle,
+    disabled ? disabledStyle : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return (
+    <button onClick={onClick} className={composedClassName} disabled={disabled}>
+      {variant === 'special' && <MdCall className="mr-2 w-5 h-5" />}
+      {children}
+    </button>
+  );
+};
+
+export default Button;
