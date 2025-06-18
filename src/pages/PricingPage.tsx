@@ -3,6 +3,7 @@ import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
 import { SlArrowDown } from 'react-icons/sl';
 import AgeRangeList from '../components/BottomSheet/AgeRangeList';
+import BenefitCard from '../components/BenefitCard';
 const PricingPage = () => {
   const [sortopen, setSortOpen] = useState(false); // 정렬 시트 토글
   const [ageopen, setAgeOpen] = useState(false); // 연령 시트 토글
@@ -30,7 +31,11 @@ const PricingPage = () => {
           {ageRanges || '전체'} <SlArrowDown className="relative top-[2px]" />
         </button>
       </div>
-
+      <BenefitCard
+        img="/images/chatbot/chatbot-main.png"
+        title="OTT 서비스"
+        descript="다양한 할인 혜택  다양한 할인 혜택  "
+      />
       <BottomSheet isOpen={sortopen} onClose={() => setSortOpen(false)} height="300px">
         <SortList onSelect={handleSortSelect} selected={isSorted} />
       </BottomSheet>
