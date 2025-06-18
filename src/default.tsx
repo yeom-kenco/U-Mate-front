@@ -7,8 +7,8 @@ import ChatbotButton from './components/ChatbotButton.tsx';
 const Default = () => {
   return (
     <>
-      <Header />
-      <div className="w-[90%] mx-auto" className="w-[90%] mx-auto">
+      <Header showBackButton={false} showSearch={true} />
+      <div className="w-[90%] mx-auto">
         <Outlet />
       </div>
       <Footer />
