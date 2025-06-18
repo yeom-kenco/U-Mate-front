@@ -4,7 +4,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 import Button from './Button';
 
 type ModalProps = {
-  size?: 's' | 'm' | 'lg';
+  size?: 's' | 'm';
   title: string;
   subtitle?: string;
   children?: React.ReactNode;
