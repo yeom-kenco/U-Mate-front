@@ -60,3 +60,12 @@ body {
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
+
+.custom-pagination .swiper-pagination-bullet {
+  background-color: #e4e4e7; /* zinc-200 */
+  opacity: 1;
+}
+
+.custom-pagination .swiper-pagination-bullet-active {
+  background-color: #ec4899; /* pink-500 */
+}
