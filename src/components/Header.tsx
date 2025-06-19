@@ -103,18 +103,19 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
         {/*메뉴 */}
         <nav className="w-full mx-auto  px-2 py-2  flex flex-col space-y-2 ">
           {/*비로그인 */}
-          <div className="flex  gap-1 max-[400px]:gap-2">
+          <div className="flex  gap-2  m px-2">
             <Button
               size="lg"
               color="violet"
-              className="max-[400px]:w-28 w-32 font-normal border-zinc-200 border"
+              className="max-[400px]:w-[108px]  w-[118px] font-normal border-zinc-200 border"
             >
               로그인
             </Button>
             <Button
               size="lg"
+              variant="outline"
               color="gray"
-              className=" max-[400px]:w-28 w-32 border-zinc-200 border font-normal  text-gray-950"
+              className=" max-[400px]:w-[108px]  w-[118px] border-zinc-200 border font-normal text-black  "
             >
               회원가입
             </Button>
@@ -128,13 +129,13 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
             <SlArrowRight className="w-3 h-3 relative top-[5px] ml-[2px]" />
           </Link> */}
 
-          <div className="flex pt-4">
+          <div className="flex pt-4 px-2">
             <Link to="/pricing" className=" max-w-48 cursor-pointer">
               요금제 찾아보기
             </Link>
             <SlArrowRight className="w-3 h-3 relative top-[5px] ml-[2px]" />
           </div>
-          <div className="flex">
+          <div className="flex px-2">
             <Link to="/pricing" className=" max-w-48 cursor-pointer">
               요금제 비교하기
             </Link>
