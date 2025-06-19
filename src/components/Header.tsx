@@ -36,7 +36,7 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
           <div className="flex items-center justify-center relative ">
             <Link to="/" className="text-xl font-bold">
               <span className="text-pink-500">U:</span>
-              <span className="text-xl font-bold">Mate</span>
+              <span className="text-xl font-bold m-1">Mate</span>
             </Link>
           </div>
         )}
