@@ -5,6 +5,7 @@ import { SlArrowLeft } from 'react-icons/sl';
 import { IoIosSearch } from 'react-icons/io';
 import { IoMdClose } from 'react-icons/io';
 import { SlArrowRight } from 'react-icons/sl';
+import Button from './Button';
 export interface HeaderProps {
   showBackButton: boolean;
   showSearch: boolean;
@@ -86,8 +87,9 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
           onClick={() => setIsMenuOpen(false)}
           className="w-6 h-6 absolute min-[400px]:left-56 min-[400px]:m-2 left-52 m-3 cursor-pointer"
         />
-        <div className="w-72 h-48 grid place-items-center bg-diagonal rounded-2xl  text-center max-[400px]:w-[260px]">
-          <div className="flex flex-col gap-1">
+        {/*사용자 정보 ?*/}
+        <div className="w-full h-48 flex justify-center items-center bg-diagonal rounded-2xl  text-center max-[400px]:w-[260px]">
+          <div className="flex  flex-col gap-1 max-[400px]:translate-x-0 -translate-x-4">
             <img src="/images/bear/gom.png" alt="" className="w-20 h-20 mx-auto mb-2" />
             <span className="text-lm font-semibold">
               <span className="text-pink-500">000님</span> 안녕하세요
@@ -98,16 +100,43 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
             </div>
           </div>
         </div>
-
-        <nav className="container mx-auto my-4 px-4 py-4 flex flex-col space-y-4">
+        {/*메뉴 */}
+        <nav className="w-full mx-auto  px-2 py-2  flex flex-col space-y-2 ">
+          {/*비로그인 */}
+          <div className="flex  gap-1 max-[400px]:gap-2">
+            <Button
+              size="lg"
+              color="violet"
+              className="max-[400px]:w-28 w-32 font-normal border-zinc-200 border"
+            >
+              로그인
+            </Button>
+            <Button
+              size="lg"
+              color="gray"
+              className=" max-[400px]:w-28 w-32 border-zinc-200 border font-normal  text-gray-950"
+            >
+              회원가입
+            </Button>
+          </div>
+          {/*로그인했을때 */}
+          {/* <Button size="lg" color="pink" className="max-[400px]:w-56 w-64 ">
+            로그아웃
+          </Button>
           <Link className="flex" to="/pricing">
             <p className=" max-w-48 cursor-pointer">요금제 찾아보기</p>
             <SlArrowRight className="w-3 h-3 relative top-[5px] ml-[2px]" />
-          </Link>
+          </Link> */}
 
+          <div className="flex pt-4">
+            <Link to="/pricing" className=" max-w-48 cursor-pointer">
+              요금제 찾아보기
+            </Link>
+            <SlArrowRight className="w-3 h-3 relative top-[5px] ml-[2px]" />
+          </div>
           <div className="flex">
             <Link to="/pricing" className=" max-w-48 cursor-pointer">
-              요금제 비교 하기
+              요금제 비교하기
             </Link>
             <SlArrowRight className="w-3 h-3 relative top-[5px] ml-[2px]" />
           </div>
