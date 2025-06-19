@@ -1,7 +1,8 @@
 import Header from './components/Header';
 import { Outlet } from 'react-router-dom';
 import Footer from './components/Footer';
-import ChatbotButton from './components/ChatbotButton.tsx';
+import LoginBanner from './components/LoginBanner.tsx';
+import ShortcutCarousel from './components/shortcut/ShortcutCarousel.tsx';
 import { useState } from 'react';
 
 const Default = () => {
@@ -18,11 +19,12 @@ const Default = () => {
         showBackButton={headerConfig.showBackButton}
         showSearch={headerConfig.showSearch}
       />
+      <LoginBanner type="chatbot" />
       <div className="w-[90%] mx-auto">
         <Outlet context={setHeaderConfig} />
       </div>
+      <ShortcutCarousel />
       <Footer />
-      <ChatbotButton />
     </>
   );
 };
