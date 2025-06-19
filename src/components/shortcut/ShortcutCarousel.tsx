@@ -79,13 +79,13 @@ const ShortcutCarousel = () => {
       {/* 화살표 */}
       <button
         ref={prevRef}
-        className="absolute left-0 z-50 bg-white rounded-full w-12 h-12 shadow-md flex items-center justify-center ml-5"
+        className="absolute left-5 z-50 bg-white rounded-full w-12 h-12 shadow-md flex items-center justify-center "
       >
         <FiChevronLeft size={35} className="text-purple-500" strokeWidth={1.5} />
       </button>
       <button
         ref={nextRef}
-        className="absolute right-0 z-50 bg-white rounded-full w-12 h-12 shadow-md flex items-center justify-center mr-5"
+        className="absolute right-5 z-50 bg-white rounded-full w-12 h-12 shadow-md flex items-center justify-center "
       >
         <FiChevronRight size={35} className="text-purple-500" strokeWidth={1.5} />
       </button>
