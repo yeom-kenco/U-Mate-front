@@ -37,41 +37,55 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
           <nav className="flex items-center gap-10">
             <Link
               to="/pricing"
-              className="flex items-center justify-end text-gray-700 hover:text-pink-500 transition-colors"
+              className="flex items-center justify-end text-black hover:text-pink-500 transition-colors"
             >
               <FiUser className="w-7 h-7" />
             </Link>
             <button
               className="flex justify-end items-center w-2/5"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => setIsMenuOpen(true)}
               aria-label="메뉴 열기"
             >
               <div className="w-6 h-5 flex flex-col justify-between">
-                <span className={`w-full h-0.5 bg-gray-700 transform transition-transform `} />
-                <span className={`w-full h-0.5 bg-gray-700 transition-opacity `} />
-                <span className={`w-full h-0.5 bg-gray-700 transform transition-transform `} />
+                <span className={`w-full h-0.5 bg-black transform transition-transform `} />
+                <span className={`w-full h-0.5 bg-black transition-opacity `} />
+                <span className={`w-full h-0.5 bg-black transform transition-transform `} />
               </div>
             </button>
           </nav>
         )}
       </div>
 
+      {/* backdrop  */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 z-[9998]"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
       {/* hambuger Menu */}
       <div
         className={` md:hidden
-          fixed top-0 w-80 h-screen rounded-2xl transform transition-transform duration-500 ease-in-out bg-background
+          fixed top-0 w-80 h-screen rounded-2xl z-[9999] transform transition-transform duration-500 ease-in-out bg-background
           ${isMenuOpen ? 'translate-x-24' : 'translate-x-96'}
         `}
       >
         <IoMdClose
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="w-6 h-6 absolute left-52 m-3"
+          onClick={() => setIsMenuOpen(false)}
+          className="w-6 h-6 absolute min-[400px]:left-56 min-[400px]:m-2 left-52 m-3 cursor-pointer"
         />
-        <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-          <Link to="/mypage" className="text-gray-700 hover:text-pink-500 transition-colors">
+        <nav className="container mx-auto my-4 px-4 py-4 flex flex-col space-y-4">
+          <Link
+            to="/pricing"
+            className="text-gray-700 hover:text-pink-500 transition-colors max-w-48 cursor-pointer"
+          >
             요금제페이지
           </Link>
-          <Link to="/notifications" className="text-gray-700 hover:text-pink-500 transition-colors">
+          <Link
+            to="/notifications"
+            className="text-gray-700 hover:text-pink-500 transition-colors max-w-48 cursor-pointer"
+          >
             요금제비교페이지
           </Link>
         </nav>
