@@ -9,6 +9,7 @@ type ButtonProps = {
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  fullWidth?: boolean;
 };
 
 const Button = ({
@@ -19,6 +20,7 @@ const Button = ({
   children,
   className = '',
   disabled = false,
+  fullWidth = false,
 }: ButtonProps) => {
   // 스타일 정의
   const variantMap = {
@@ -66,6 +68,7 @@ const Button = ({
     sizeMap[size],
     variantStyle,
     disabled ? disabledStyle : '',
+    fullWidth ? 'w-full' : '',
     className,
   ]
     .filter(Boolean)
