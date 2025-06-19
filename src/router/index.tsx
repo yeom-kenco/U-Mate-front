@@ -5,6 +5,8 @@ import TermsOfUsePage from '../pages/TermsOfUsePage';
 import BenefitDropBar from '../components/BenefitDropBar';
 import { benefitList } from '../data/benefits';
 import PricingPage from '../pages/PricingPage';
+import LoginPage from '../pages/LoginPage';
+import LoginBanner from '../components/LoginBanner';
 import Modal from '../components/Modal';
 import { HeaderProps } from '../components/Header';
 import { useEffect } from 'react';
@@ -80,6 +82,7 @@ const router = createBrowserRouter([
         element: <TermsOfUsePage />,
       },
       { path: 'pricing', element: <PricingPage /> },
+      { path: '/login', element: <LoginPage /> },
     ],
   },
 ]);
