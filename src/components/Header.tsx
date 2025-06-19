@@ -5,7 +5,7 @@ import { SlArrowLeft } from 'react-icons/sl';
 import { IoIosSearch } from 'react-icons/io';
 import { IoMdClose } from 'react-icons/io';
 import { SlArrowRight } from 'react-icons/sl';
-interface HeaderProps {
+export interface HeaderProps {
   showBackButton: boolean;
   showSearch: boolean;
   title?: string;
@@ -15,9 +15,6 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
   const [isMenuOpen, setIsMenuOpen] = useState(false); //햄버거 토글
   const location = useLocation();
   const navigate = useNavigate();
-  const isChatbot = location.pathname !== '/chatbot' ? showSearch : !showSearch;
-
-  const isPage = location.pathname === '/' ? showBackButton : !showBackButton;
 
   //
   useEffect(() => {
@@ -30,10 +27,10 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
   return (
     <header className=" w-full h-16  flex justify-center items-center px-5 py-6">
       <div className="relative container mx-auto  h-full flex items-center justify-between ">
-        {isPage ? (
+        {showBackButton ? (
           <div className="flex items-center " onClick={BackPage}>
             <SlArrowLeft className="w-6 h-6 " />
-            <span className="text-lm w-20 h-6">{title}</span>
+            <span className="text-lm w-32 h-6">{title}</span>
           </div>
         ) : (
           <div className="flex items-center justify-center relative ">
@@ -45,7 +42,7 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
         )}
 
         {/*  Navigation */}
-        {isChatbot ? (
+        {showSearch ? (
           <IoIosSearch className="w-8 h-8" />
         ) : (
           <nav className="flex items-center gap-10">
