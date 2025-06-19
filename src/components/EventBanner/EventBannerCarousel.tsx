@@ -27,7 +27,7 @@ const EventBannerCarousel = () => {
           disableOnInteraction: false,
         }}
         pagination={{ clickable: true }}
-        className="w-full pb-10" // ✅ 여백 아래로 밀어내기
+        className="w-full pb-10"
       >
         {images.map((src, i) => (
           <SwiperSlide key={i} className="!w-[80%] sm:!w-[400px] flex justify-center">
