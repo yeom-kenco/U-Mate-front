@@ -9,7 +9,7 @@ import Modal from '../components/Modal';
 import { HeaderProps } from '../components/Header';
 import { useEffect } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
 import { openModal, closeModal } from '../store/modalSlice';
 import Button from '../components/Button';
@@ -26,7 +26,7 @@ const TempPage = () => {
   }, []);
 
   // 모달 테스트
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleOpen = () => {
     dispatch(openModal());
@@ -36,7 +36,7 @@ const TempPage = () => {
     dispatch(closeModal());
   };
 
-  const isOpen = useSelector((state: RootState) => state.modal.isOpen);
+  const isOpen = useAppSelector((state) => state.modal.isOpen);
 
   return (
     <div className="py-10">
