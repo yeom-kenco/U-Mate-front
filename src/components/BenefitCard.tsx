@@ -1,5 +1,3 @@
-const MockData = {};
-
 interface BenefitCardProps {
   img: string;
   title: string;
