@@ -5,6 +5,7 @@ import TermsOfUsePage from '../pages/TermsOfUsePage';
 import BenefitDropBar from '../components/BenefitDropBar';
 import { benefitList } from '../data/benefits';
 import PricingPage from '../pages/PricingPage';
+import OnBoarding from '../components/OnBoarding';
 import LoginPage from '../pages/LoginPage';
 import LoginBanner from '../components/LoginBanner';
 import Modal from '../components/Modal';
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       { path: 'pricing', element: <PricingPage /> },
       { path: '/login', element: <LoginPage /> },
     ],
+  },
+  {
+    path: '/onboarding',
+    element: <OnBoarding />,
   },
 ]);
 
