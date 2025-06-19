@@ -5,7 +5,7 @@ import Button from './Button';
 
 type ModalProps = {
   size?: 's' | 'm';
-  title: string;
+  title?: string;
   subtitle?: string;
   children?: React.ReactNode;
   onClose?: () => void;
