@@ -6,6 +6,7 @@ import AgeRangeList from '../components/BottomSheet/AgeRangeList';
 import BenefitCard from '../components/BenefitCard';
 import { useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
+import { benefitCards } from '../data/benefitsCard';
 const PricingPage = () => {
   const [sortopen, setSortOpen] = useState(false); // 정렬 시트 토글
   const [ageopen, setAgeOpen] = useState(false); // 연령 시트 토글
@@ -42,11 +43,12 @@ const PricingPage = () => {
           {ageRanges || '전체'} <SlArrowDown className="relative top-[2px]" />
         </button>
       </div>
-      <BenefitCard
-        img="/images/chatbot/chatbot-main.png"
-        title="OTT 서비스"
-        descript="다양한 할인 혜택  다양한 할인 혜택  "
-      />
+      <div className="grid grid-cols-3 gap-4 ">
+        {benefitCards.map((card, i) => (
+          <BenefitCard key={i} {...card} />
+        ))}
+      </div>
+
       <BottomSheet isOpen={sortopen} onClose={() => setSortOpen(false)} height="300px">
         <SortList onSelect={handleSortSelect} selected={isSorted} />
       </BottomSheet>

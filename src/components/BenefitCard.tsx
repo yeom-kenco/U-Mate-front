@@ -1,17 +1,21 @@
 interface BenefitCardProps {
-  img: string;
+  img?: string;
   title: string;
-  descript: string;
+  descript?: string;
 }
 
 const BenefitCard = ({ img, title, descript }: BenefitCardProps) => {
   return (
-    <div className="flex flex-col  items-center justify-center w-[110px] h-[140px] border-2 border-zinc-300 rounded-lg text-center">
-      <div className="w-[50px] h-[50px] rounded-full bg-background overflow-hidden ">
-        <img src={img} alt={title} className="w-full h-full object-contain" />
+    <div className="flex flex-col cursor-pointer items-center justify-center w-[110px] max-[400px]:w-[100px] h-[140px] border-2 border-zinc-300 rounded-lg text-center ">
+      {img && (
+        <div className="w-[50px] h-[50px] rounded-full bg-background overflow-hidden flex-shrink-0 ">
+          <img src={img} alt={title} className=" w-full h-full object-contain" />
+        </div>
+      )}
+      <div className="flex flex-col items-center mt-2 space-y-[2px]">
+        <p className="text-s w-20 font-bold text-zinc-600 leading-tight ">{title}</p>
+        <p className="text-s w-16 text-zinc-500  line-clamp-2 leading-tight">{descript}</p>
       </div>
-      <p className="text-s font-bold text-zinc-600">{title}</p>
-      <p className="text-s  text-zinc-500  leading-4 line-clamp-2">{descript}</p>
     </div>
   );
 };
