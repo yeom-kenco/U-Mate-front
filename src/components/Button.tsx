@@ -3,7 +3,7 @@ import React from 'react';
 
 type ButtonProps = {
   variant?: 'fill' | 'outline' | 'ghost' | 'special';
-  color?: 'pink' | 'gray' | 'violet' | 'black';
+  color?: 'pink' | 'gray' | 'violet' | 'black' | 'white';
   size?: 's' | 'm' | 'lg' | 'xl';
   onClick?: () => void;
   children: React.ReactNode;
@@ -33,6 +33,7 @@ const Button = ({
       pink: 'border border-pink-500 text-pink-500 hover:bg-pink-50 focus:bg-pink-100',
       gray: 'border border-zinc-200 text-black hover:bg-zinc-100 focus:bg-zinc-200',
       violet: 'border border-violet-200 text-violet-400 hover:bg-violet-50',
+      white: 'border border-white text-white font-normal',
     },
     ghost: {
       pink: 'text-pink-500 hover:bg-pink-50',
@@ -46,10 +47,10 @@ const Button = ({
 
   // 사이즈별 스타일
   const sizeMap = {
-    s: 'text-xs px-3 h-8 min-w-14',
-    m: 'text-sm px-4 h-9 min-w-20',
-    lg: 'text-m px-5 h-11 min-w-16',
-    xl: 'text-m px-6 h-14 min-w-24',
+    s: 'text-xs px-3 h-8 min-w-14 max-[400px]:text-[0.625rem] max-[400px]:px-2 max-[400px]:h-7',
+    m: 'text-sm px-4 h-9 min-w-16 max-[400px]:text-xs max-[400px]:px-3 max-[400px]:h-8',
+    lg: 'text-m px-5 h-11 min-w-16 max-[400px]:text-sm max-[400px]:px-4 max-[400px]:h-10',
+    xl: 'text-m px-6 h-14 min-w-24 max-[400px]:text-sm max-[400px]:px-5 max-[400px]:h-12',
   };
 
   // 둥근 모서리 설정
@@ -76,7 +77,7 @@ const Button = ({
   return (
     <button onClick={onClick} className={composedClassName} disabled={disabled}>
       {variant === 'special' && <MdCall className="mr-2 w-5 h-5" />}
-      {children}
+      <span className="mt-[2px]">{children}</span>
     </button>
   );
 };
