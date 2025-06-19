@@ -36,8 +36,11 @@ const router = createBrowserRouter([
         element: <TermsOfUsePage />,
       },
       { path: 'pricing', element: <PricingPage /> },
-      { path: '/onboarding', element: <OnBoarding /> },
     ],
+  },
+  {
+    path: '/onboarding',
+    element: <OnBoarding />,
   },
 ]);
 

@@ -114,7 +114,7 @@ const OnBoarding = () => {
   };
 
   return (
-    <div className="relative w-full h-screen flex flex-col items-center">
+    <div className="relative w-[90%] h-screen mx-auto flex flex-col items-center">
       {/* 페이지네이션을 위로 */}
       <div className="custom-pagination flex justify-center mt-14" />
 
@@ -137,7 +137,7 @@ const OnBoarding = () => {
       >
         {onboardingSlides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col items-center justify-start px-6 text-center max-w-[412px]">
+            <div className="flex flex-col items-center justify-center px-6 text-center max-w-[412px] mx-auto">
               <h2 className="text-lg font-bold mt-8 max-[400px]:text-lm">{slide.title}</h2>
               <div className="relative w-full max-w-96 mt-8 mx-auto ">
                 {/* 온보딩1 안내 슬라이드 에셋 */}
