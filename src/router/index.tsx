@@ -47,7 +47,8 @@ const TempPage = () => {
       <Button onClick={() => dispatch(openModal())}>모달</Button>
       {isOpen && (
         <Modal
-          showButtons
+          leftButtonText="아니오"
+          rightButtonText="네"
           onClose={handleClose} // 모달 닫기 테스트
           onConfirm={() => {
             console.log('삭제');

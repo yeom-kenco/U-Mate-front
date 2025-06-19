@@ -10,7 +10,6 @@ type ModalProps = {
   children?: React.ReactNode;
   onClose?: () => void;
   onConfirm?: () => void;
-  showButtons?: boolean;
   leftButtonText?: string;
   rightButtonText?: string;
   closeOnOutsideClick?: boolean; // 외부 클릭 시 닫기 여부
@@ -29,8 +28,7 @@ const Modal = ({
   onClose,
   onConfirm,
   leftButtonText = '취소',
-  rightButtonText = '삭제하기',
-  showButtons = false,
+  rightButtonText,
   closeOnOutsideClick = true, // 기본값: 외부 클릭 시 닫힘
 }: ModalProps) => {
   const modalRoot = document.getElementById('modal-root');
@@ -45,7 +43,7 @@ const Modal = ({
 
   if (!modalRoot) return null;
 
-  const shouldRenderButtons = showButtons && (leftButtonText || rightButtonText);
+  const shouldRenderButtons = leftButtonText || rightButtonText;
 
   return createPortal(
     <div
