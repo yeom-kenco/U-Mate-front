@@ -15,6 +15,11 @@ export default {
         primary: 'linear-gradient(90deg, #BA0087 0%, #33059C 62%)',
       },
 
+      boxShadow: {
+        // shadow-[지정명]
+        card: '0px 0px 15px rgba(0, 0, 0, 0.15)',
+      },
+
       fontSize: {
         // text-[지정명]
         xs: '0.625rem', // 10px
