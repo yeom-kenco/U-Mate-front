@@ -75,7 +75,7 @@ const onboardingSlides: OnboardingSlide[] = [
     phoneImg: thirdPhone,
     bearImg: thirdBear,
     reviewImg: thirdReview,
-    bearPosition: 'bottom-[165px] left-0',
+    bearPosition: 'bottom-[145px] left-0',
   },
   {
     title: (
@@ -88,7 +88,7 @@ const onboardingSlides: OnboardingSlide[] = [
     ),
     phoneImg: fourthPhone,
     bearImg: fourthBear,
-    bearPosition: 'bottom-[-15px] left-0',
+    bearPosition: 'bottom-[-20px] left-0',
   },
 ];
 
@@ -114,7 +114,7 @@ const OnBoarding = () => {
   };
 
   return (
-    <div className="relative w-[90%] h-screen mx-auto flex flex-col items-center">
+    <div className="relative w-[90%] max-w-md h-screen mx-auto flex flex-col items-center">
       {/* 페이지네이션을 위로 */}
       <div className="custom-pagination flex justify-center mt-14" />
 
@@ -161,7 +161,7 @@ const OnBoarding = () => {
                   <img
                     src={slide.reviewImg}
                     alt="요금제신청"
-                    className="absolute bottom-0 w-full object-contain z-10"
+                    className="absolute bottom-[-20px] w-full object-contain z-10"
                   />
                 )}
 
