@@ -26,7 +26,7 @@ const ReviewCard = ({
   onDelete,
 }: ReviewCardProps) => {
   return (
-    <div className="rounded-[20px] bg-white shadow-card overflow-hidden w-[332px] h-[197px] flex flex-col">
+    <div className="rounded-[20px] bg-white shadow-card overflow-hidden w-[332px] h-[197px] flex max-[390px]:w-[300px] flex-col">
       {/* 상단 */}
       <div className="bg-primary text-white px-5 py-3 flex justify-between items-center text-m font-bold">
         {isMyPage ? (
@@ -58,10 +58,10 @@ const ReviewCard = ({
             {isMyPage && (
               <>
                 <button onClick={onEdit}>
-                  <FiEdit className="text-violet-300 text-lm mr-2" />
+                  <FiEdit className="text-violet-300 text-lm mr-2 hover:text-violet-500 active:text-violet-500 transition-colors" />
                 </button>
                 <button onClick={onDelete}>
-                  <FiTrash2 className="text-violet-300 text-lm mr-2" />
+                  <FiTrash2 className="text-violet-300 text-lm mr-2 hover:text-violet-500 active:text-violet-500 transition-colors" />
                 </button>
               </>
             )}
