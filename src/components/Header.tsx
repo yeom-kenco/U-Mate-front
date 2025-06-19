@@ -45,12 +45,12 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
         {showSearch ? (
           <IoIosSearch className="w-8 h-8" />
         ) : (
-          <nav className="flex items-center gap-10">
+          <nav className="flex items-center gap-8">
             <Link
               to="/pricing"
               className="flex items-center justify-end text-black hover:text-pink-500 transition-colors"
             >
-              <FiUser className="w-7 h-7" />
+              <FiUser className="w-7 h-7" strokeWidth={1.5} />
             </Link>
             <button
               className="flex justify-end items-center w-2/5"
