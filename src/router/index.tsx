@@ -5,15 +5,18 @@ import TermsOfUsePage from '../pages/TermsOfUsePage';
 import BenefitDropBar from '../components/BenefitDropBar';
 import { benefitList } from '../data/benefits';
 import PricingPage from '../pages/PricingPage';
+import ChatBubble from '../components/ChatBubble';
 import OnBoarding from '../components/OnBoarding';
 import LoginPage from '../pages/LoginPage';
 import LoginBanner from '../components/LoginBanner';
 import Modal from '../components/Modal';
 import { HeaderProps } from '../components/Header';
 import { useContext, useEffect } from 'react';
-import Button from '../components/Button';
-
 import { ToastContext } from '../context/ToastContext';
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
+import { openModal, closeModal } from '../store/modalSlice';
+import Button from '../components/Button';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -32,6 +35,19 @@ const TempPage = () => {
     toastContext?.showToast('리뷰가 삭제되었습니다!', 'black');
   };
 
+  // 모달 테스트
+  const dispatch = useAppDispatch();
+
+  const handleOpen = () => {
+    dispatch(openModal());
+  };
+
+  const handleClose = () => {
+    dispatch(closeModal());
+  };
+
+  const isOpen = useAppSelector((state) => state.modal.isOpen);
+
   return (
     <div className="py-10">
       <BenefitDropBar label="할인 혜택" indexes={[0, 1, 2, 3, 4]} data={benefitList} />
@@ -43,6 +59,36 @@ const TempPage = () => {
       <Button onClick={() => toastContext?.showToast('비밀번호가 일치하지 않습니다')}>
         토스트 실패
       </Button>
+      <ChatBubble
+        from="bot"
+        message="ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ?"
+        time="16:00"
+      />
+      <ChatBubble
+        from="user"
+        message="ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ?"
+        time="16:00"
+      />
+      <Button onClick={() => dispatch(openModal())}>모달</Button>
+      {isOpen && (
+        <Modal
+          title="내가 작성한 리뷰"
+          subtitle="삭제한 리뷰는 다시 되돌릴 수 없어요. 🥲"
+          size="s"
+          showButtons
+          leftButtonText="취소"
+          rightButtonText="삭제하기"
+          onClose={handleClose} // 모달 닫기 테스트
+          onConfirm={() => {
+            console.log('삭제');
+            dispatch(closeModal());
+          }} // 버튼 확인 테스트용
+        >
+          {/* <p>
+          안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽
+        </p> */}
+        </Modal>
+      )}
     </div>
   );
 };
