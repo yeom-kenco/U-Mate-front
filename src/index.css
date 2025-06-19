@@ -69,3 +69,12 @@ body {
 .custom-pagination .swiper-pagination-bullet-active {
   background-color: #ec4899; /* pink-500 */
 }
+
+/* swiper 페이지네이션 커스텀용: tailwind로 접근 불가해서 css따로 추가 */
+.swiper-pagination-bullet {
+  background-color: #e5e7eb !important; /* gray-200 */
+  opacity: 1 !important;
+}
+.swiper-pagination-bullet-active {
+  background-color: #ec4899 !important; /* pink-500 */
+}
