@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import Button from './Button';
 
@@ -34,17 +34,30 @@ const Modal = ({
   closeOnOutsideClick = true, // 기본값: 외부 클릭 시 닫힘
 }: ModalProps) => {
   const modalRoot = document.getElementById('modal-root');
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 8);
+    return () => clearTimeout(timer);
+  }, []);
+
   if (!modalRoot) return null;
 
   const shouldRenderButtons = showButtons && (leftButtonText || rightButtonText);
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      }`}
       onClick={closeOnOutsideClick ? onClose : undefined} // 외부 클릭 감지
     >
       <div
-        className={`bg-white rounded-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.25) ${SIZE_CLASSES[size]}`}
+        className={`bg-white rounded-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)] transition-all duration-300 ease-out transform ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+        } ${SIZE_CLASSES[size]}`}
         onClick={(e) => e.stopPropagation()} // 내부 클릭은 닫기 방지
       >
         {/* X 버튼: s 사이즈는 제외 */}
