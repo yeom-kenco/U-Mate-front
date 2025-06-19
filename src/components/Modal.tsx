@@ -22,14 +22,14 @@ const SIZE_CLASSES: Record<NonNullable<ModalProps['size']>, string> = {
 };
 
 const Modal = ({
-  size = 'm',
-  title,
-  subtitle,
+  size = 's',
+  title = '정말 삭제하시겠습니까?',
+  subtitle = '삭제한 리뷰는 다시 되돌릴 수 없어요. 🥲',
   children,
   onClose,
   onConfirm,
-  leftButtonText = '',
-  rightButtonText = '',
+  leftButtonText = '취소',
+  rightButtonText = '삭제하기',
   showButtons = false,
   closeOnOutsideClick = true, // 기본값: 외부 클릭 시 닫힘
 }: ModalProps) => {

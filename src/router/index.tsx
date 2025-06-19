@@ -47,12 +47,7 @@ const TempPage = () => {
       <Button onClick={() => dispatch(openModal())}>모달</Button>
       {isOpen && (
         <Modal
-          title="내가 작성한 리뷰"
-          subtitle="삭제한 리뷰는 다시 되돌릴 수 없어요. 🥲"
-          size="s"
           showButtons
-          leftButtonText="취소"
-          rightButtonText="삭제하기"
           onClose={handleClose} // 모달 닫기 테스트
           onConfirm={() => {
             console.log('삭제');
