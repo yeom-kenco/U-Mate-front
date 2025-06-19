@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
 import { SlArrowDown } from 'react-icons/sl';
 import AgeRangeList from '../components/BottomSheet/AgeRangeList';
 import BenefitCard from '../components/BenefitCard';
+import PlanCard from '../components/PlanCard';
+import { useOutletContext } from 'react-router-dom';
+import { HeaderProps } from '../components/Header';
+
 const PricingPage = () => {
   const [sortopen, setSortOpen] = useState(false); // 정렬 시트 토글
   const [ageopen, setAgeOpen] = useState(false); // 연령 시트 토글
   const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
   const [ageRanges, SetAgeRanges] = useState(''); // 선택된 연령 기준
+  const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
+
+  useEffect(() => {
+    setHeaderConfig({
+      title: '요금제',
+      showBackButton: true,
+      showSearch: false,
+    });
+  }, []);
 
   // 정렬 기준 선택 시
   const handleSortSelect = (value: string) => {
@@ -36,6 +49,29 @@ const PricingPage = () => {
         title="OTT 서비스"
         descript="다양한 할인 혜택  다양한 할인 혜택  "
       />
+
+      <PlanCard
+        name="5G 프리미어 에센셜"
+        description="데이터 무제한 테더링+쉐어링 70GB"
+        price="월 85,000원"
+        discountedPrice="월 58,500원"
+        rating={{ score: 3.0, count: 15 }}
+        size="small"
+        onCompareClick={() => console.log('비교')}
+        onChangeClick={() => console.log('변경')}
+      />
+
+      <PlanCard
+        name="5G 프리미어 에센셜"
+        description="데이터 무제한 테더링+쉐어링 70GB"
+        price="월 85,000원"
+        discountedPrice="월 58,500원"
+        rating={{ score: 3.0, count: 15 }}
+        size="large"
+        onCompareClick={() => console.log('비교')}
+        onChangeClick={() => console.log('변경')}
+      />
+
       <BottomSheet isOpen={sortopen} onClose={() => setSortOpen(false)} height="300px">
         <SortList onSelect={handleSortSelect} selected={isSorted} />
       </BottomSheet>
