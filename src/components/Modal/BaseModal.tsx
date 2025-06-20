@@ -36,7 +36,7 @@ const BaseModal = ({
       onClick={closeOnOutsideClick ? onClose : undefined}
     >
       <div
-        className={`bg-white rounded-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)] w-[90%] max-w-md transition-transform duration-300 transform ${
+        className={`bg-white rounded-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)] w-[90%] max-w-md max-h-[70vh] transition-transform duration-300 transform ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
         } ${className}`}
         onClick={(e) => e.stopPropagation()}
