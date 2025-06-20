@@ -8,6 +8,7 @@ type ConfirmModalProps = {
   onConfirm: () => void;
   cancelText?: string;
   confirmText?: string;
+  children?: React.ReactNode;
 };
 
 const ConfirmModal = ({
@@ -17,13 +18,14 @@ const ConfirmModal = ({
   onConfirm,
   cancelText = '취소',
   confirmText = '변경하기',
+  children,
 }: ConfirmModalProps) => {
   return (
     <BaseModal onClose={onClose}>
       <div className="p-6 sm:p-8">
         <h2 className="text-m font-bold text-center">{title}</h2>
         <p className="text-sm text-zinc-400 text-center mt-2">{subtitle}</p>
-
+        {children}
         <div className="flex gap-2 mt-5">
           <Button variant="fill" color="gray" size="lg" onClick={onClose} className="flex-1">
             {cancelText}
