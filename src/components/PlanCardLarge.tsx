@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { PlanCardProps } from './PlanCard';
+import Button from './Button';
 
 const PlanCardLarge: React.FC<PlanCardProps> = ({
   name,
@@ -16,7 +17,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
   return (
     <div
       className={clsx(
-        'rounded-lg border bg-white p-4 my-4 shadow-sm flex flex-col gap-2 w-full min-h-[330px]',
+        'rounded-xl cursor-pointer   border bg-white p-4 my-4 shadow-sm flex flex-col gap-2 w-[98%] min-h-[325px]',
         highlight && 'border-pink-500'
       )}
     >
@@ -28,7 +29,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
         </div>
       )}
 
-      <div className="text-base">
+      <div className="text-base cursor-pointer">
         {name} <span className="text-lg">›</span>
       </div>
       <div className="text-lg text-black font-bold w-2/3">{description}</div>
@@ -40,18 +41,24 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
 
       {showButtons && (
         <div className="flex gap-2 mt-3 text-sm">
-          <button
+          <Button
             onClick={onCompareClick}
-            className="flex-1 py-3 rounded-lg border border-gray-300 "
+            variant="outline"
+            color="gray"
+            size="lg"
+            className="flex-1 font-semibold"
           >
             비교하기
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={onChangeClick}
-            className="flex-1 py-1 rounded-lg border border-pink-500 text-pink-600"
+            variant="outline"
+            color="pink"
+            size="lg"
+            className="flex-1 font-semibold"
           >
             변경하기
-          </button>
+          </Button>
         </div>
       )}
     </div>
