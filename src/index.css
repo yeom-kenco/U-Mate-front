@@ -44,14 +44,6 @@ body {
   font-size: inherit; /* 16px */
 }
 
-/*toastify 기본속성이 적용되어 tailwind로 안되서 전역으로 important해서 적용 */
-.Toastify__toast {
-  min-height: unset !important; /* unset : 해당 속성이 상속 가능한 속성일 때는 inherit 상속되지 않는 속성일 때는 initial  */
-  padding: 8px 4px !important;
-  margin: 4px 0 !important;
-  border-radius: 6px !important;
-}
-
 /*스크롤바 안보이게 */
 .scrollbar-hidden {
   scrollbar-width: none;

@@ -13,12 +13,12 @@ const PlanCardSmall: React.FC<PlanCardProps> = ({
   return (
     <div
       className={clsx(
-        'rounded-xl border bg-white shadow-sm px-4 my-4 py-3 w-full max-w-[254px] min-h-[166px] flex flex-col justify-between',
+        'rounded-xl cursor-pointer border bg-white shadow-sm px-4 my-4 py-3 w-full max-w-[254px] min-h-[166px] flex flex-col justify-between',
         highlight && 'border-pink-500'
       )}
     >
       <div className="flex justify-between items-center">
-        <p className="text-s ">
+        <p className="text-s cursor-pointer">
           {name} <span className="text-lm">›</span>
         </p>
         {rating && (

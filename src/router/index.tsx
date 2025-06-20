@@ -5,14 +5,15 @@ import TermsOfUsePage from '../pages/TermsOfUsePage';
 import BenefitDropBar from '../components/BenefitDropBar';
 import { benefitList } from '../data/benefits';
 import PricingPage from '../pages/PricingPage';
+import ChatBubble from '../components/ChatBubble';
 import OnBoarding from '../components/OnBoarding';
 import LoginPage from '../pages/LoginPage';
 import LoginBanner from '../components/LoginBanner';
 import Modal from '../components/Modal';
 import { HeaderProps } from '../components/Header';
-import { useEffect } from 'react';
 import ReviewCard from '../components/ReviewCard';
-
+import { useContext, useEffect } from 'react';
+import { ToastContext } from '../context/ToastContext';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
 import { openModal, closeModal } from '../store/modalSlice';
@@ -28,6 +29,12 @@ const TempPage = () => {
       showSearch: false,
     });
   }, []);
+
+  const toastContext = useContext(ToastContext);
+
+  const handleClick = () => {
+    toastContext?.showToast('리뷰가 삭제되었습니다!', 'black');
+  };
 
   // 모달 테스트
   const dispatch = useAppDispatch();
@@ -68,6 +75,24 @@ const TempPage = () => {
         rating={5}
         onEdit={() => console.log('수정')}
         onDelete={() => console.log('삭제')}
+      />
+
+      <Button onClick={handleClick}>토스트 리뷰 삭제</Button>
+      <Button onClick={() => toastContext?.showToast('비밀번호가 변경되었습니다!', 'success')}>
+        토스트 성공
+      </Button>
+      <Button onClick={() => toastContext?.showToast('비밀번호가 일치하지 않습니다')}>
+        토스트 실패
+      </Button>
+      <ChatBubble
+        from="bot"
+        message="ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ?"
+        time="16:00"
+      />
+      <ChatBubble
+        from="user"
+        message="ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ?"
+        time="16:00"
       />
 
       <Button onClick={() => dispatch(openModal())}>모달</Button>
