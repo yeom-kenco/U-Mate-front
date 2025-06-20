@@ -45,7 +45,7 @@ const Header = ({
   showBackButton = false,
   showSearch = false,
   title = '마이페이지',
-  isLoggedIn = true,
+  isLoggedIn = false,
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -65,7 +65,7 @@ const Header = ({
   const BackPage = () => navigate(-1);
 
   return (
-    <header className="w-full h-16 flex justify-center items-center px-[5%] py-6 shadow-header md:shadow-none">
+    <header className=" w-full h-16 flex justify-center items-center px-[5%] py-6 shadow-header md:shadow-none ">
       <div className="relative w-full h-full flex items-center justify-between">
         {/* 뒤로가기: md 미만에서만 */}
         {showBackButton && (
