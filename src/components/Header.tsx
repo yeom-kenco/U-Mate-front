@@ -13,6 +13,23 @@ export interface HeaderProps {
   title?: string;
 }
 
+const NavigationLinks = () => (
+  <>
+    <Link to="/pricing" className="hover:text-pink-500">
+      요금제 찾기
+    </Link>
+    <Link to="/compare" className="hover:text-pink-500">
+      요금제 비교하기
+    </Link>
+    <Link to="/login" className="hover:text-pink-500">
+      로그인
+    </Link>
+    <Link to="/signup" className="hover:text-pink-500">
+      회원가입
+    </Link>
+  </>
+);
+
 const Header = ({
   showBackButton = false,
   showSearch = false,
@@ -37,15 +54,21 @@ const Header = ({
     navigate(-1);
   };
   return (
-    <header className=" w-full h-16 flex justify-center items-center px-5 py-6">
-      <div className="relative container mx-auto  h-full flex items-center justify-between ">
-        {showBackButton ? (
-          <div className="flex items-center " onClick={BackPage}>
+    <header className=" w-full h-16 flex justify-center items-center px-[5%] py-6 shadow-header md:shadow-none">
+      <div className="relative w-full h-full flex items-center justify-between ">
+        {/* 뒤로가기: md 미만에서만 보임 */}
+        {showBackButton && (
+          <div className="flex items-center md:hidden cursor-pointer" onClick={BackPage}>
             <SlArrowLeft className="w-5 h-5 mr-2" />
             <span className="text-lm w-32 h-6">{title}</span>
           </div>
-        ) : (
-          <div className="flex items-center justify-center relative ">
+        )}
+
+        {/* 로고: md 이상에서는 항상, md 미만에서는 뒤로가기 없을 때만 보임 */}
+        {(!showBackButton || window.innerWidth >= 768) && (
+          <div
+            className={`items-center justify-center ${showBackButton ? 'hidden md:flex' : 'flex'}`}
+          >
             <Link to="/" className="text-xl font-bold">
               <span className="text-pink-500">U:</span>
               <span className="text-xl font-bold m-1">Mate</span>
@@ -54,25 +77,44 @@ const Header = ({
         )}
 
         {/*  Navigation */}
-        {showSearch ? (
-          <IoIosSearch className="w-8 h-8" />
-        ) : (
-          <nav className="flex items-center gap-5">
-            <Link
-              to="/pricing"
-              className="flex items-center justify-end text-black hover:text-pink-500 active:text-pink-500 transition-colors"
-            >
-              <FiUser className="w-6 h-6" strokeWidth={1.5} />
-            </Link>
-            <button
-              className="flex justify-end items-center w-2/5 md:hidden"
-              onClick={() => setIsMenuOpen(true)}
-              aria-label="메뉴 열기"
-            >
-              <FiMenu className="w-7 h-7 text-black" />
-            </button>
-          </nav>
-        )}
+        {/* 이 영역 전체를 조건별로 분기 */}
+        <div className="flex items-center gap-5">
+          {showSearch ? (
+            <>
+              {/* ✅ md 이상: 검색 + 메뉴 */}
+              <div className="hidden md:flex items-center gap-6 text-sm text-black">
+                <NavigationLinks />
+                <IoIosSearch className="w-6 h-6 ml-2" />
+              </div>
+
+              {/* ✅ md 미만: 검색만 */}
+              <div className="md:hidden">
+                <IoIosSearch className="w-6 h-6" />
+              </div>
+            </>
+          ) : (
+            <>
+              {/* ✅ md 이상: 메뉴만 */}
+              <div className="hidden md:flex items-center gap-6 text-sm text-black">
+                <NavigationLinks />
+              </div>
+
+              {/* ✅ md 미만: 마이페이지 + 햄버거 메뉴 */}
+              <div className="flex md:hidden items-center gap-5">
+                <Link to="/mypage" className="flex items-center text-black hover:text-pink-500">
+                  <FiUser className="w-6 h-6" strokeWidth={1.5} />
+                </Link>
+                <button
+                  className="flex items-center"
+                  onClick={() => setIsMenuOpen(true)}
+                  aria-label="메뉴 열기"
+                >
+                  <FiMenu className="w-7 h-7 text-black" />
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       {/* backdrop  */}
