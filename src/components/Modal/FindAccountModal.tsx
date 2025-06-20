@@ -35,6 +35,7 @@ const FindAccountModal = ({ onClose }: Props) => {
   const [isCodeSent, setIsCodeSent] = useState(false);
 
   const handleRequestAuth = () => {
+    // API 로직 추가하기
     console.log('인증 요청됨');
     setIsCodeSent(true);
   };
