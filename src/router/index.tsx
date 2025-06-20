@@ -9,7 +9,6 @@ import ChatBubble from '../components/ChatBubble';
 import OnBoarding from '../components/OnBoarding';
 import LoginPage from '../pages/LoginPage';
 import LoginBanner from '../components/LoginBanner';
-import Modal from '../components/Modal';
 import { HeaderProps } from '../components/Header';
 import ReviewCard from '../components/ReviewCard';
 import { useContext, useEffect } from 'react';
@@ -18,6 +17,10 @@ import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
 import { openModal, closeModal } from '../store/modalSlice';
 import Button from '../components/Button';
+import ReviewModal from '../components/Modal/reviewModal';
+import ConfirmModal from '../components/Modal/ConfirmModal';
+import InputField from '../components/InputField';
+import FindAccountModal from '../components/Modal/FindAccountModal';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -97,17 +100,10 @@ const TempPage = () => {
 
       <Button onClick={() => dispatch(openModal())}>모달</Button>
       {isOpen && (
-        <Modal
-          leftButtonText="아니오"
-          rightButtonText="네"
+        <FindAccountModal
           onClose={handleClose} // 모달 닫기 테스트
-          onConfirm={() => {
-            console.log('삭제');
-            dispatch(closeModal());
-          }} // 버튼 확인 테스트용
-        ></Modal>
+        ></FindAccountModal>
       )}
-
     </div>
   );
 };
@@ -125,7 +121,7 @@ const router = createBrowserRouter([
         path: '/terms',
         element: <TermsOfUsePage />,
       },
-      { path: 'pricing', element: <PricingPage /> },
+      { path: 'pricing', element: <PricingPage /> }, // 요금제 페이지
       { path: '/login', element: <LoginPage /> },
     ],
   },
