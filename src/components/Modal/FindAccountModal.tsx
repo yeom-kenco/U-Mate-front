@@ -96,11 +96,11 @@ const FindAccountModal = ({ onClose }: Props) => {
         )}
         {flow === 'id' && step === 'getId' && (
           <>
-            <p className="text-sm border border-zinc-200 p-3 mt-2 rounded-md">
+            <p className="text-sm border border-zinc-200 p-4 rounded-lg">
               당신이 가입한 이메일은
-              <br /> <strong>sejin@naver.com</strong> 입니다.
+              <br /> <strong className="text-pink-500">sejin@naver.com</strong> 입니다.
             </p>
-            <p className="text-s mt-3 mb-2 max-[400px]:text-xs max-[320px]:text-[9px]">
+            <p className="text-s mt-2 mb-2 max-[400px]:text-xs max-[320px]:text-[9px]">
               비밀번호도 잊으셨나요? 걱정하지 마세요.
               <br /> 아래 버튼을 눌러 비밀번호를 쉽고 빠르게 찾아보실 수 있어요.
             </p>
