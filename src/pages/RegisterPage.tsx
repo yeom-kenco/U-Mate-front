@@ -60,9 +60,23 @@ const RegisterPage = () => {
       showSearch: false,
     });
   }, []);
-
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(
+      name,
+      gender,
+      birth,
+      phone,
+      email,
+      verificationCode,
+      password,
+      confirmPassword,
+      isPlan,
+      agreements.all
+    );
+  };
   return (
-    <div className="w-full max-w-md mx-auto px-4 py-6">
+    <form onSubmit={onSubmit} className="w-full max-w-md mx-auto px-4 py-6">
       <p className="text-lg font-bold mb-4 w-40">본인인증 정보를 입력해주세요.</p>
       <InputField
         label="이름"
@@ -190,7 +204,7 @@ const RegisterPage = () => {
       <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="700px">
         <PlanList onSelect={handlePlanSelect} selected={isPlan} />
       </BottomSheet>
-    </div>
+    </form>
   );
 };
 

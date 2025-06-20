@@ -24,8 +24,8 @@ const CheckBox = ({
   const matchedAgreement = agreements.find((a) => a.id === id);
 
   return (
-    <div className="mb-4 border border-zinc-300 rounded-md">
-      <div className="flex justify-between items-center text-m pt-[5px] mb-2 bg-background h-9 w-full">
+    <div className=" border border-zinc-300 rounded-md">
+      <div className="flex justify-between items-center text-m pt-[5px]  bg-background h-9 w-full">
         <div className="flex gap-2 items-center pb-2">
           <div
             onClick={() => onChange(id, !checked)}
@@ -47,10 +47,10 @@ const CheckBox = ({
         )}
       </div>
 
-      {/* 드롭다운 영역: 해당 id만 보여줌 */}
+      {/* 드롭다운 이용약관*/}
       <div
         className={clsx(
-          'transition-all duration-500 overflow-y-scroll px-3 text-xs text-gray-700 ',
+          'transition-all duration-500 overflow-y-scroll px-3 text-xs text-gray-700 scrollbar-hidden ',
           isOpen ? 'max-h-[250px] py-2 opacity-100' : 'max-h-0 py-0 opacity-0 '
         )}
       >
