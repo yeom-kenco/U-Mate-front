@@ -4,6 +4,7 @@ import { useState } from 'react';
 import InputField from '../InputField';
 import { IoCloseOutline } from 'react-icons/io5';
 import AccountToggleMenu from './AccountToggleMenu';
+import ResetPasswordForm from './ResetPasswordModal';
 
 type FlowType = 'id' | 'password'; // 아이디, 비밀번호 구분
 type ModalStep = 'findId' | 'getId' | 'verify' | 'reset'; // 현재 단계 구분
@@ -138,16 +139,7 @@ const FindAccountModal = ({ onClose }: Props) => {
         {/* 비밀번호 재설정 */}
         {flow === 'password' && step === 'reset' && (
           <>
-            <InputField variant="box" placeholder="새 비밀번호 입력" type="password" />
-            <InputField variant="box" placeholder="비밀번호 확인" type="password" />
-            <div className="flex gap-2 mt-4">
-              <Button variant="fill" color="gray" size="lg" onClick={onClose} className="flex-1">
-                취소
-              </Button>
-              <Button variant="fill" size="lg" onClick={onClose} className="flex-1">
-                완료
-              </Button>
-            </div>
+            <ResetPasswordForm onCancel={onClose} onComplete={onClose} />
           </>
         )}
       </div>
