@@ -25,7 +25,7 @@ const ConfirmModal = ({
       <div className="p-6 sm:p-8">
         <h2 className="text-m font-bold text-center">{title}</h2>
         <p className="text-sm text-zinc-400 text-center mt-2">{subtitle}</p>
-        {children}
+        {children && <div className="mt-4">{children}</div>}
         <div className="flex gap-2 mt-5">
           <Button variant="fill" color="gray" size="lg" onClick={onClose} className="flex-1">
             {cancelText}
