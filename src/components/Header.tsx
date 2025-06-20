@@ -70,16 +70,16 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
       {/* backdrop  */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-40 z-[9998] md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-40 z-[9998] sm:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       {/* hambuger Menu */}
       <div
-        className={` md:hidden
+        className={` sm:hidden
           fixed top-0 w-80 h-screen rounded-2xl z-[9999] transform transition-transform duration-500 ease-in-out bg-background
-          ${isMenuOpen ? 'translate-x-24' : 'translate-x-96'}
+          ${isMenuOpen ? 'translate-x-24' : 'translate-x-[500px]'}
         `}
       >
         <IoMdClose
