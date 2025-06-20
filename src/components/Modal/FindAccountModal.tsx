@@ -1,7 +1,7 @@
 import BaseModal from './BaseModal';
 import { useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
-import AccountStepContent from './AccountStepContent';
+import AccountStepRenderer from './AccountStepRenderer';
 
 type FlowType = 'id' | 'password';
 type ModalStep = 'findId' | 'getId' | 'verify' | 'reset';
@@ -79,7 +79,7 @@ const FindAccountModal = ({ onClose }: Props) => {
         </div>
         <p className="text-m mt-2 mb-8 max-[400px]:text-s max-[400px]:mb-6">{subtitle}</p>
 
-        <AccountStepContent
+        <AccountStepRenderer
           step={step}
           flow={flow}
           isCodeSent={isCodeSent}
