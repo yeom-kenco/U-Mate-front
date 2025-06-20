@@ -17,7 +17,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
   return (
     <div
       className={clsx(
-        'rounded-xl cursor-pointer border bg-white p-4 my-4 shadow-sm flex flex-col gap-2 min-h-[325px]',
+        'rounded-xl cursor-pointer border bg-white p-4 shadow-sm flex flex-col gap-2 min-h-[325px]',
         highlight && 'border-pink-500'
       )}
     >
