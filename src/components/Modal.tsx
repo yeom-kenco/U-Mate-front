@@ -13,23 +13,25 @@ type ModalProps = {
   leftButtonText?: string;
   rightButtonText?: string;
   closeOnOutsideClick?: boolean; // 외부 클릭 시 닫기 여부
+  className?: string;
 };
 
 const SIZE_CLASSES: Record<NonNullable<ModalProps['size']>, string> = {
-  s: 'w-[85%] max-w-sm px-5 py-7',
-  m: 'w-[95%] max-w-sm p-6',
+  s: 'w-[85%] px-5 py-7',
+  m: 'w-[95%] p-6',
 };
 
 const Modal = ({
   size = 's',
-  title = '정말 삭제하시겠습니까?',
-  subtitle = '삭제한 리뷰는 다시 되돌릴 수 없어요. 🥲',
+  title = '',
+  subtitle = '',
   children,
   onClose,
   onConfirm,
   leftButtonText = '취소',
   rightButtonText,
   closeOnOutsideClick = true, // 기본값: 외부 클릭 시 닫힘
+  className = '',
 }: ModalProps) => {
   const modalRoot = document.getElementById('modal-root');
   const [isVisible, setIsVisible] = useState(false);
@@ -38,7 +40,13 @@ const Modal = ({
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 8);
-    return () => clearTimeout(timer);
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      clearTimeout(timer);
+      document.body.style.overflow = '';
+    };
   }, []);
 
   if (!modalRoot) return null;
@@ -55,7 +63,7 @@ const Modal = ({
       <div
         className={`bg-white rounded-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)] transition-all duration-300 ease-out transform ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-        } ${SIZE_CLASSES[size]}`}
+        } ${SIZE_CLASSES[size]} ${className}`}
         onClick={(e) => e.stopPropagation()} // 내부 클릭은 닫기 방지
       >
         {/* X 버튼: s 사이즈는 제외 */}
@@ -69,14 +77,12 @@ const Modal = ({
 
         {/* 헤더 */}
         <div className="text-center mb-5">
-          <h2 className="text-m font-bold">{title}</h2>
+          {title && <h2 className="text-m font-bold">{title}</h2>}
           {subtitle && <p className="text-sm text-zinc-400 mt-1">{subtitle}</p>}
         </div>
 
         {/* 콘텐츠 */}
-        <div className={children ? 'max-h-[50vh] overflow-y-auto scrollbar-hide' : ''}>
-          {children}
-        </div>
+        <div className={children ? 'overflow-y-auto scrollbar-hide' : ''}>{children}</div>
 
         {/* 버튼 영역 */}
         {shouldRenderButtons && (
