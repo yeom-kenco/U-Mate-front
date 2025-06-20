@@ -82,9 +82,7 @@ const Modal = ({
         </div>
 
         {/* 콘텐츠 */}
-        <div className={children ? 'max-h-[70vh] overflow-y-auto scrollbar-hide' : ''}>
-          {children}
-        </div>
+        <div className={children ? 'overflow-y-auto scrollbar-hide' : ''}>{children}</div>
 
         {/* 버튼 영역 */}
         {shouldRenderButtons && (
