@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
 import { SlArrowDown } from 'react-icons/sl';
 import AgeRangeList from '../components/BottomSheet/AgeRangeList';
-import InputField from '../components/InputField';
 import BenefitCard from '../components/BenefitCard';
 import PlanCard from '../components/PlanCard';
 import { useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
 import { benefitCards } from '../data/benefitsCard';
+
 import FilterButton from '../components/FilterButton';
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
-import { closeModal, openModal } from '../store/modalSlice';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
+
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { closeModal, openModal } from '../store/modalSlice';
 
 const PricingPage = () => {
   const [sortopen, setSortOpen] = useState(false); // 정렬 시트 토글
@@ -56,12 +57,13 @@ const PricingPage = () => {
   };
   return (
     <div className="h-full">
+      {/* 필터 영역 */}
       <div className="flex items-center gap-4 py-4">
-        <div className="flex gap-6">
-          <button onClick={() => setSortOpen(true)} className="text-m flex items-center gap-1">
+        <div className="flex gap-6 text-m">
+          <button onClick={() => setSortOpen(true)} className="flex items-center gap-2">
             {isSorted || '인기순'} <SlArrowDown />
           </button>
-          <button onClick={() => setAgeOpen(true)} className="text-m flex items-center gap-1">
+          <button onClick={() => setAgeOpen(true)} className="flex items-center gap-2">
             {ageRanges || '전체'} <SlArrowDown />
           </button>
         </div>
@@ -70,44 +72,28 @@ const PricingPage = () => {
           <FilterButton onClick={handleOpen} />
         </div>
       </div>
-      {isOpen && (
-        <Modal
-          size="m"
-          title=""
-          subtitle=""
-          leftButtonText=""
-          onClose={handleClose} // 모달 닫기 테스트
-          onConfirm={() => {
-            dispatch(closeModal());
-          }} // 버튼 확인 테스트용
-          className="w-full h-full rounded-none sm:h-[90%] px-[20px]"
-        >
-          <div className="grid grid-cols-3 gap-4">
-            {benefitCards.map((card, i) => (
-              <BenefitCard key={i} {...card} />
-            ))}
-          </div>
-          <div className="w-full flex gap-2 border border-red-500">
-            <Button size="m" variant="ghost">
-              초기화
-            </Button>
-            <Button size="m" variant="fill" className="flex-1">
-              4개 요금제 보기
-            </Button>
-          </div>
-        </Modal>
-      )}
 
-      <PlanCard
-        name="5G 프리미어 에센셜"
-        description="데이터 무제한 테더링+쉐어링 70GB"
-        price="월 85,000원"
-        discountedPrice="월 58,500원"
-        rating={{ score: 3.0, count: 15 }}
-        size="large"
-        onCompareClick={() => console.log('비교')}
-        onChangeClick={() => console.log('변경')}
-      />
+      {/* 요금제 카드 영역 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
+        {[1, 2, 3].map((_, i) => (
+          <PlanCard
+            name="5G 프리미어 에센셜"
+            description="데이터 무제한 테더링+쉐어링 70GB"
+            price="월 85,000원"
+            discountedPrice="월 58,500원"
+            rating={{ score: 3.0, count: 15 }}
+            size="large"
+            onCompareClick={() => console.log('비교')}
+            onChangeClick={handleOpen}
+          />
+        ))}
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
+        {benefitCards.map((card, i) => (
+          <BenefitCard key={i} {...card} />
+        ))}
+      </div>
 
       <BottomSheet isOpen={sortopen} onClose={() => setSortOpen(false)} height="300px">
         <SortList onSelect={handleSortSelect} selected={isSorted} />
@@ -116,6 +102,16 @@ const PricingPage = () => {
       <BottomSheet isOpen={ageopen} onClose={() => setAgeOpen(false)} height="350px">
         <AgeRangeList onSelect={handleAgeSelect} selected={ageRanges} />
       </BottomSheet>
+
+      {isOpen && (
+        <Modal
+          title="해당 요금제로 변경하시겠습니까?"
+          leftButtonText="취소"
+          rightButtonText="변경하기"
+          onClose={handleClose}
+          onConfirm={handleClose}
+        />
+      )}
     </div>
   );
 };
