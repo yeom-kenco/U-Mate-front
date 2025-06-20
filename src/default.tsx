@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import LoginBanner from './components/LoginBanner.tsx';
 import ShortcutCarousel from './components/shortcut/ShortcutCarousel.tsx';
 import { useState } from 'react';
+import EventBannerCarousel from './components/EventBanner/EventBannerCarousel.tsx';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
@@ -23,6 +24,7 @@ const Default = () => {
       <div className="w-[90%] mx-auto">
         <Outlet context={setHeaderConfig} />
       </div>
+      <EventBannerCarousel />
       <ShortcutCarousel />
       <Footer />
     </>
