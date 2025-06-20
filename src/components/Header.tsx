@@ -25,7 +25,7 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
     navigate(-1);
   };
   return (
-    <header className=" w-full h-16  flex justify-center items-center px-5 py-6">
+    <header className=" w-full h-16  flex justify-center items-center px-5 py-6 shadow-sm z-50 relative bg-white">
       <div className="relative container mx-auto  h-full flex items-center justify-between ">
         {showBackButton ? (
           <div className="flex items-center " onClick={BackPage}>

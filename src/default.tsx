@@ -19,12 +19,12 @@ const Default = () => {
         showBackButton={headerConfig.showBackButton}
         showSearch={headerConfig.showSearch}
       />
-      <LoginBanner type="chatbot" />
+      {/* <LoginBanner type="chatbot" /> */}
       <div className="w-[90%] mx-auto">
         <Outlet context={setHeaderConfig} />
       </div>
-      <ShortcutCarousel />
-      <Footer />
+      {/* <ShortcutCarousel />
+      <Footer /> */}
     </>
   );
 };
