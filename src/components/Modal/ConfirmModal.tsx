@@ -1,0 +1,40 @@
+import BaseModal from './BaseModal';
+import Button from '../Button';
+
+type ConfirmModalProps = {
+  title: string;
+  subtitle: string;
+  onClose: () => void;
+  onConfirm: () => void;
+  cancelText?: string;
+  confirmText?: string;
+};
+
+const ConfirmModal = ({
+  title,
+  subtitle,
+  onClose,
+  onConfirm,
+  cancelText = '취소',
+  confirmText = '변경하기',
+}: ConfirmModalProps) => {
+  return (
+    <BaseModal onClose={onClose}>
+      <div className="p-6 sm:p-8">
+        <h2 className="text-m font-bold text-center">{title}</h2>
+        <p className="text-sm text-zinc-400 text-center mt-2">{subtitle}</p>
+
+        <div className="flex gap-2 mt-5">
+          <Button variant="fill" color="gray" size="lg" onClick={onClose} className="flex-1">
+            {cancelText}
+          </Button>
+          <Button variant="fill" color="pink" size="lg" onClick={onConfirm} className="flex-1">
+            {confirmText}
+          </Button>
+        </div>
+      </div>
+    </BaseModal>
+  );
+};
+
+export default ConfirmModal;
