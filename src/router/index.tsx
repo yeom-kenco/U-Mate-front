@@ -11,6 +11,7 @@ import LoginPage from '../pages/LoginPage';
 import LoginBanner from '../components/LoginBanner';
 import Modal from '../components/Modal';
 import { HeaderProps } from '../components/Header';
+import ReviewCard from '../components/ReviewCard';
 import { useContext, useEffect } from 'react';
 import { ToastContext } from '../context/ToastContext';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
@@ -52,6 +53,30 @@ const TempPage = () => {
     <div className="py-10">
       <BenefitDropBar label="할인 혜택" indexes={[0, 1, 2, 3, 4]} data={benefitList} />
       <BenefitDropBar label="기본 혜택" indexes={[5, 6, 7, 8, 9]} data={benefitList} />
+
+      <Button variant="outline" color="gray" size="s">
+        outline
+      </Button>
+      {/* 최대 글자수일때&요금제상세페이지 UI 테스트 */}
+      <ReviewCard
+        writerName="김석"
+        writerAge="20대"
+        content="이 서비스는 정말 유용하고 직관적이에요. 디자인도 깔끔하고 사용법도 쉬워서 만족스럽습니다. 이 서비스는 정말 유용하고 직관적이에요. 디자인도 깔끔하고 사용법도 쉬워서 만족스러워요."
+        date="25.06.11"
+        rating={5}
+      />
+      <div className="mb-4"></div>
+      {/* 글자수 적을때&마이페이지 UI 테스트 */}
+      <ReviewCard
+        isMyPage
+        planName="5G 프리미어 에센셜"
+        content="유메이트 화이팅! 우아아앙"
+        date="25.06.11"
+        rating={5}
+        onEdit={() => console.log('수정')}
+        onDelete={() => console.log('삭제')}
+      />
+
       <Button onClick={handleClick}>토스트 리뷰 삭제</Button>
       <Button onClick={() => toastContext?.showToast('비밀번호가 변경되었습니다!', 'success')}>
         토스트 성공
@@ -69,26 +94,20 @@ const TempPage = () => {
         message="ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ?"
         time="16:00"
       />
+
       <Button onClick={() => dispatch(openModal())}>모달</Button>
       {isOpen && (
         <Modal
-          title="내가 작성한 리뷰"
-          subtitle="삭제한 리뷰는 다시 되돌릴 수 없어요. 🥲"
-          size="s"
-          showButtons
-          leftButtonText="취소"
-          rightButtonText="삭제하기"
+          leftButtonText="아니오"
+          rightButtonText="네"
           onClose={handleClose} // 모달 닫기 테스트
           onConfirm={() => {
             console.log('삭제');
             dispatch(closeModal());
           }} // 버튼 확인 테스트용
-        >
-          {/* <p>
-          안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽안뇽
-        </p> */}
-        </Modal>
+        ></Modal>
       )}
+
     </div>
   );
 };
