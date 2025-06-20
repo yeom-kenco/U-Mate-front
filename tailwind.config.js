@@ -33,7 +33,11 @@ export default {
         xl: '2rem', // 32px
         xxl: '2.25rem', //36px
       },
+      screens: {
+        xs: '400px', // 400px 이상
+        'max-xs': { max: '400px' }, // 400px 이하
+      },
     },
+    plugins: [scrollbarHide],
   },
-  plugins: [scrollbarHide],
 };
