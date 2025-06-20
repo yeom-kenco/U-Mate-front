@@ -8,9 +8,9 @@ import EventBannerCarousel from './components/EventBanner/EventBannerCarousel.ts
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
-    title: '요금제',
+    title: '마이페이지',
     showBackButton: false,
-    showSearch: false,
+    showSearch: true,
   });
 
   return (
@@ -20,7 +20,7 @@ const Default = () => {
         showBackButton={headerConfig.showBackButton}
         showSearch={headerConfig.showSearch}
       />
-      <LoginBanner type="chatbot" />
+
       <div className="w-[90%] mx-auto">
         <Outlet context={setHeaderConfig} />
       </div>
