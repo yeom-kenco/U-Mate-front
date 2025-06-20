@@ -72,11 +72,39 @@ const PricingPage = () => {
           <FilterButton onClick={handleOpen} />
         </div>
       </div>
+      <BenefitCard
+        img="/images/chatbot/chatbot-main.png"
+        title="OTT 서비스"
+        descript="다양한 할인 혜택  다양한 할인 혜택  "
+      />
+
+      <PlanCard
+        name="5G 프리미어 에센셜"
+        description="데이터 무제한 테더링+쉐어링 70GB"
+        price="월 85,000원"
+        discountedPrice="월 58,500원"
+        rating={{ score: 3.0, count: 15 }}
+        size="small"
+        onCompareClick={() => console.log('비교')}
+        onChangeClick={() => console.log('변경')}
+      />
+
+      <PlanCard
+        name="5G 프리미어 에센셜"
+        description="데이터 무제한 테더링+쉐어링 70GB"
+        price="월 85,000원"
+        discountedPrice="월 58,500원"
+        rating={{ score: 3.0, count: 15 }}
+        size="large"
+        onCompareClick={() => console.log('비교')}
+        onChangeClick={() => console.log('변경')}
+      />
 
       {/* 요금제 카드 영역 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
         {[1, 2, 3].map((_, i) => (
           <PlanCard
+            key={i}
             name="5G 프리미어 에센셜"
             description="데이터 무제한 테더링+쉐어링 70GB"
             price="월 85,000원"
