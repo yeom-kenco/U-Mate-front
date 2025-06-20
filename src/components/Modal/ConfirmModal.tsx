@@ -3,7 +3,7 @@ import Button from '../Button';
 
 type ConfirmModalProps = {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   onClose: () => void;
   onConfirm: () => void;
   cancelText?: string;
