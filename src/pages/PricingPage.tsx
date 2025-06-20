@@ -10,7 +10,6 @@ import { HeaderProps } from '../components/Header';
 import { benefitCards } from '../data/benefitsCard';
 
 import FilterButton from '../components/FilterButton';
-import Modal from '../components/Modal';
 import Button from '../components/Button';
 
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
@@ -130,16 +129,6 @@ const PricingPage = () => {
       <BottomSheet isOpen={ageopen} onClose={() => setAgeOpen(false)} height="350px">
         <AgeRangeList onSelect={handleAgeSelect} selected={ageRanges} />
       </BottomSheet>
-
-      {isOpen && (
-        <Modal
-          title="해당 요금제로 변경하시겠습니까?"
-          leftButtonText="취소"
-          rightButtonText="변경하기"
-          onClose={handleClose}
-          onConfirm={handleClose}
-        />
-      )}
     </div>
   );
 };
