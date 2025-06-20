@@ -3,10 +3,12 @@ import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
 import { SlArrowDown } from 'react-icons/sl';
 import AgeRangeList from '../components/BottomSheet/AgeRangeList';
+import InputField from '../components/InputField';
 import BenefitCard from '../components/BenefitCard';
 import PlanCard from '../components/PlanCard';
 import { useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
+import { benefitCards } from '../data/benefitsCard';
 
 const PricingPage = () => {
   const [sortopen, setSortOpen] = useState(false); // 정렬 시트 토글
@@ -44,6 +46,13 @@ const PricingPage = () => {
           {ageRanges || '전체'} <SlArrowDown className="relative top-[2px]" />
         </button>
       </div>
+      <div className="grid grid-cols-3 gap-4 ">
+        {benefitCards.map((card, i) => (
+          <BenefitCard key={i} {...card} />
+        ))}
+      </div>
+      <InputField label="이름" required placeholder="이름을 입력해주세요" />
+      <InputField variant="box" label="비밀번호" placeholder="비밀번호를 입력해주세요" />
       <BenefitCard
         img="/images/chatbot/chatbot-main.png"
         title="OTT 서비스"

@@ -1,7 +1,9 @@
+import { HiVolumeUp } from 'react-icons/hi';
+
 type ChatBubbleProps = {
   from: 'user' | 'bot';
-  message?: string;
-  time?: string;
+  message: string;
+  time: string;
   children?: React.ReactNode; // 카드나 버튼 등 확장 콘텐츠
 };
 
@@ -14,7 +16,7 @@ const ChatBubble = ({ from, message, time, children }: ChatBubbleProps) => {
       <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
         <div
           className={`
-            w-fit max-w-[80%] break-words rounded-3xl py-3 px-4
+            w-fit max-w-64 rounded-3xl py-3 px-4
             ${isUser ? 'bg-violet-100 rounded-br-none drop-shadow-[0_4px_15px_rgba(51,5,156,0.25)]' : 'bg-white rounded-tl-none drop-shadow-[0_0px_15px_rgba(51,5,156,0.15)]'}
           `}
         >
@@ -22,16 +24,12 @@ const ChatBubble = ({ from, message, time, children }: ChatBubbleProps) => {
           {children}
         </div>
       </div>
-      {time && (
-        <p
-          className={`
-            text-s text-zinc-400 mt-1
-            ${isUser ? 'text-right' : 'text-left'}
-          `}
-        >
-          {time}
-        </p>
-      )}
+      <div className={`flex items-center mt-1 gap-2`}>
+        {time && (
+          <p className="text-s text-zinc-400 ${isUser ? 'justify-end' : 'justify-start'}">{time}</p>
+        )}
+        {!isUser && <HiVolumeUp className="text-violet-400 w-3 h-3 mt-[-1px]" />}
+      </div>
     </div>
   );
 };
