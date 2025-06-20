@@ -51,8 +51,6 @@ const PricingPage = () => {
           <BenefitCard key={i} {...card} />
         ))}
       </div>
-      <InputField label="이름" required placeholder="이름을 입력해주세요" />
-      <InputField variant="box" label="비밀번호" placeholder="비밀번호를 입력해주세요" />
       <BenefitCard
         img="/images/chatbot/chatbot-main.png"
         title="OTT 서비스"

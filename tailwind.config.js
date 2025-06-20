@@ -20,6 +20,7 @@ export default {
       boxShadow: {
         // shadow-[지정명]
         card: '0px 0px 15px rgba(0, 0, 0, 0.15)',
+        header: '0px 2px 4px rgba(0,0,0,0.15)',
       },
 
       fontSize: {
@@ -33,7 +34,11 @@ export default {
         xl: '2rem', // 32px
         xxl: '2.25rem', //36px
       },
+      screens: {
+        xs: '400px', // 400px 이상
+        'max-xs': { max: '400px' }, // 400px 이하
+      },
     },
+    plugins: [scrollbarHide],
   },
-  plugins: [scrollbarHide],
 };

@@ -19,6 +19,7 @@ import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 
 import { openModal, closeModal } from '../store/modalSlice';
 import Button from '../components/Button';
 import RegisterPage from '../pages/RegisterPage';
+import MyPage from '../pages/MyPage';
 import CheckBox from '../components/CheckBox';
 
 // 테스트용 임시 페이지
@@ -133,6 +134,7 @@ const router = createBrowserRouter([
       { path: 'pricing', element: <PricingPage /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <RegisterPage /> },
+      { path: '/mypage', element: <MyPage /> },
     ],
   },
   {

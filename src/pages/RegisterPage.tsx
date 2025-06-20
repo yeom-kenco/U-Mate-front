@@ -7,6 +7,7 @@ import CheckBox from '../components/CheckBox';
 import { SlArrowRight } from 'react-icons/sl';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
+import PlanList from '../components/BottomSheet/PlanList';
 const RegisterPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
 
@@ -139,8 +140,8 @@ const RegisterPage = () => {
         회원가입
       </Button>
 
-      <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="500px">
-        <SortList onSelect={handlePlanSelect} selected={isPlan} />
+      <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="700px">
+        <PlanList onSelect={handlePlanSelect} selected={isPlan} />
       </BottomSheet>
     </div>
   );
