@@ -61,7 +61,7 @@ const InputField: React.FC<InputFieldProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           className={clsx(
-            'flex-1 text-sm outline-none placeholder:font-semibold placeholder-[#A9B3C2]',
+            'flex-1 text-sm mt-1 outline-none placeholder:font-normal placeholder-[#A9B3C2]',
             variant === 'line' ? 'bg-transparent' : 'bg-white'
           )}
         />
