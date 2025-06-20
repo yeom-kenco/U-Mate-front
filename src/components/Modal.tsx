@@ -17,8 +17,8 @@ type ModalProps = {
 };
 
 const SIZE_CLASSES: Record<NonNullable<ModalProps['size']>, string> = {
-  s: 'w-[85%] px-5 py-7',
-  m: 'w-[95%] p-6',
+  s: 'w-[85%] max-w-md px-5 py-7',
+  m: 'w-[95%] max-w-md p-6',
 };
 
 const Modal = ({
