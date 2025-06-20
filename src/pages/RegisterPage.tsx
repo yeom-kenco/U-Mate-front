@@ -1,4 +1,4 @@
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { HeaderProps } from '../components/Header';
 import InputField from '../components/InputField';
@@ -10,7 +10,7 @@ import SortList from '../components/BottomSheet/SortList';
 import PlanList from '../components/BottomSheet/PlanList';
 const RegisterPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
-
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [gender, setGender] = useState<'male' | 'female' | ''>('');
   const [birth, setBirth] = useState('');
@@ -19,9 +19,34 @@ const RegisterPage = () => {
   const [verificationCode, setVerificationCode] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [plans, setPlans] = useState('');
   const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
   const [isPlan, setisPlan] = useState(''); // 선택된 정렬 기준
+
+  //체크박스 관리
+  const [agreements, setAgreements] = useState({
+    all: false,
+    privacy: false,
+    delegate: false,
+    terms: false,
+  });
+
+  const handleCheckChange = (id: string, value: boolean) => {
+    // 전체 동의 선택 시, 모든 항목을 동일하게
+    if (id === 'all') {
+      setAgreements({
+        all: value,
+        privacy: value,
+        delegate: value,
+        terms: value,
+      });
+    } // 개별 항목 선택 시, 그 항목만 선택
+    else {
+      const newAgreements = { ...agreements, [id]: value };
+      // 개별 항목들이 모두 true면 전체동의도 true로
+      const allChecked = newAgreements.privacy && newAgreements.delegate && newAgreements.terms;
+      setAgreements({ ...newAgreements, all: allChecked });
+    }
+  };
 
   const handlePlanSelect = (value: string) => {
     setisPlan(value);
@@ -118,6 +143,7 @@ const RegisterPage = () => {
         type="password"
         required
       />
+      {/*요금제 선택 박스 */}
       <label className="text-s text-gray-400">
         <span className="">사용중인 요금제/관심 요금제</span>
       </label>
@@ -126,15 +152,36 @@ const RegisterPage = () => {
       hover:bg-slate-200"
         onClick={() => setPlanOpen(true)}
       >
-        <p className="text-sm mt-[4px]">요금제를 선택해주세요</p>
+        <p className="text-sm mt-[4px]">{isPlan || '요금제를 선택해주세요.'}</p>
         <SlArrowRight />
       </div>
-      {/* 약관 동의: 별도 컴포넌트로 분리 가능 */}
+      {/* 약관 동의*/}
       <div className="mt-8 space-y-4">
-        <CheckBox showButton={false} />
-        <CheckBox title="개인정보 수집 및 이용 동의(필수)" showButton />
-        <CheckBox title="개인정보 처리 위탁 동의(필수)" showButton />
-        <CheckBox title="서비스 이용 약관 동의(필수)" showButton />
+        <CheckBox
+          id="all"
+          title="전체 동의"
+          showButton={false}
+          checked={agreements.all}
+          onChange={handleCheckChange}
+        />
+        <CheckBox
+          id="privacy"
+          title="개인정보 수집 및 이용 동의(필수)"
+          checked={agreements.privacy}
+          onChange={handleCheckChange}
+        />
+        <CheckBox
+          id="delegate"
+          title="개인정보 처리 위탁 동의(필수)"
+          checked={agreements.delegate}
+          onChange={handleCheckChange}
+        />
+        <CheckBox
+          id="terms"
+          title="서비스 이용 약관 동의(필수)"
+          checked={agreements.terms}
+          onChange={handleCheckChange}
+        />
       </div>
       <Button size="xl" fullWidth className="mt-6 rounded-xl h-14">
         회원가입

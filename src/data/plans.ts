@@ -4,6 +4,7 @@ export interface planprops {
 }
 
 export const plans: planprops[] = [
+  { id: 0, name: '요금제를 잘 몰라요. ( LG U+ 가장 인기있는 요금제로 추천! )' },
   { id: 1, name: '5G 시그니처' },
   { id: 2, name: '5G 프리미어 슈퍼' },
   { id: 3, name: '5G 프리미어 플러스' },
