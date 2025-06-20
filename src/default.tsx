@@ -10,7 +10,7 @@ const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
     title: '요금제',
     showBackButton: false,
-    showSearch: false,
+    showSearch: true,
   });
 
   return (
