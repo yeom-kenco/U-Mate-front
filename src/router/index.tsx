@@ -11,8 +11,8 @@ import LoginPage from '../pages/LoginPage';
 import LoginBanner from '../components/LoginBanner';
 import Modal from '../components/Modal';
 import { HeaderProps } from '../components/Header';
-import { useEffect } from 'react';
-
+import { useContext, useEffect } from 'react';
+import { ToastContext } from '../context/ToastContext';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
 import { openModal, closeModal } from '../store/modalSlice';
@@ -28,6 +28,12 @@ const TempPage = () => {
       showSearch: false,
     });
   }, []);
+
+  const toastContext = useContext(ToastContext);
+
+  const handleClick = () => {
+    toastContext?.showToast('리뷰가 삭제되었습니다!', 'black');
+  };
 
   // 모달 테스트
   const dispatch = useAppDispatch();
@@ -46,6 +52,13 @@ const TempPage = () => {
     <div className="py-10">
       <BenefitDropBar label="할인 혜택" indexes={[0, 1, 2, 3, 4]} data={benefitList} />
       <BenefitDropBar label="기본 혜택" indexes={[5, 6, 7, 8, 9]} data={benefitList} />
+      <Button onClick={handleClick}>토스트 리뷰 삭제</Button>
+      <Button onClick={() => toastContext?.showToast('비밀번호가 변경되었습니다!', 'success')}>
+        토스트 성공
+      </Button>
+      <Button onClick={() => toastContext?.showToast('비밀번호가 일치하지 않습니다')}>
+        토스트 실패
+      </Button>
       <ChatBubble
         from="bot"
         message="ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ?"
