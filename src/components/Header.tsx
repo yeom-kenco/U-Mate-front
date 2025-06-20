@@ -13,12 +13,15 @@ export interface HeaderProps {
   title?: string;
 }
 
-const Header = ({ showBackButton = false, showSearch = false, title = '요금제' }: HeaderProps) => {
+const Header = ({
+  showBackButton = false,
+  showSearch = false,
+  title = '마이페이지',
+}: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); //햄버거 토글
   const location = useLocation();
   const navigate = useNavigate();
 
-  //
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
@@ -27,7 +30,7 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
     navigate(-1);
   };
   return (
-    <header className=" w-full h-16  flex justify-center items-center px-5 py-6">
+    <header className=" w-full h-16 flex justify-center items-center px-5 py-6">
       <div className="relative container mx-auto  h-full flex items-center justify-between ">
         {showBackButton ? (
           <div className="flex items-center " onClick={BackPage}>
@@ -55,7 +58,7 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
               <FiUser className="w-6 h-6" strokeWidth={1.5} />
             </Link>
             <button
-              className="flex justify-end items-center w-2/5"
+              className="flex justify-end items-center w-2/5 md:hidden"
               onClick={() => setIsMenuOpen(true)}
               aria-label="메뉴 열기"
             >
@@ -75,9 +78,8 @@ const Header = ({ showBackButton = false, showSearch = false, title = '요금제
 
       {/* hambuger Menu */}
       <div
-        className={` md:hidden
-          fixed top-0 w-80 h-screen rounded-2xl z-[9999] transform transition-transform duration-500 ease-in-out bg-background
-          ${isMenuOpen ? 'translate-x-24' : 'translate-x-96'}
+        className={`md:hidden fixed top-0 right-0 w-80 h-screen rounded-3xl z-[9999] transform transition-transform duration-500 ease-in-out bg-background
+          ${isMenuOpen ? 'translate-x-[2.8rem] max-xs:translate-x-10 ' : 'translate-x-full'}
         `}
       >
         <IoMdClose
