@@ -1,13 +1,10 @@
 import BaseModal from './BaseModal';
-import Button from '../Button';
 import { useState } from 'react';
-import InputField from '../InputField';
 import { IoCloseOutline } from 'react-icons/io5';
-import AccountToggleMenu from './AccountToggleMenu';
-import ResetPasswordForm from './ResetPasswordModal';
+import AccountStepContent from './AccountStepContent';
 
-type FlowType = 'id' | 'password'; // 아이디, 비밀번호 구분
-type ModalStep = 'findId' | 'getId' | 'verify' | 'reset'; // 현재 단계 구분
+type FlowType = 'id' | 'password';
+type ModalStep = 'findId' | 'getId' | 'verify' | 'reset';
 
 type Props = {
   onClose: () => void;
@@ -38,7 +35,6 @@ const FindAccountModal = ({ onClose }: Props) => {
   const [isCodeSent, setIsCodeSent] = useState(false);
 
   const handleRequestAuth = () => {
-    // 실제 API 요청
     console.log('인증 요청됨');
     setIsCodeSent(true);
   };
@@ -75,73 +71,23 @@ const FindAccountModal = ({ onClose }: Props) => {
   return (
     <BaseModal onClose={onClose}>
       <div className="p-6">
-        {/* 닫기 버튼 */}
         <div className="flex justify-between">
-          {/* 제목 */}
-          <h2 className={'text-lm font-bold max-[400px]:text-m'}>{title}</h2>
+          <h2 className="text-lm font-bold max-[400px]:text-m">{title}</h2>
           <button onClick={onClose} aria-label="닫기">
             <IoCloseOutline className="text-2xl text-zinc-400 hover:text-black" />
           </button>
         </div>
         <p className="text-m mt-2 mb-8 max-[400px]:text-s max-[400px]:mb-6">{subtitle}</p>
 
-        {/* 아이디 찾기 흐름 */}
-        {flow === 'id' && step === 'findId' && (
-          <>
-            <AccountToggleMenu active={flow} onChange={handleTabChange} />
-            <InputField variant="box" placeholder="휴대폰 번호 입력 ex) 01012345678" />
-            <Button onClick={handleNext} size="lg" fullWidth className="mt-4 max-[400px]:text-s">
-              아이디 찾기
-            </Button>
-          </>
-        )}
-        {flow === 'id' && step === 'getId' && (
-          <>
-            <p className="text-sm border border-zinc-200 p-4 rounded-lg">
-              당신이 가입한 이메일은
-              <br /> <strong className="text-pink-500">sejin@naver.com</strong> 입니다.
-            </p>
-            <p className="text-s mt-2 mb-2 max-[400px]:text-xs max-[320px]:text-[9px]">
-              비밀번호도 잊으셨나요? 걱정하지 마세요.
-              <br /> 아래 버튼을 눌러 비밀번호를 쉽고 빠르게 찾아보실 수 있어요.
-            </p>
-            <Button
-              onClick={() => handleTabChange('password')}
-              size="lg"
-              fullWidth
-              className="mt-4"
-            >
-              비밀번호 찾기
-            </Button>
-          </>
-        )}
-        {/* 본인인증 */}
-        {flow === 'password' && step === 'verify' && (
-          <>
-            <AccountToggleMenu active={flow} onChange={handleTabChange} />
-            <InputField variant="box" placeholder="휴대폰 번호 입력" />
-            <Button onClick={handleRequestAuth} size="s">
-              인증 요청
-            </Button>
-            <InputField variant="box" placeholder="인증번호 입력" />
-            <Button onClick={handleNext} size="s">
-              확인
-            </Button>
-            {isCodeSent && (
-              <p className="text-s mt-2 text-pink-500 leading-4 max-[400px]:text-xs">
-                인증번호가 발송되었습니다. 인증번호가 오지 않는다면, 입력하신 이메일이 정확한 지
-                확인해주세요.
-              </p>
-            )}
-          </>
-        )}
-
-        {/* 비밀번호 재설정 */}
-        {flow === 'password' && step === 'reset' && (
-          <>
-            <ResetPasswordForm onCancel={onClose} onComplete={onClose} />
-          </>
-        )}
+        <AccountStepContent
+          step={step}
+          flow={flow}
+          isCodeSent={isCodeSent}
+          onChangeFlow={handleTabChange}
+          onRequestAuth={handleRequestAuth}
+          onNext={handleNext}
+          onClose={onClose}
+        />
       </div>
     </BaseModal>
   );
