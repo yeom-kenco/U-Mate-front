@@ -7,26 +7,31 @@
 @font-face {
   font-family: 'LG EI Headline Bold';
   src: url('/font/LG-EI-Headline-otf/LGEIHeadline-Bold.otf') format('woff2');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'LG EI Headline Light';
   src: url('/font/LG-EI-Headline-otf/LGEIHeadline-Light.otf') format('woff2');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'LG EI Headline Regular';
   src: url('/font/LG-EI-Headline-otf/LGEIHeadline-Regular.otf') format('woff2');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'LG EI Headline Semibold';
   src: url('/font/LG-EI-Headline-otf/LGEIHeadline-Semibold.otf') format('woff2');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'LG EI Headline Thin';
   src: url('/font/LG-EI-Headline-otf/LGEIHeadline-Thin.otf') format('woff2');
+  font-display: swap;
 }
 
 * {
