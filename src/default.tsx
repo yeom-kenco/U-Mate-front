@@ -6,9 +6,10 @@ import ChatbotButton from './components/ChatbotButton';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
-    title: '대표 페이지',
+    title: '대표페이지',
     showBackButton: false,
     showSearch: false,
+    hasShadow: false,
   });
 
   return (
@@ -18,6 +19,7 @@ const Default = () => {
         title={headerConfig.title}
         showBackButton={headerConfig.showBackButton}
         showSearch={headerConfig.showSearch}
+        hasShadow={headerConfig.hasShadow}
       />
 
       {/* 메인 콘텐츠 */}

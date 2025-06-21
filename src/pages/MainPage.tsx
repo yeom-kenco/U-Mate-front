@@ -63,13 +63,14 @@ const MainPage = () => {
       title: '대표페이지',
       showBackButton: false,
       showSearch: false,
+      hasShadow: false,
     });
   }, [setHeaderConfig]);
 
   return (
     <div className="bg-background">
       {/* 하얀색 배너 영역 */}
-      <div className="relative z-20">
+      <div className="relative">
         <div className="bg-white rounded-b-[32px] shadow-[0_8px_15px_-4px_rgba(0,0,0,0.1)] w-full px-[5%] pt-2 pb-6">
           <LoginBanner type="mainGradient" />
         </div>

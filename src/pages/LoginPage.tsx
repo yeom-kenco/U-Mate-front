@@ -16,6 +16,7 @@ const LoginPage = () => {
       title: '로그인',
       showBackButton: true,
       showSearch: false,
+      hasShadow: true,
     });
   }, [setHeaderConfig]);
 
