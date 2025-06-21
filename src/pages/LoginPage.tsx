@@ -35,7 +35,7 @@ const LoginPage = () => {
 
   return (
     <div className="relative overflow-x-hidden">
-      <div className="fixed top-0 left-0 w-screen h-[300px] md:h-[500px] z-[-1] overflow-hidden">
+      <div className="absolute w-full top-[-60px] left-0 h-[300px] md:h-[500px] z-[-1] overflow-hidden">
         {/* 왼쪽 원 - 데스크탑에서 더 큼 */}
         <img
           src="/images/login/big-circle-2.png"
@@ -62,7 +62,7 @@ const LoginPage = () => {
         />
       </div>
       {/* 실제 로그인 내용: 가운데 정렬 */}
-      <div className="relative max-w-[600px] mx-auto z-10 md:mt-[-70px]">
+      <div className="relative max-w-[600px] w-[90%] mx-auto z-10 md:mt-[-70px]">
         {/*배너 */}
         <div className="w-full relative h-72 flex flex-col items-center justify-center z-0  ">
           {/* 텍스트 */}
