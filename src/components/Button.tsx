@@ -49,7 +49,7 @@ const Button = ({
   // 사이즈별 스타일
   const sizeMap = {
     s: 'text-xs px-3 h-8 min-w-14 max-[400px]:text-[0.625rem] max-[400px]:px-2 max-[400px]:h-7',
-    sm: 'text-sm font-normal px-4 h-9 min-w-14 max-[400px]:text-[0.625rem] max-[400px]:px-2 max-[400px]:h-7', //대표 페이지- 추천 요금제용 속성 추가: 폰트 굵기 얇게(default값은 너무 두껍길래 normal로 변경), 폰트 사이즈 크게 변경
+    sm: 'text-sm font-normal px-4 h-9 min-w-14 max-[400px]:text-[0.8rem] max-[400px]:px-3', //대표 페이지- 추천 요금제용 속성 추가: 폰트 굵기 얇게(default값은 너무 두껍길래 normal로 변경), 폰트 사이즈 크게 변경
     m: 'text-sm px-4 h-9 min-w-16 max-[400px]:text-xs max-[400px]:px-3 max-[400px]:h-8',
     lg: 'text-m px-5 h-11 min-w-16 max-[400px]:text-sm max-[400px]:px-4 max-[400px]:h-10',
     xl: 'text-m px-6 h-14 min-w-24 max-[400px]:text-sm max-[400px]:px-5 max-[400px]:h-12',
