@@ -36,7 +36,6 @@ export default {
       },
       screens: {
         xs: '400px', // 400px 이상
-        'xs-max': { raw: '(max-width: 400px)' }, // 400px 이하
       },
     },
     plugins: [scrollbarHide],
