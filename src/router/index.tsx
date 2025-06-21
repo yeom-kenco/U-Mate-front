@@ -23,6 +23,7 @@ import InputField from '../components/InputField';
 import FindAccountModal from '../components/Modal/FindAccountModal';
 import MyPage from '../pages/MyPage';
 import CheckBox from '../components/CheckBox';
+import ReviewTextarea from '../components/ReviewTextarea';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -102,9 +103,10 @@ const TempPage = () => {
 
       <Button onClick={() => dispatch(openModal())}>모달</Button>
       {isOpen && (
-        <FindAccountModal
+        <ReviewModal
+          type="reviewWrite"
           onClose={handleClose} // 모달 닫기 테스트
-        ></FindAccountModal>
+        ></ReviewModal>
       )}
       <CheckBox showButton={false} />
       <CheckBox title="개인정보 수집 및 이용 동의(필수)" />
