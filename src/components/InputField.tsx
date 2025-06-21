@@ -27,11 +27,10 @@ const InputField: React.FC<InputFieldProps> = ({
   suffixButton,
   variant = 'line',
 }) => {
-  const wrapperClass =
-    variant === 'line' ? 'flex flex-col gap-[6px] w-full' : 'flex flex-col gap-2 w-full';
+  const wrapperClass = variant === 'line' ? 'flex flex-col   w-full' : 'flex flex-col gap-2 w-full';
   const inputWrapperClass =
     variant === 'line'
-      ? 'border-b  px-2 py-2 bg-transparent'
+      ? `border-b mb-2 px-2  pb-1 bg-transparent ${suffixButton ? 'pt-2' : 'pt-4'}`
       : 'border  rounded-lg px-2 py-2 bg-white';
   const [showPassword, setShowPassword] = useState(false);
 
@@ -51,7 +50,7 @@ const InputField: React.FC<InputFieldProps> = ({
       {/*wrapper 영역 focus시 색 변경 */}
       <div
         className={clsx(
-          'flex mb-4 items-center border-zinc-200 transition duration-200 focus-within:border-black',
+          'flex mb-1 items-center border-zinc-200 transition duration-200 focus-within:border-black',
           inputWrapperClass
         )}
       >
@@ -63,8 +62,9 @@ const InputField: React.FC<InputFieldProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           className={clsx(
-            'flex-1 text-m outline-none  placeholder-[#A9B3C2]',
-            variant === 'line' ? 'bg-transparent' : 'bg-white'
+            'flex-1 text-m max-xs:text-sm outline-none  placeholder-[#A9B3C2]',
+            variant === 'line' ? 'bg-transparent' : 'bg-white',
+            suffixButton ? 'relative top-1' : ''
           )}
         />
         {type === 'password' && (
@@ -92,7 +92,7 @@ const InputField: React.FC<InputFieldProps> = ({
         )}
       </div>
       {/*error영역*/}
-      {error && <p className="text-xs text-pink-500 mt-1">{error}</p>}
+      {error && <p className="text-xs text-pink-500 mb-2">{error}</p>}
     </div>
   );
 };

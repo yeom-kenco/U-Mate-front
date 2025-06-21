@@ -6,7 +6,6 @@ import Button from '../components/Button';
 import CheckBox from '../components/CheckBox';
 import { SlArrowRight } from 'react-icons/sl';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
-import SortList from '../components/BottomSheet/SortList';
 import PlanList from '../components/BottomSheet/PlanList';
 const RegisterPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -21,6 +20,41 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
   const [isPlan, setisPlan] = useState(''); // 선택된 정렬 기준
+
+  const [errors, setErrors] = useState({
+    name: '',
+    gender: '',
+    birth: '',
+    phone: '',
+    email: '',
+    verificationCode: '',
+    password: '',
+    confirmPassword: '',
+    isPlan: '',
+    agreements: '',
+  });
+
+  const validate = () => {
+    const newErrors = {
+      name: name.trim() === '' ? '이름을 입력해주세요.' : '',
+      gender: gender.trim() === '' ? '성별을 선택해주세요.' : '',
+      birth: /^\d{8}$/.test(birth) ? '' : '생년월일 8자리를 정확히 입력해주세요.',
+      phone: /^010\d{8}$/.test(phone) ? '' : '휴대폰 번호를 정확히 입력해주세요.',
+      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+        ? ''
+        : '잘못된 형식의 이메일 주소입니다. 주소를 정확히 입력해주세요.',
+      verificationCode: verificationCode.length === 6 ? '' : '인증번호 6자리를 입력해주세요.',
+      password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{12,}$/.test(password)
+        ? ''
+        : '영문 대 소문자, 숫자, 특수문자를 포함하여 12자 이상 입력해주세요.',
+      confirmPassword: confirmPassword === password ? '' : '비밀번호가 일치하지 않습니다.',
+      isPlan: isPlan.trim() === '' ? '사용/관심 요금제 선택해주세요.' : '',
+      agreements: agreements.all === false ? '이용약관을 모두 동의해 주세요' : '',
+    };
+    setErrors(newErrors);
+    // 에러가 하나라도 있으면 false 반환
+    return Object.values(newErrors).every((msg) => msg === '');
+  };
 
   //체크박스 관리
   const [agreements, setAgreements] = useState({
@@ -62,18 +96,7 @@ const RegisterPage = () => {
   }, []);
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(
-      name,
-      gender,
-      birth,
-      phone,
-      email,
-      verificationCode,
-      password,
-      confirmPassword,
-      isPlan,
-      agreements.all
-    );
+    if (!validate()) return;
   };
   return (
     <form onSubmit={onSubmit} className="w-full max-w-md mx-auto px-4 py-6">
@@ -84,12 +107,13 @@ const RegisterPage = () => {
         onChange={(e) => setName(e.target.value)}
         placeholder="이름"
         required
+        error={errors.name}
       />
       {/* 성별 선택 */}
-      <label className="text-s mb-[-5px] text-gray-400">
+      <label className="text-s  text-gray-400">
         <span>성별</span> <span className="text-pink-500">*</span>
       </label>
-      <div className="flex gap-4 my-4">
+      <div className="flex gap-4 my-2">
         <Button
           variant={gender === 'male' ? 'fill' : 'outline'}
           color="pink"
@@ -109,12 +133,14 @@ const RegisterPage = () => {
           여성
         </Button>
       </div>
+      <p className="text-xs text-pink-500 mb-2">{errors.gender}</p>
       <InputField
         label="생년월일"
         value={birth}
         onChange={(e) => setBirth(e.target.value)}
         placeholder="생년월일 8자리 (YYYYMMDD)"
         required
+        error={errors.birth}
       />
       <InputField
         label="휴대폰번호"
@@ -123,6 +149,7 @@ const RegisterPage = () => {
         placeholder="'-'없이 입력(예:01012345678)"
         suffixButton="중복 확인"
         required
+        error={errors.phone}
       />
       <InputField
         label="이메일"
@@ -132,6 +159,7 @@ const RegisterPage = () => {
         type="email"
         suffixButton="이메일 인증"
         required
+        error={errors.email}
       />
       <InputField
         label="이메일 인증번호"
@@ -140,6 +168,7 @@ const RegisterPage = () => {
         placeholder="인증번호 6자리 입력"
         suffixButton="인증 확인"
         required
+        error={errors.verificationCode}
       />
       <InputField
         label="비밀번호"
@@ -148,6 +177,7 @@ const RegisterPage = () => {
         placeholder="비밀번호"
         type="password"
         required
+        error={errors.password}
       />
       <InputField
         label="비밀번호 확인"
@@ -156,21 +186,25 @@ const RegisterPage = () => {
         placeholder="비밀번호 확인"
         type="password"
         required
+        error={errors.confirmPassword}
       />
       {/*요금제 선택 박스 */}
       <label className="text-s text-gray-400">
-        <span className="">사용중인 요금제/관심 요금제</span>
+        <span className="">
+          사용중인 요금제/관심 요금제 <span className="text-pink-500">*</span>
+        </span>
       </label>
       <div
-        className="flex justify-between items-center w-full border border-zinc-500 rounded-lg px-2 py-2 bg-background cursor-pointer
+        className="flex justify-between my-2 items-center w-full border border-zinc-500 rounded-lg px-2 py-2 bg-background cursor-pointer
       hover:bg-slate-200"
         onClick={() => setPlanOpen(true)}
       >
-        <p className="text-sm mt-[4px]">{isPlan || '요금제를 선택해주세요.'}</p>
+        <p className="text-s max-xs:text-xs mt-[4px]">{isPlan || '요금제를 선택해주세요.'} </p>
         <SlArrowRight />
       </div>
+      <p className="text-xs text-pink-500 mb-2">{errors.isPlan}</p>
       {/* 약관 동의*/}
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-4 mb-2">
         <CheckBox
           id="all"
           title="전체 동의"
@@ -197,6 +231,7 @@ const RegisterPage = () => {
           onChange={handleCheckChange}
         />
       </div>
+      <p className="text-xs text-pink-500 mb-2">{errors.agreements}</p>
       <Button size="xl" fullWidth className="mt-6 rounded-xl h-14">
         회원가입
       </Button>
