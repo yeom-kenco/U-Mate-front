@@ -133,7 +133,7 @@ const RegisterPage = () => {
           여성
         </Button>
       </div>
-      <p className="text-xs text-pink-500 mb-2">{errors.gender}</p>
+      <p className="text-xs md:text-s text-pink-500 mb-2">{errors.gender}</p>
       <InputField
         label="생년월일"
         value={birth}
@@ -204,7 +204,7 @@ const RegisterPage = () => {
         </p>
         <SlArrowRight />
       </div>
-      <p className="text-xs text-pink-500 mb-2">{errors.isPlan}</p>
+      <p className="text-xs md:text-s text-pink-500 mb-2">{errors.isPlan}</p>
       {/* 약관 동의*/}
       <div className="mt-8 space-y-4 mb-2">
         <CheckBox
@@ -233,7 +233,7 @@ const RegisterPage = () => {
           onChange={handleCheckChange}
         />
       </div>
-      <p className="text-xs text-pink-500 mb-2">{errors.agreements}</p>
+      <p className="text-xs md:text-s text-pink-500 mb-2">{errors.agreements}</p>
       <Button size="xl" fullWidth className="mt-6 rounded-xl h-14">
         회원가입
       </Button>

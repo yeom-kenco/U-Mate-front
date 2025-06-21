@@ -92,7 +92,7 @@ const InputField: React.FC<InputFieldProps> = ({
         )}
       </div>
       {/*error영역*/}
-      {error && <p className="text-xs text-pink-500 mb-2">{error}</p>}
+      {error && <p className="text-xs md:text-s text-pink-500 mb-2">{error}</p>}
     </div>
   );
 };

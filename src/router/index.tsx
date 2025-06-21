@@ -18,8 +18,9 @@ import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
 import { openModal, closeModal } from '../store/modalSlice';
 import Button from '../components/Button';
-import RegisterPage from '../pages/RegisterPage';
 import MyPage from '../pages/MyPage';
+import CheckBox from '../components/CheckBox';
+import RegisterPage from '../pages/RegisterPage';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -109,6 +110,10 @@ const TempPage = () => {
           }} // 버튼 확인 테스트용
         ></Modal>
       )}
+      <CheckBox showButton={false} />
+      <CheckBox title="개인정보 수집 및 이용 동의(필수)" />
+      <CheckBox title="개인정보 처리 위탁 동의(필수)" />
+      <CheckBox title="서비스 이용 약관 동의(필수)" />
     </div>
   );
 };
@@ -128,8 +133,8 @@ const router = createBrowserRouter([
       },
       { path: 'pricing', element: <PricingPage /> },
       { path: '/login', element: <LoginPage /> },
-      { path: 'signup', element: <RegisterPage /> },
       { path: '/mypage', element: <MyPage /> },
+      { path: '/signup', element: <RegisterPage /> },
     ],
   },
   {
