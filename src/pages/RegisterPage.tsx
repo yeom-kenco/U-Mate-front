@@ -99,7 +99,7 @@ const RegisterPage = () => {
     if (!validate()) return;
   };
   return (
-    <form onSubmit={onSubmit} className="w-full max-w-md mx-auto px-4 py-6">
+    <form onSubmit={onSubmit} className="w-full max-w-[600px] mx-auto px-4 py-6">
       <p className="text-lg font-bold mb-4 w-40">본인인증 정보를 입력해주세요.</p>
       <InputField
         label="이름"
@@ -199,7 +199,9 @@ const RegisterPage = () => {
       hover:bg-slate-200"
         onClick={() => setPlanOpen(true)}
       >
-        <p className="text-s max-xs:text-xs mt-[4px]">{isPlan || '요금제를 선택해주세요.'} </p>
+        <p className="text-s max-w-[400px]:text-xs mt-[4px]">
+          {isPlan || '요금제를 선택해주세요.'}{' '}
+        </p>
         <SlArrowRight />
       </div>
       <p className="text-xs text-pink-500 mb-2">{errors.isPlan}</p>
