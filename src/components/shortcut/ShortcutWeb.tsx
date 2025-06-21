@@ -17,7 +17,7 @@ const ShortcutGrid = () => (
           <img
             src="/images/shortcut/shortcut-main-big.png"
             alt="대표 페이지"
-            className="mt-2 w-full h-full object-contain"
+            className="mt-14 w-full h-full object-contain"
           />
         }
         title="대표 페이지"
@@ -27,7 +27,7 @@ const ShortcutGrid = () => (
         height="h-full"
         iconSize="w-72 h-72"
         showButton={false}
-        titleClassName="mt-2 text-[40px]"
+        titleClassName="mt-14 text-[40px]"
         descriptionClassName="mt-3 text-lm"
       />
 
