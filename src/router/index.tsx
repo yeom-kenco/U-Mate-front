@@ -9,7 +9,6 @@ import ChatBubble from '../components/ChatBubble';
 import OnBoarding from '../components/OnBoarding';
 import LoginPage from '../pages/LoginPage';
 import LoginBanner from '../components/LoginBanner';
-import Modal from '../components/Modal';
 import { HeaderProps } from '../components/Header';
 import ReviewCard from '../components/ReviewCard';
 import { useContext, useEffect } from 'react';
@@ -18,8 +17,13 @@ import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
 import { openModal, closeModal } from '../store/modalSlice';
 import Button from '../components/Button';
+import ReviewModal from '../components/Modal/reviewModal';
+import ConfirmModal from '../components/Modal/ConfirmModal';
+import InputField from '../components/InputField';
+import FindAccountModal from '../components/Modal/FindAccountModal';
 import MyPage from '../pages/MyPage';
 import CheckBox from '../components/CheckBox';
+import ReviewTextarea from '../components/ReviewTextarea';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -99,15 +103,10 @@ const TempPage = () => {
 
       <Button onClick={() => dispatch(openModal())}>모달</Button>
       {isOpen && (
-        <Modal
-          leftButtonText="아니오"
-          rightButtonText="네"
+        <ReviewModal
+          type="reviewWrite"
           onClose={handleClose} // 모달 닫기 테스트
-          onConfirm={() => {
-            console.log('삭제');
-            dispatch(closeModal());
-          }} // 버튼 확인 테스트용
-        ></Modal>
+        ></ReviewModal>
       )}
       <CheckBox showButton={false} />
       <CheckBox title="개인정보 수집 및 이용 동의(필수)" />
@@ -130,7 +129,7 @@ const router = createBrowserRouter([
         path: '/terms',
         element: <TermsOfUsePage />,
       },
-      { path: 'pricing', element: <PricingPage /> },
+      { path: 'pricing', element: <PricingPage /> }, // 요금제 페이지
       { path: '/login', element: <LoginPage /> },
       { path: '/mypage', element: <MyPage /> },
     ],

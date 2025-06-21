@@ -36,7 +36,7 @@ export default {
       },
       screens: {
         xs: '400px', // 400px 이상
-        'max-xs': { max: '400px' }, // 400px 이하
+        // 'max-xs': { max: '400px' }, // 400px 이하 이거 적용하니까 max- 또는 min- 으로 해놨던 것들이 안돼요ㅜㅜ
       },
     },
     plugins: [scrollbarHide],
