@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
 import { SlArrowDown } from 'react-icons/sl';
 import AgeRangeList from '../components/BottomSheet/AgeRangeList';
-import InputField from '../components/InputField';
 import BenefitCard from '../components/BenefitCard';
 import PlanCard from '../components/PlanCard';
 import { useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
 import { benefitCards } from '../data/benefitsCard';
+
+import FilterButton from '../components/FilterButton';
+import Button from '../components/Button';
+
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { closeModal, openModal } from '../store/modalSlice';
 
 const PricingPage = () => {
   const [sortopen, setSortOpen] = useState(false); // 정렬 시트 토글
@@ -16,6 +21,19 @@ const PricingPage = () => {
   const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
   const [ageRanges, SetAgeRanges] = useState(''); // 선택된 연령 기준
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
+
+  // 필터 버튼 모달 상태
+  const dispatch = useAppDispatch();
+
+  const handleOpen = () => {
+    dispatch(openModal());
+  };
+
+  const handleClose = () => {
+    dispatch(closeModal());
+  };
+
+  const isOpen = useAppSelector((state) => state.modal.isOpen);
 
   useEffect(() => {
     setHeaderConfig({
@@ -38,18 +56,20 @@ const PricingPage = () => {
   };
   return (
     <div className="h-full">
-      <div className="flex gap-4 p-4">
-        <button onClick={() => setSortOpen(true)} className="text-sm font-semibold flex gap-1">
-          {isSorted || '인기순'} <SlArrowDown className="relative top-[2px]" />
-        </button>
-        <button onClick={() => setAgeOpen(true)} className="text-sm font-semibold flex gap-1">
-          {ageRanges || '전체'} <SlArrowDown className="relative top-[2px]" />
-        </button>
-      </div>
-      <div className="grid grid-cols-3 gap-4 ">
-        {benefitCards.map((card, i) => (
-          <BenefitCard key={i} {...card} />
-        ))}
+      {/* 필터 영역 */}
+      <div className="flex items-center gap-4 py-4">
+        <div className="flex gap-6 text-m">
+          <button onClick={() => setSortOpen(true)} className="flex items-center gap-2">
+            {isSorted || '인기순'} <SlArrowDown />
+          </button>
+          <button onClick={() => setAgeOpen(true)} className="flex items-center gap-2">
+            {ageRanges || '전체'} <SlArrowDown />
+          </button>
+        </div>
+
+        <div className="ml-auto">
+          <FilterButton onClick={handleOpen} />
+        </div>
       </div>
       <BenefitCard
         img="/images/chatbot/chatbot-main.png"
@@ -78,6 +98,29 @@ const PricingPage = () => {
         onCompareClick={() => console.log('비교')}
         onChangeClick={() => console.log('변경')}
       />
+
+      {/* 요금제 카드 영역 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
+        {[1, 2, 3].map((_, i) => (
+          <PlanCard
+            key={i}
+            name="5G 프리미어 에센셜"
+            description="데이터 무제한 테더링+쉐어링 70GB"
+            price="월 85,000원"
+            discountedPrice="월 58,500원"
+            rating={{ score: 3.0, count: 15 }}
+            size="large"
+            onCompareClick={() => console.log('비교')}
+            onChangeClick={handleOpen}
+          />
+        ))}
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
+        {benefitCards.map((card, i) => (
+          <BenefitCard key={i} {...card} />
+        ))}
+      </div>
 
       <BottomSheet isOpen={sortopen} onClose={() => setSortOpen(false)} height="300px">
         <SortList onSelect={handleSortSelect} selected={isSorted} />

@@ -2,9 +2,10 @@ import Header from './components/Header';
 import { Outlet } from 'react-router-dom';
 import Footer from './components/Footer';
 import LoginBanner from './components/LoginBanner.tsx';
-import ShortcutCarousel from './components/shortcut/ShortcutCarousel.tsx';
+// import ShortcutCarousel from './components/shortcut/ShortcutCarousel.tsx';
 import { useState } from 'react';
-import EventBannerCarousel from './components/EventBanner/EventBannerCarousel.tsx';
+import ChatbotButton from './components/ChatbotButton.tsx';
+// import EventBannerCarousel from './components/EventBanner/EventBannerCarousel.tsx';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
@@ -24,8 +25,9 @@ const Default = () => {
       <div>
         <Outlet context={setHeaderConfig} />
       </div>
-      <EventBannerCarousel />
-      <ShortcutCarousel />
+      {/* <EventBannerCarousel /> */}
+      {/* <ShortcutCarousel /> */}
+      <ChatbotButton />
       <Footer />
     </>
   );
