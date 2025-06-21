@@ -48,8 +48,8 @@ const ReviewModal = ({
 
               {/* 요금제 정보 박스 */}
               <div className="border border-zinc-200 mb-2 rounded-xl p-4 text-s flex justify-between text-black items-center">
-                <p className="font-bold text-m">{planName ?? '요금제 이름'}</p>
-                <p>{planPrice ?? '가격 정보 없음'}</p>
+                <p className="font-bold text-sm">{planName ?? '요금제 이름'}</p>
+                <p className="text-sm">{planPrice ?? '가격 정보 없음'}</p>
               </div>
 
               {/* 별점 박스 */}
