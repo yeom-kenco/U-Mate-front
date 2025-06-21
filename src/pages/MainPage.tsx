@@ -1,5 +1,8 @@
 import React from 'react';
+import { HeaderProps } from '../components/Header';
 import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import { useEffect } from 'react';
 import LoginBanner from '../components/LoginBanner';
 import EventBannerCarousel from '../components/EventBanner/EventBannerCarousel';
 import Button from '../components/Button';
@@ -50,9 +53,18 @@ const mockPlans = [
 ];
 
 const MainPage = () => {
+  const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [selectedCategory, setSelectedCategory] = useState<Category>('청년');
 
   const filteredPlans = mockPlans.filter((plan) => plan.category === selectedCategory);
+
+  useEffect(() => {
+    setHeaderConfig({
+      title: '대표페이지',
+      showBackButton: false,
+      showSearch: false,
+    });
+  }, [setHeaderConfig]);
 
   return (
     <div className="bg-background">

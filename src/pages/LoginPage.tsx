@@ -17,7 +17,7 @@ const LoginPage = () => {
       showBackButton: true,
       showSearch: false,
     });
-  }, []);
+  }, [setHeaderConfig]);
 
   const ChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
