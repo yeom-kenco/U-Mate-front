@@ -4,7 +4,7 @@ import React from 'react';
 type ButtonProps = {
   variant?: 'fill' | 'outline' | 'ghost' | 'special';
   color?: 'pink' | 'gray' | 'violet' | 'black' | 'white';
-  size?: 's' | 'm' | 'lg' | 'xl';
+  size?: 's' | 'sm' | 'm' | 'lg' | 'xl';
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
@@ -28,6 +28,7 @@ const Button = ({
       pink: 'bg-pink-500 text-white hover:bg-pink-400 active:bg-pink-600',
       gray: 'bg-zinc-100 text-zinc-400 hover:bg-zinc-300 active:bg-gray-400',
       violet: 'bg-violet-100 text-black hover:bg-violet-50',
+      white: 'bg-white text-black hover:bg-pink-500 hover:text-white border border-zinc-200', //대표 페이지- 추천 요금제용 속성 추가
     },
     outline: {
       pink: 'border border-pink-500 text-pink-500 hover:bg-pink-50 focus:bg-pink-100',
@@ -48,13 +49,15 @@ const Button = ({
   // 사이즈별 스타일
   const sizeMap = {
     s: 'text-xs px-3 h-8 min-w-14 max-[400px]:text-[0.625rem] max-[400px]:px-2 max-[400px]:h-7',
+    sm: 'text-sm font-normal px-4 h-9 min-w-14 max-[400px]:text-[0.625rem] max-[400px]:px-2 max-[400px]:h-7', //대표 페이지- 추천 요금제용 속성 추가: 폰트 굵기 얇게(default값은 너무 두껍길래 normal로 변경), 폰트 사이즈 크게 변경
     m: 'text-sm px-4 h-9 min-w-16 max-[400px]:text-xs max-[400px]:px-3 max-[400px]:h-8',
     lg: 'text-m px-5 h-11 min-w-16 max-[400px]:text-sm max-[400px]:px-4 max-[400px]:h-10',
     xl: 'text-m px-6 h-14 min-w-24 max-[400px]:text-sm max-[400px]:px-5 max-[400px]:h-12',
   };
 
   // 둥근 모서리 설정
-  const borderRadius = size === 's' || variant === 'special' ? 'rounded-3xl' : 'rounded-lg';
+  const borderRadius =
+    size === 's' || size === 'sm' || variant === 'special' ? 'rounded-3xl' : 'rounded-lg';
 
   // 비활성화 상태 스타일
   const disabledStyle = 'bg-zinc-200 text-white cursor-not-allowed pointer-events-none';
