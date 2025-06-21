@@ -24,6 +24,7 @@ import FindAccountModal from '../components/Modal/FindAccountModal';
 import MyPage from '../pages/MyPage';
 import CheckBox from '../components/CheckBox';
 import ReviewTextarea from '../components/ReviewTextarea';
+import ShortcutPage from '../pages/ShortcutPage';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -137,6 +138,10 @@ const router = createBrowserRouter([
   {
     path: '/onboarding',
     element: <OnBoarding />,
+  },
+  {
+    path: '/shortcut',
+    element: <ShortcutPage />,
   },
 ]);
 
