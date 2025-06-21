@@ -56,6 +56,7 @@ const ReviewModal = ({
               <div>
                 <h3 className="text-sm mt-6 mb-1">이 요금제에 대해 얼마나 만족하시나요?</h3>
                 <div className="border border-zinc-200 mb-6 rounded-xl p-3 text-s flex justify-center text-black items-center">
+                  {/* 별점 렌더링 */}
                   {[...Array(rating ?? 5)].map((_, i) => (
                     <AiFillStar key={i} className="text-zinc-200 text-m" />
                   ))}
