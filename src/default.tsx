@@ -21,7 +21,7 @@ const Default = () => {
         showSearch={headerConfig.showSearch}
       />
       {/* <LoginBanner type="chatbot" /> */}
-      <div className="w-[90%] mx-auto">
+      <div>
         <Outlet context={setHeaderConfig} />
       </div>
       <EventBannerCarousel />
