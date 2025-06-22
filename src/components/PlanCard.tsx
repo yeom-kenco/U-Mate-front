@@ -15,6 +15,7 @@ export interface PlanCardProps {
   showButtons?: boolean;
   onChangeClick?: () => void;
   onCompareClick?: () => void;
+  onClick: () => void;
   size?: 'small' | 'large'; // 대표페이지(small) ,요금제페이지(large)
 }
 

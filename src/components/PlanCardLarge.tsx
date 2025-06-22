@@ -13,6 +13,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
   showButtons = true,
   onCompareClick,
   onChangeClick,
+  onClick,
 }) => {
   return (
     <div
@@ -20,6 +21,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
         'rounded-xl cursor-pointer border bg-white p-4 shadow-sm flex flex-col gap-2 min-h-[325px]',
         highlight && 'border-pink-500'
       )}
+      onClick={onClick}
     >
       {rating && (
         <div className="text-sm flex items-center gap-[1px]">
@@ -29,7 +31,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
         </div>
       )}
 
-      <div className="text-base cursor-pointer">
+      <div className="text-base cursor-pointer hover:font-bold">
         {name} <span className="text-lg">›</span>
       </div>
       <div className="text-lg text-black font-bold w-2/3">{description}</div>
