@@ -27,7 +27,7 @@ const PricingPage = () => {
   const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
   const [ageRanges, SetAgeRanges] = useState(''); // 선택된 연령 기준
   const [selectedPlan, setSelectedPlan] = useState(null); // 변경할 요금제
-  const [visibleCount, setVisibleCount] = useState(3); // 초반에 요금제 3개만 보여주기
+  const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
 
   const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
 
