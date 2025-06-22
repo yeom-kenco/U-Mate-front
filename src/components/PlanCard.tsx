@@ -13,8 +13,8 @@ export interface PlanCardProps {
   };
   highlight?: boolean;
   showButtons?: boolean;
-  onChangeClick?: () => void;
-  onCompareClick?: () => void;
+  onChangeClick?: (e: React.MouseEvent) => void;
+  onCompareClick?: (e: React.MouseEvent) => void;
   onClick: () => void;
   size?: 'small' | 'large'; // 대표페이지(small) ,요금제페이지(large)
 }

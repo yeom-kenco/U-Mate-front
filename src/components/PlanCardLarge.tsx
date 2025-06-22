@@ -19,6 +19,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
     <div
       className={clsx(
         'rounded-xl cursor-pointer border bg-white p-4 shadow-sm flex flex-col gap-2 min-h-[325px]',
+        'transition-transform duration-200 ease hover:-translate-y-1 hover:shadow-md',
         highlight && 'border-pink-500'
       )}
       onClick={onClick}
@@ -44,7 +45,10 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
       {showButtons && (
         <div className="flex gap-2 mt-auto pt-3 text-sm">
           <Button
-            onClick={onCompareClick}
+            onClick={(e) => {
+              e.stopPropagation(); // 카드 클릭 방지
+              onCompareClick?.(e);
+            }}
             variant="outline"
             color="gray"
             size="lg"
@@ -53,7 +57,10 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
             비교하기
           </Button>
           <Button
-            onClick={onChangeClick}
+            onClick={(e) => {
+              e.stopPropagation(); // 카드 클릭 방지
+              onChangeClick?.(e); // 부모 함수 호출
+            }}
             variant="outline"
             color="pink"
             size="lg"
