@@ -33,7 +33,7 @@ const ReviewWriteContent = ({
           <h3 className="text-sm mt-6 mb-1 max-[370px]:text-s">
             이 요금제에 대해 얼마나 만족하시나요?
           </h3>
-          <div className="border border-zinc-200 mb-6 rounded-xl p-3 text-s flex justify-center text-black items-center">
+          <div className="border border-zinc-200 mb-2 rounded-xl p-3 text-s flex justify-center text-black items-center">
             {[...Array(rating ?? 5)].map((_, i) => (
               <AiFillStar key={i} className="text-zinc-200 text-m" />
             ))}
