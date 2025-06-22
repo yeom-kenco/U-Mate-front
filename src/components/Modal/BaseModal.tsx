@@ -45,17 +45,17 @@ const BaseModal = ({
   if (!modalRoot) return null;
 
   return createPortal(
-    <FocusTrap>
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={labelledBy}
-        tabIndex={-1}
-        className={`fixed inset-0 z-50 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        }`}
-        onClick={closeOnOutsideClick ? onClose : undefined}
-      >
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={labelledBy}
+      tabIndex={-1}
+      className={`fixed inset-0 z-50 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      }`}
+      onClick={closeOnOutsideClick ? onClose : undefined}
+    >
+      <FocusTrap>
         <div
           className={`bg-white rounded-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)] w-[90%] max-w-md max-h-[70vh] transition-transform duration-300 transform ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
@@ -64,8 +64,9 @@ const BaseModal = ({
         >
           {children}
         </div>
-      </div>
-    </FocusTrap>,
+      </FocusTrap>
+      ,
+    </div>,
     modalRoot
   );
 };
