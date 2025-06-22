@@ -39,8 +39,8 @@ const ReviewModal = ({
 }: ReviewModalProps) => {
   return (
     <BaseModal onClose={onClose}>
-      <div className="flex flex-col h-[70vh] max-h-[500px]">
-        <div className="flex justify-end pt-4 pr-4 shrink-0">
+      <div className="flex flex-col h-[70vh] max-h-[520px]">
+        <div className="flex justify-end pt-4 pr-5 shrink-0">
           <button onClick={onClose} aria-label="닫기">
             <IoCloseOutline className="text-2xl text-zinc-400 hover:text-black" />
           </button>
