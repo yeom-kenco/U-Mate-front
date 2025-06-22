@@ -18,7 +18,7 @@ const solutions = [
 
 const SolutionList: React.FC<PlanListProps> = ({ onSelect, selected, onSendMessage }) => {
   return (
-    <ul className="flex flex-wrap px-3 py-2 gap-2">
+    <ul className="flex flex-wrap px-3 py-2 gap-2 ">
       <p className="font-bold text-lg mb-4 w-full">원하는 질문을 찾아보세요</p>
       {solutions.map((text, index) => (
         <li
