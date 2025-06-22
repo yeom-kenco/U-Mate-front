@@ -136,6 +136,7 @@ const RegisterPage = () => {
       </label>
       <div className="flex gap-4 my-2">
         <Button
+          type="button"
           variant={formData.gender === 'male' ? 'fill' : 'outline'}
           color="pink"
           size="lg"
@@ -147,6 +148,7 @@ const RegisterPage = () => {
           남성
         </Button>
         <Button
+          type="button"
           variant={formData.gender === 'female' ? 'fill' : 'outline'}
           color="pink"
           size="lg"

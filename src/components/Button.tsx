@@ -10,6 +10,7 @@ type ButtonProps = {
   className?: string;
   disabled?: boolean;
   fullWidth?: boolean;
+  type?: 'button' | 'submit';
 };
 
 const Button = ({
@@ -21,6 +22,7 @@ const Button = ({
   className = '',
   disabled = false,
   fullWidth = false,
+  type = 'submit',
 }: ButtonProps) => {
   // 스타일 정의
   const variantMap = {
@@ -75,7 +77,7 @@ const Button = ({
     .join(' ');
 
   return (
-    <button onClick={onClick} className={composedClassName} disabled={disabled}>
+    <button onClick={onClick} type={type} className={composedClassName} disabled={disabled}>
       {variant === 'special' && <MdCall className="mr-2 w-5 h-5" />}
       <span className="mt-[2px]">{children}</span>
     </button>

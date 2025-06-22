@@ -84,6 +84,7 @@ const InputField: React.FC<InputFieldProps> = ({
           <Button
             variant="outline"
             size="m"
+            type="button"
             color="gray"
             className="border-zinc-400 ml-2 bg-zinc-50"
           >
