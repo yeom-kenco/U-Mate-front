@@ -1,5 +1,6 @@
 import { createPortal } from 'react-dom';
 import { useEffect, useState } from 'react';
+import { FocusTrap } from 'focus-trap-react';
 
 type BaseModalProps = {
   children: React.ReactNode;
@@ -42,21 +43,23 @@ const BaseModal = ({
   if (!modalRoot) return null;
 
   return createPortal(
-    <div
-      className={`fixed inset-0 z-50 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
-        isVisible ? 'opacity-100' : 'opacity-0'
-      }`}
-      onClick={closeOnOutsideClick ? onClose : undefined}
-    >
+    <FocusTrap>
       <div
-        className={`bg-white rounded-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)] w-[90%] max-w-md max-h-[70vh] transition-transform duration-300 transform ${
-          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
-        } ${className}`}
-        onClick={(e) => e.stopPropagation()}
+        className={`fixed inset-0 z-50 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+        onClick={closeOnOutsideClick ? onClose : undefined}
       >
-        {children}
+        <div
+          className={`bg-white rounded-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)] w-[90%] max-w-md max-h-[70vh] transition-transform duration-300 transform ${
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
+          } ${className}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
       </div>
-    </div>,
+    </FocusTrap>,
     modalRoot
   );
 };
