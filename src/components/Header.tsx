@@ -65,7 +65,7 @@ const Header = ({
   const BackPage = () => navigate(-1);
 
   return (
-    <header className="relative z-10 w-full h-16 flex justify-center items-center px-[5%] py-6 shadow-header md:shadow-none bg-white">
+    <header className="relative z-10 w-full h-16 flex justify-center items-center px-[5%] py-6 shadow-header md:shadow-none bg-white md:px-10">
       <div className="relative w-full h-full flex items-center justify-between">
         {/* 뒤로가기: md 미만에서만 */}
         {showBackButton && (
