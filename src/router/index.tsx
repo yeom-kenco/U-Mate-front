@@ -11,7 +11,7 @@ import LoginPage from '../pages/LoginPage';
 import LoginBanner from '../components/LoginBanner';
 import { HeaderProps } from '../components/Header';
 import ReviewCard from '../components/ReviewCard';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ToastContext } from '../context/ToastContext';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
@@ -25,6 +25,8 @@ import MyPage from '../pages/MyPage';
 import CheckBox from '../components/CheckBox';
 import RegisterPage from '../pages/RegisterPage';
 import ReviewTextarea from '../components/ReviewTextarea';
+import BottomSheet from '../components/BottomSheet/BottomSheet';
+import SolutionList from '../components/BottomSheet/solutionList';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -55,7 +57,13 @@ const TempPage = () => {
   };
 
   const isOpen = useAppSelector((state) => state.modal.isOpen);
+  const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
+  const [isPlan, setisPlan] = useState(''); // 선택한 요금제
 
+  const handlePlanSelect = (value: string) => {
+    setisPlan(value);
+    setPlanOpen(false);
+  };
   return (
     <div className="py-10">
       <BenefitDropBar label="할인 혜택" indexes={[0, 1, 2, 3, 4]} data={benefitList} />
@@ -109,6 +117,10 @@ const TempPage = () => {
           onClose={handleClose} // 모달 닫기 테스트
         ></ReviewModal>
       )}
+      <button onClick={() => setPlanOpen(true)}>열기</button>
+      <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="400px">
+        <SolutionList onSelect={handlePlanSelect} selected={isPlan} />
+      </BottomSheet>
     </div>
   );
 };
