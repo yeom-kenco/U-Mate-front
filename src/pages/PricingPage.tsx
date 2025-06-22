@@ -12,6 +12,7 @@ import FilterButton from '../components/FilterButton';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { closeModal, openModal } from '../store/modalSlice';
 import Button from '../components/Button';
+import { useToast } from '../hooks/useToast';
 
 const plans = [
   {
@@ -72,6 +73,7 @@ const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
 
   const [visibleCount, setVisibleCount] = useState(3); // 일단 3개만 보여주기
+  const toast = useToast();
 
   // 필터 버튼 모달 상태
   const dispatch = useAppDispatch();
@@ -107,7 +109,12 @@ const PricingPage = () => {
   };
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 3);
+    if (visibleCount >= plans.length) {
+      toast?.showToast(`더 이상의 요금제는 없어요.`, 'black');
+      return;
+    }
+
+    setVisibleCount((prev) => Math.min(prev + 3, plans.length));
   };
 
   return (
@@ -144,14 +151,14 @@ const PricingPage = () => {
         ))}
       </div>
 
-      <div className="flex justify-center mt-6 mb-20">
+      <div className="flex justify-center mt-8 mb-20">
         <Button
           variant="outline"
           color="gray"
           size="xl"
           rounded="full"
           onClick={handleLoadMore}
-          disabled={visibleCount >= plans.length}
+          className="md:w-96"
         >
           요금제 더보기 ({visibleCount}/{plans.length})
         </Button>
