@@ -12,7 +12,7 @@ import SortList from '../components/BottomSheet/SortList';
 import AgeRangeList from '../components/BottomSheet/AgeRangeList';
 import PlanCard from '../components/PlanCard';
 import FilterButton from '../components/FilterButton';
-import FilterModal from '../components/Modal/FilterModal';
+// import FilterModal from '../components/Modal/FilterModal';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 import LoginBanner from '../components/LoginBanner';
 import Button from '../components/Button';
