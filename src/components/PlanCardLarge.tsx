@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { PlanCardProps } from './PlanCard';
 import Button from './Button';
+import { SlArrowRight } from 'react-icons/sl';
 
 const PlanCardLarge: React.FC<PlanCardProps> = ({
   name,
@@ -19,10 +20,8 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
     <div
       className={clsx(
         'rounded-xl cursor-pointer border bg-white p-4 shadow-sm flex flex-col gap-2 min-h-[325px]',
-        'transition-transform duration-200 ease hover:-translate-y-1 hover:shadow-md',
         highlight && 'border-pink-500'
       )}
-      onClick={onClick}
     >
       {rating && (
         <div className="text-sm flex items-center gap-[1px]">
@@ -32,13 +31,16 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
         </div>
       )}
 
-      <div className="text-base cursor-pointer hover:font-bold">
-        {name} <span className="text-lg">›</span>
+      <div className="flex text-base cursor-pointer" onClick={onClick}>
+        {name}
+        <span className="text-sm mt-1">
+          <SlArrowRight />
+        </span>
       </div>
       <div className="text-lg text-black font-bold w-2/3">{description}</div>
 
       <div className="mt-2">
-        <p className="text-xl font-bold text-black">{price}</p>
+        <p className="text-xl font-bold text-black">월 {price}원</p>
         {discountedPrice && <p className="text-sm ">약정 할인 시 {discountedPrice}</p>}
       </div>
 
