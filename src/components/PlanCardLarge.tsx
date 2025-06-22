@@ -40,7 +40,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
       </div>
 
       {showButtons && (
-        <div className="flex gap-2 mt-3 text-sm">
+        <div className="flex gap-2 mt-auto pt-3 text-sm">
           <Button
             onClick={onCompareClick}
             variant="outline"
