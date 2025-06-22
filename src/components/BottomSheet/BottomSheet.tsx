@@ -49,7 +49,12 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-hidden px-[18px] pb-[34px] flex flex-col gap-7 scrollbar-hidden">
+        <div
+          className={clsx(
+            `flex-1 overflow-y-hidden px-[18px] pb-[34px] flex flex-col gap-7 scrollbar-hidden `,
+            height === '700px' && 'overflow-y-scroll'
+          )}
+        >
           {children}
         </div>
       </div>
