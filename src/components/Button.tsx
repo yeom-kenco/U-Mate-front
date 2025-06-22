@@ -28,12 +28,12 @@ const Button = ({
   const variantMap = {
     fill: {
       pink: 'bg-pink-500 text-white hover:bg-pink-400 active:bg-pink-600',
-      gray: 'bg-zinc-100 text-zinc-400 hover:bg-zinc-300 active:bg-gray-400',
+      gray: 'bg-zinc-100 text-zinc-400 hover:bg-zinc-300 active:bg-zinc-400 active:text-white',
       violet: 'bg-violet-100 text-black hover:bg-violet-50',
     },
     outline: {
       pink: 'border border-pink-500 text-pink-500 hover:bg-pink-50 focus:bg-pink-100',
-      gray: 'border border-zinc-200 text-black hover:bg-zinc-100 focus:bg-zinc-200',
+      gray: 'border border-zinc-200 text-black hover:bg-zinc-100',
       violet: 'border border-violet-200 text-violet-400 hover:bg-violet-50',
       white: 'border border-white text-white font-normal',
     },
