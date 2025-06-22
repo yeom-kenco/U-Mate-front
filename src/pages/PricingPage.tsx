@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { closeModal, openModal } from '../store/modalSlice';
 import Button from '../components/Button';
 import { useToast } from '../hooks/useToast';
+import ConfirmModal from '../components/Modal/ConfirmModal';
 
 const plans = [
   {
@@ -87,6 +88,10 @@ const PricingPage = () => {
   };
 
   const isOpen = useAppSelector((state) => state.modal.isOpen);
+
+  const handleConfirm = () => {
+    toast?.showToast('해당 요금제가 신청되었습니다', 'black');
+  };
 
   useEffect(() => {
     setHeaderConfig({
@@ -171,6 +176,14 @@ const PricingPage = () => {
       <BottomSheet isOpen={ageopen} onClose={() => setAgeOpen(false)} height="350px">
         <AgeRangeList onSelect={handleAgeSelect} selected={ageRanges} />
       </BottomSheet>
+
+      {isOpen && (
+        <ConfirmModal
+          title="해당 요금제를 신청하시겠습니까?"
+          onConfirm={handleConfirm}
+          onClose={handleClose}
+        />
+      )}
     </div>
   );
 };
