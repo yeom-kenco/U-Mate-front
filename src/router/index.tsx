@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
 import { openModal, closeModal } from '../store/modalSlice';
 import Button from '../components/Button';
-import ReviewModal from '../components/Modal/reviewModal';
+import ReviewModal from '../components/Modal/Review/ReviewModal';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 import InputField from '../components/InputField';
 import FindAccountModal from '../components/Modal/FindAccountModal';
