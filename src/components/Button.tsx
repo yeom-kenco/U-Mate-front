@@ -5,6 +5,7 @@ type ButtonProps = {
   variant?: 'fill' | 'outline' | 'ghost' | 'special';
   color?: 'pink' | 'gray' | 'violet' | 'black' | 'white';
   size?: 's' | 'm' | 'lg' | 'xl';
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
@@ -16,6 +17,7 @@ const Button = ({
   variant = 'fill',
   color = 'pink',
   size = 'm',
+  rounded,
   onClick,
   children,
   className = '',
@@ -54,7 +56,12 @@ const Button = ({
   };
 
   // 둥근 모서리 설정
-  const borderRadius = size === 's' || variant === 'special' ? 'rounded-3xl' : 'rounded-lg';
+  const borderRadius =
+    rounded !== undefined
+      ? `rounded-${rounded}`
+      : size === 's' || variant === 'special'
+        ? 'rounded-3xl'
+        : 'rounded-lg';
 
   // 비활성화 상태 스타일
   const disabledStyle = 'bg-zinc-200 text-white cursor-not-allowed pointer-events-none';
