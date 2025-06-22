@@ -7,6 +7,7 @@ type BaseModalProps = {
   onClose: () => void;
   closeOnOutsideClick?: boolean;
   className?: string;
+  labelledBy?: string;
 };
 
 const BaseModal = ({
@@ -14,6 +15,7 @@ const BaseModal = ({
   onClose,
   closeOnOutsideClick = true,
   className = '',
+  labelledBy,
 }: BaseModalProps) => {
   const modalRoot = document.getElementById('modal-root');
   const [isVisible, setIsVisible] = useState(false);
@@ -45,6 +47,10 @@ const BaseModal = ({
   return createPortal(
     <FocusTrap>
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={labelledBy}
+        tabIndex={-1}
         className={`fixed inset-0 z-50 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
