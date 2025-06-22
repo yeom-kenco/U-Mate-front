@@ -1,5 +1,6 @@
 import Button from '../../Button';
 import { AiFillStar } from 'react-icons/ai';
+import ReviewTextarea from '../../ReviewTextarea';
 
 type ReviewWriteContentProps = {
   rating?: number;
@@ -35,6 +36,8 @@ const ReviewWriteContent = ({
           </div>
         </div>
       </div>
+
+      <ReviewTextarea width="w-full" />
 
       <div className="flex gap-2 mt-6">
         <Button variant="fill" color="gray" size="lg" onClick={onClose} className="flex-1">
