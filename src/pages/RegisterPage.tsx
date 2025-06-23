@@ -155,13 +155,13 @@ const RegisterPage = () => {
     const requestData = {
       name: formData.name,
       gender: formData.gender as 'M' | 'F',
-      birthDay: formatBirth(formData.birth), //YYYY-MM--DD로 변환
+      birthDay: formData.birth,
       phoneNumber: formData.phone,
       email: formData.email,
       password: formData.password,
       phonePlan: 1,
     };
-
+    console.log(requestData);
     try {
       const res = await signUp(requestData);
       //성공시
