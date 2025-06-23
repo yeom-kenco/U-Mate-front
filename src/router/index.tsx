@@ -13,7 +13,6 @@ import ReviewCard from '../components/ReviewCard';
 import { useContext, useEffect } from 'react';
 import { ToastContext } from '../context/ToastContext';
 import Button from '../components/Button';
-import ReviewModal from '../components/Modal/Review/ReviewModal';
 import MyPage from '../pages/MyPage';
 import MainPage from '../pages/MainPage';
 import RegisterPage from '../pages/RegisterPage';
