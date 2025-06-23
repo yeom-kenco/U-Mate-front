@@ -18,7 +18,7 @@ import LoginBanner from '../components/LoginBanner';
 import Button from '../components/Button';
 
 // 요금제 리스트 불러오기
-import { getPlanList } from '../apis/PlansApi';
+import { getPlanList, updatePlan } from '../apis/PlansApi';
 
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -100,10 +100,23 @@ const PricingPage = () => {
   };
 
   // 변경하기 확인 버튼 로직 (사용자 요금제 변경 필요)
-  const handleChangePlans = () => {
-    setModalType('change');
-    toast?.showToast('해당 요금제로 변경되었습니다', 'black');
-    dispatch(closeModal());
+  const handleChangePlans = async () => {
+    if (!selectedPlan) return;
+
+    try {
+      // userId는 리덕스에서 가져오기?
+      await updatePlan({
+        userId,
+        newPlanId: selectedPlan.PLAN_ID,
+      });
+      setModalType('change');
+      toast?.showToast('해당 요금제로 변경되었습니다', 'black');
+    } catch (error) {
+      console.log(error);
+      toast?.showToast('요금제 변경에 실패하였습니다', 'error');
+    } finally {
+      dispatch(closeModal());
+    }
   };
 
   // 변경하기 모달 닫기
