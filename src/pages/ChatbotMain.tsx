@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, KeyboardEvent } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
-import ChatbotButton from '../components/ChatbotButton';
 import ChatBubble from '../components/ChatBubble';
+import ChatbotInput from '../components/ChatbotInput';
 
 type Message = {
   type: 'system' | 'user' | 'bot';
@@ -55,7 +55,7 @@ export default function ChatbotMain() {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // 메시지 푸시
+  // 메시지 푸시 헬퍼
   const pushMsg = (type: Message['type'], content: string, time?: string) => {
     setMessages((m) => [...m, { type, content, time }]);
   };
@@ -85,6 +85,7 @@ export default function ChatbotMain() {
       setConnected(true);
       pushSys('🟢 연결됨');
     };
+
     ws.current.onmessage = (ev) => {
       let data;
       try {
@@ -94,10 +95,12 @@ export default function ChatbotMain() {
       }
       handleServer(data);
     };
+
     ws.current.onclose = () => {
       setConnected(false);
       pushSys('🔴 연결 끊김');
     };
+
     ws.current.onerror = () => {
       setConnected(false);
       pushSys('🔴 연결 오류');
@@ -124,13 +127,11 @@ export default function ChatbotMain() {
         }
         break;
       }
-      // --- 서버 메시지 핸들러의 text_done 케이스 ---
       case 'text_done':
         pushMsg('bot', data.text, new Date().toLocaleTimeString());
         if (!email) {
-          // <-- 마찬가지로 타입을 명시해 줍니다.
           const entry: GuestEntry = {
-            MESSAGE_TYPE: 'assistant', // 정확히 'assistant'
+            MESSAGE_TYPE: 'assistant',
             MESSAGE: data.text,
             CREATED_AT: new Date().toISOString(),
           };
@@ -138,22 +139,17 @@ export default function ChatbotMain() {
           localStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
         }
         break;
-
       case 'error':
         pushSys(`❌ 오류: ${data.error}`);
         break;
     }
   };
 
-  // --- 메시지 전송 ---
+  // 메시지 전송
   const send = () => {
     if (!input.trim() || !connected) return;
-
-    // 1) 화면에 바로 반영
     const now = new Date().toLocaleTimeString();
     pushMsg('user', input.trim(), now);
-
-    // 2) 게스트라면 로컬스토리지에도 저장
     if (!email) {
       const entry: GuestEntry = {
         MESSAGE_TYPE: 'user',
@@ -163,8 +159,6 @@ export default function ChatbotMain() {
       guestHistoryRef.current.push(entry);
       localStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
     }
-
-    // 3) 서버로 전송
     ws.current?.send(JSON.stringify({ type: 'user_message', message: input.trim() }));
     setInput('');
   };
@@ -179,10 +173,6 @@ export default function ChatbotMain() {
 
   return (
     <div className="relative min-h-screen p-4">
-      <div className="absolute bottom-8 right-8">
-        <ChatbotButton />
-      </div>
-
       <div className="mx-auto w-[90%] max-w-2xl h-[90vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
         {/* 로그인/게스트 영역 */}
         {!connected && (
@@ -208,7 +198,9 @@ export default function ChatbotMain() {
         {/* 최적화 정보 */}
         {optInfo && (
           <div
-            className={`text-xs text-center p-2 ${optInfo.firstSession ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'}`}
+            className={`text-xs text-center p-2 ${
+              optInfo.firstSession ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'
+            }`}
           >
             {optInfo.firstSession
               ? '🆕 새 세션: 첫 메시지에는 유저 정보 포함'
@@ -229,44 +221,9 @@ export default function ChatbotMain() {
           <div ref={endRef} />
         </div>
 
-        {/* 메시지 입력창: 항상 보여줌 */}
+        {/* 입력 컴포넌트 */}
         <div className="p-5 bg-white border-t border-gray-200">
-          <div className="flex gap-3 flex-wrap mb-4">
-            <button
-              className="px-3 py-1 border border-gray-300 rounded-full text-xs hover:bg-gray-100"
-              onClick={() => setMessages([{ type: 'system', content: '채팅이 정리되었습니다.' }])}
-            >
-              채팅 정리
-            </button>
-            <button
-              className="px-3 py-1 border border-gray-300 rounded-full text-xs hover:bg-gray-100"
-              onClick={() => setOptInfo((o) => (o ? { ...o, firstSession: !o.firstSession } : o))}
-            >
-              📊 최적화 정보
-            </button>
-            <button
-              className="px-3 py-1 border border-gray-300 rounded-full text-xs hover:bg-gray-100"
-              onClick={() => pushSys(`🔗 연결 상태: ${connected ? '정상' : '끊김'}`)}
-            >
-              🔗 연결 테스트
-            </button>
-          </div>
-          <div className="flex gap-3 items-end">
-            <textarea
-              className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-[25px] text-sm resize-none focus:border-blue-500 outline-none min-h-[44px] max-h-[120px]"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={onKey}
-              rows={1}
-            />
-            <button
-              className="w-11 h-11 rounded-full bg-blue-500 text-white flex items-center justify-center disabled:bg-gray-300"
-              onClick={send}
-              disabled={!input.trim()}
-            >
-              ➤
-            </button>
-          </div>
+          <ChatbotInput value={input} onChange={setInput} onSend={send} disabled={!connected} />
         </div>
       </div>
     </div>
