@@ -11,6 +11,7 @@ export interface HeaderProps {
   showSearch: boolean;
   title?: string;
   isLoggedIn?: boolean;
+  hasShadow?: boolean;
 }
 
 const NavigationLinks = ({ isLoggedIn }: { isLoggedIn?: boolean }) => (
@@ -44,8 +45,9 @@ const NavigationLinks = ({ isLoggedIn }: { isLoggedIn?: boolean }) => (
 const Header = ({
   showBackButton = false,
   showSearch = false,
-  title = '마이페이지',
+  title = '대표페이지',
   isLoggedIn = false,
+  hasShadow = false,
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -65,7 +67,10 @@ const Header = ({
   const BackPage = () => navigate(-1);
 
   return (
-    <header className="relative z-10 w-full h-16 flex justify-center items-center px-[5%] py-6 shadow-header md:shadow-none bg-white">
+    <header
+      className={`relative z-10 w-full h-16 flex justify-center items-center px-[5%] py-6 bg-white 
+        ${hasShadow ? 'shadow-header' : 'shadow-none'} md:shadow-none`}
+    >
       <div className="relative w-full h-full flex items-center justify-between">
         {/* 뒤로가기: md 미만에서만 */}
         {showBackButton && (
@@ -132,7 +137,7 @@ const Header = ({
       {/* 햄버거 메뉴 */}
       <div
         className={`md:hidden fixed top-0 right-0 w-80 h-screen rounded-3xl z-[9999] transform transition-transform duration-500 ease-in-out bg-background
-        ${isMenuOpen ? 'translate-x-[2.4rem] max-xs:translate-x-10' : 'translate-x-full'}
+        ${isMenuOpen ? 'translate-x-[2.4rem] max-[400px]:translate-x-10' : 'translate-x-full'}
       `}
       >
         <IoMdClose
@@ -141,7 +146,7 @@ const Header = ({
         />
 
         {/* 사용자 인사 */}
-        <div className="w-full h-52 flex justify-center items-center bg-diagonal rounded-2xl text-center max-[400px]:w-[260px]">
+        <div className="w-full h-52 flex justify-center items-center bg-diagonal rounded-2xl text-center max-[400px]:w-[290px]">
           <div className="flex flex-col gap-1 max-[400px]:translate-x-0 -translate-x-4">
             <img src="/images/bear/gom.png" alt="" className="w-20 h-20 mx-auto mb-2" />
             <span className="text-lm font-semibold">
