@@ -182,7 +182,9 @@ const MainPage = () => {
       {/* 맞춤 요금제 (로그인한 경우에만) */}
       {user.birthDay && (
         <section className="ml-[5%] pt-6">
-          <h2 className="text-lg font-semibold mb-1">{user.name}님을 위한 맞춤 요금제</h2>
+          <h2 className="text-lg font-semibold mb-1 max-[400px]:text-[20px]">
+            {user.name}님을 위한 맞춤 요금제
+          </h2>
           <p className="text-m mb-1 text-zinc-700">
             {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
           </p>
@@ -209,7 +211,7 @@ const MainPage = () => {
 
       {/* 추천 요금제 영역 */}
       <section className="ml-[5%] pt-2">
-        <h2 className="text-lg font-semibold mb-2">추천 요금제</h2>
+        <h2 className="text-lg font-semibold mb-2 max-[400px]:text-[20px]">추천 요금제</h2>
 
         {/* 카테고리 버튼 */}
         <div className="flex gap-2 mb-1">
@@ -263,15 +265,15 @@ const MainPage = () => {
             {/* 흰 배경: 타이틀 + 뱃지 + 설명 */}
             <div className="bg-white w-full p-4 rounded-t-[20px]">
               <div className="flex items-center justify-start">
-                <h2 className="text-lg font-bold px-2">나의 멤버십</h2>
+                <h2 className="text-lg font-bold px-2 max-[400px]:text-[20px]">나의 멤버십</h2>
                 <div className="flex gap-2 ml-1">
                   {membershipLabel && (
-                    <span className="inline-flex items-center bg-pink-500 text-white text-m font-normal px-3 rounded-full leading-none h-7">
+                    <span className="inline-flex items-center bg-pink-500 text-white text-m max-[400px]:text-sm font-normal px-3 rounded-full leading-none h-7">
                       {membershipLabel}
                     </span>
                   )}
                   {showYouth && (
-                    <span className="inline-flex items-center bg-violet-500 text-white text-m font-medium px-3 rounded-full leading-none h-7">
+                    <span className="inline-flex items-center bg-violet-500 text-white text-m max-[400px]:text-sm font-medium px-3 rounded-full leading-none h-7">
                       유쓰
                     </span>
                   )}
@@ -291,7 +293,7 @@ const MainPage = () => {
                 />
                 <div className="ml-3">
                   <p className="text-s text-zinc-500">유튜브 프리미엄 x 넷플릭스</p>
-                  <p className="text-m font-regular">
+                  <p className="text-m font-regular max-[400px]:text-sm">
                     국내 유일! 최대 혜택가 11,900원에 이용하세요.
                   </p>
                 </div>
@@ -306,7 +308,9 @@ const MainPage = () => {
                 />
                 <div className="ml-3">
                   <p className="text-s text-zinc-500">CGV</p>
-                  <p className="text-m font-regular">2D영화 장당 2,000원 할인</p>
+                  <p className="text-m font-regular max-[400px]:text-sm">
+                    2D영화 장당 2,000원 할인
+                  </p>
                 </div>
               </div>
 
@@ -319,7 +323,7 @@ const MainPage = () => {
                 />
                 <div>
                   <p className="text-s text-zinc-500">롯데시네마</p>
-                  <p className="text-m font-regular">연 6회 4,000원 할인</p>
+                  <p className="text-m font-regular max-[400px]:text-sm">연 6회 4,000원 할인</p>
                 </div>
               </div>
             </div>
