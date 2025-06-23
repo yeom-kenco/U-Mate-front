@@ -73,7 +73,6 @@ const AccountStepContent = ({
     return () => clearInterval(countdown);
   }, [isCounting, timer]);
 
-  console.log(email, verificationCode);
   switch (step) {
     case 'findId':
       return (

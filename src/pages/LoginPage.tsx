@@ -64,7 +64,9 @@ const LoginPage = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
+      console.log(email, password);
       const res = await login({ id: email, password });
+      console.log(res.data);
       // birthDay만 한국 시간 기준으로 변환
       const date = new Date(res.data.birthDay);
       const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
@@ -73,7 +75,7 @@ const LoginPage = () => {
       showToast(`${email}님 환영합니다`, 'black');
       navigate('/');
     } catch (err: any) {
-      console.log(err.response.data);
+      console.log(err.response);
       showToast(err.response.data, 'error');
     }
   };
