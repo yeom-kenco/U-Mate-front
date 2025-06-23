@@ -50,11 +50,11 @@ body {
 }
 
 /*스크롤바 안보이게 */
-.scrollbar-hidden {
+.scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-.scrollbar-hidden::-webkit-scrollbar {
+.scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
