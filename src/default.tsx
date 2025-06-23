@@ -1,5 +1,5 @@
 import Header from './components/Header';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Footer from './components/Footer';
 import { useState } from 'react';
 import ChatbotButton from './components/ChatbotButton';
@@ -11,6 +11,8 @@ const Default = () => {
     showSearch: false,
     hasShadow: false,
   });
+
+  const { pathname } = useLocation();
 
   return (
     <div className="flex flex-col min-h-[calc(100vh+1px)]">
@@ -32,7 +34,7 @@ const Default = () => {
       </main>
 
       {/* 챗봇 버튼 (고정된 위치에 표시됨) */}
-      <ChatbotButton />
+      {pathname !== '/chatbot' && <ChatbotButton />}
 
       {/* 푸터 */}
       <Footer />
