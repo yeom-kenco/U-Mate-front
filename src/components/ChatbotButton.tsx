@@ -7,7 +7,7 @@ export default function ChatbotButton() {
   return (
     <button
       onClick={() => navigate('/chatbot')}
-      className="fixed min-h-0 bottom-[10.4rem] right-[5%]  w-[4.3rem] h-[4.3rem] z-50 rounded-full bg-chatbot bg-cover bg-center shadow-md flex items-center justify-center overflow-hidden
+      className="fixed min-h-0 bottom-[2rem] right-[5%]  w-[4.3rem] h-[4.3rem] z-50 rounded-full bg-chatbot bg-cover bg-center shadow-md flex items-center justify-center overflow-hidden
                  transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
       aria-label="챗봇 열기"
     >

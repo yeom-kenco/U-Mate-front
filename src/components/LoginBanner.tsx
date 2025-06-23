@@ -30,17 +30,17 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
   const isMainWhite = type === 'mainWhite';
 
   const containerClass = isMainWhite
-    ? 'bg-white text-black rounded-2xl border border-zinc-200 drop-shadow-[0_0px_12px_rgba(0,0,0,0.08)] px-5 py-9 max-[400px]:py-6'
+    ? 'bg-white text-m text-black rounded-2xl border border-zinc-200 drop-shadow-[0_0px_12px_rgba(0,0,0,0.08)] px-5 py-9 max-[400px]:py-6'
     : type === 'mainGradient'
-      ? 'bg-primary text-white rounded-2xl px-5 py-9 max-[400px]:py-6'
-      : 'bg-primary text-white';
+      ? 'text-sm bg-primary text-white rounded-2xl px-5 py-9 max-[400px]:py-6'
+      : 'text-sm bg-primary text-white';
 
   const buttonVariant = 'outline' as const;
   const buttonColor = isMainWhite ? ('gray' as const) : ('white' as const);
 
   return (
     <div className={`w-full flex justify-between items-center gap-2 px-3 py-3 ${containerClass}`}>
-      <span className="text-sm font-normal mt-[2px] max-[400px]:text-xs">{messages[type]}</span>
+      <span className="font-normal mt-[2px] max-[400px]:text-xs">{messages[type]}</span>
       <Button onClick={handleLoginClick} variant={buttonVariant} color={buttonColor}>
         로그인
       </Button>
