@@ -150,14 +150,25 @@ const RegisterPage = () => {
     };
     try {
       const res = await signUp(requestData);
+      //성공시
       if (res.data.success) {
         toastContext?.showToast(res.data.message, 'black');
-        navigate('/login');
+        navigate('/login'); //로그인페이지 이동
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  // 이메일 인증 후  email필드 변경 시 다시 인증해야함
+  useEffect(() => {
+    setIsEmailVerified(false);
+  }, [formData.email]);
+
+  // 휴대폰 중복 확인 후 phone필드  변경 시 다시 중복확인
+  useEffect(() => {
+    setIsPhoneChecked(false);
+  }, [formData.phone]);
 
   return (
     <form onSubmit={onSubmit} className=" w-[90%] max-w-[600px] mx-auto px-4 py-6">
@@ -240,21 +251,25 @@ const RegisterPage = () => {
         required
         error={errors.email}
       />
-      <InputField
-        label="이메일 인증번호"
-        value={formData.verificationCode}
-        onChange={(e) => handleChange('verificationCode', e.target.value)}
-        placeholder="인증번호 6자리 입력"
-        suffixButton={
-          <CodeCheckButton
-            email={formData.verificationCode}
-            setError={(field, msg) => setErrors((prev) => ({ ...prev, [field]: msg }))}
-            setSuccessFlag={setIsEmailVerified} // 인증번호 확인  체크여부
-          />
-        }
-        required
-        error={errors.verificationCode}
-      />
+      {isEmailClickd && (
+        <InputField
+          label="이메일 인증번호"
+          value={formData.verificationCode}
+          onChange={(e) => handleChange('verificationCode', e.target.value)}
+          placeholder="인증번호 6자리 입력"
+          suffixButton={
+            <CodeCheckButton
+              email={formData.email}
+              code={formData.verificationCode}
+              setError={(field, msg) => setErrors((prev) => ({ ...prev, [field]: msg }))}
+              setSuccessFlag={setIsEmailVerified} // 인증번호 확인  체크여부
+            />
+          }
+          required
+          error={errors.verificationCode}
+        />
+      )}
+
       <InputField
         label="비밀번호"
         value={formData.password}
