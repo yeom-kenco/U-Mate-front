@@ -1,6 +1,7 @@
 import React from 'react';
 import { HeaderProps } from '../components/Header';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,6 +11,7 @@ import { calculateDiscountedPrice } from '../utils/getDiscountFree';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/userSlice';
 import { clearUser } from '../store/userSlice';
+import { FiChevronRight } from 'react-icons/fi';
 import LoginBanner from '../components/LoginBanner';
 import EventBannerCarousel from '../components/EventBanner/EventBannerCarousel';
 import Button from '../components/Button';
@@ -58,7 +60,6 @@ const MainPage = () => {
       })
     );
   }, []);
-
   // useEffect(() => {
   //   dispatch(clearUser()); // 테스트용 로그인 유저 상태 초기화할 때 사용하는 문장
   // }, []);
@@ -171,13 +172,22 @@ const MainPage = () => {
     <div className="bg-background">
       {/* 하얀색 배너 영역 */}
       <div className="relative">
-        <div className="bg-white rounded-b-[32px] shadow-[0_8px_15px_-4px_rgba(0,0,0,0.1)] w-full px-[5%] pt-2 pb-6">
+        <div className="bg-white rounded-b-[32px] shadow-[0_8px_15px_-4px_rgba(0,0,0,0.1)] w-full px-[5%] pt-2 pb-8">
           {user.name && myPlan ? (
-            <PlanInfoBanner
-              planName={myPlan.PLAN_NAME}
-              dataInfo={myPlan.DATA_INFO}
-              dataInfoDetail={myPlan.DATA_INFO_DETAIL}
-            />
+            <>
+              <PlanInfoBanner
+                planName={myPlan.PLAN_NAME}
+                dataInfo={myPlan.DATA_INFO}
+                dataInfoDetail={myPlan.DATA_INFO_DETAIL}
+              />
+              <Link
+                to="/compare"
+                className="flex items-center justify-end mt-4 text-m text-black font-regular mb-[-20px]"
+              >
+                다른 요금제와 비교해보기
+                <FiChevronRight className="text-lm mt-[-3px]" />
+              </Link>
+            </>
           ) : (
             <LoginBanner type="mainGradient" />
           )}
