@@ -52,7 +52,6 @@ const TempPage = () => {
     <div className="py-10">
       <BenefitDropBar label="할인 혜택" indexes={[0, 1, 2, 3, 4]} data={benefitList} />
       <BenefitDropBar label="기본 혜택" indexes={[5, 6, 7, 8, 9]} data={benefitList} />
-
       <Button variant="outline" color="gray" size="s">
         outline
       </Button>
@@ -75,7 +74,6 @@ const TempPage = () => {
         onEdit={() => console.log('수정')}
         onDelete={() => console.log('삭제')}
       />
-
       <Button onClick={handleClick}>토스트 리뷰 삭제</Button>
       <Button onClick={() => toastContext?.showToast('비밀번호가 변경되었습니다!', 'success')}>
         토스트 성공
@@ -93,6 +91,13 @@ const TempPage = () => {
         message="ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ?"
         time="16:00"
       />
+      <Button onClick={() => dispatch(openModal())}>모달</Button>
+      {isOpen && (
+        <ReviewModal
+          type="reviewWrite"
+          onClose={handleClose} // 모달 닫기 테스트
+        ></ReviewModal>
+      )}
     </div>
   );
 };
