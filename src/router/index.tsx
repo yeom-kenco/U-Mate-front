@@ -16,6 +16,8 @@ import Button from '../components/Button';
 import MyPage from '../pages/MyPage';
 import CheckBox from '../components/CheckBox';
 import MainPage from '../pages/MainPage';
+import RegisterPage from '../pages/RegisterPage';
+import ReviewTextarea from '../components/ReviewTextarea';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -99,11 +101,7 @@ const TempPage = () => {
           type="reviewWrite"
           onClose={handleClose} // 모달 닫기 테스트
         ></ReviewModal>
-      )} */}
-      <CheckBox showButton={false} />
-      <CheckBox title="개인정보 수집 및 이용 동의(필수)" />
-      <CheckBox title="개인정보 처리 위탁 동의(필수)" />
-      <CheckBox title="서비스 이용 약관 동의(필수)" />
+      )}
     </div>
   );
 };
@@ -128,6 +126,7 @@ const router = createBrowserRouter([
       { path: 'pricing', element: <PricingPage /> }, // 요금제 페이지
       { path: '/login', element: <LoginPage /> },
       { path: '/mypage', element: <MyPage /> },
+      { path: '/signup', element: <RegisterPage /> },
     ],
   },
   {
