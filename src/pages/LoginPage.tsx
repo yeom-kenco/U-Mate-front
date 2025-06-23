@@ -65,14 +65,15 @@ const LoginPage = () => {
     try {
       console.log(email, password);
       const res = await login({ id: email, password });
-      console.log(res.data);
+
+      console.log(res.data.name);
       showToast(`${email}님 환영합니다`, 'black');
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      console.log(err.response.data);
+      showToast(err.response.data, 'error');
     }
   };
 
-  const handleEmailPasswordModal = () => {};
   return (
     <div className="relative overflow-x-hidden">
       <div className="absolute w-full top-[-60px] left-0 h-[300px] md:h-[500px] z-[-1] overflow-hidden">
