@@ -11,6 +11,7 @@ import { signUp } from '../apis/auth';
 import { formatBirth } from '../utils/formatBirth';
 import { CodeCheckButton, EmailSendButton, PhoneCheckButton } from '../components/suffixButtons';
 import { ToastContext } from '../context/ToastContext';
+import { formatTime } from '../utils/formatTimer';
 const RegisterPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const navigate = useNavigate();
@@ -33,6 +34,10 @@ const RegisterPage = () => {
   const [isPhoneChecked, setIsPhoneChecked] = useState(false);
   // 이메일 인증버튼 클릭 여부
   const [isEmailClickd, setIsEmailClickd] = useState(false);
+
+  // 타이머 3분
+  const [timer, setTimer] = useState<number>(180);
+  const [isCounting, setIsCounting] = useState<boolean>(false); // 타이머 동작 여부
   // 이메일 인증코드 확인 여부
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   //에러 Record사용하여 string string 으로 ex ) : name,name의 에러 메세지
@@ -123,6 +128,17 @@ const RegisterPage = () => {
     newErrors.agreements = agreements.all ? '' : '이용약관을 동의해주세요.';
     // 요금제 선택 안할 시 에러
     newErrors.isPlan = isPlan === '' ? '요금제를 선택해주세요' : '';
+
+    //휴대폰 중복,이메일 인증 클릭 이메일 인증 회원가입 시 확인
+    if (!isPhoneChecked) {
+      newErrors.phone = '휴대폰 중복확인을 해주세요.';
+    }
+    if (!isEmailClickd) {
+      newErrors.email = '이메일 인증을 완료해주세요.';
+    }
+    if (!isEmailVerified) {
+      newErrors.verificationCode = '이메일 인증을 완료해주세요.';
+    }
     setErrors(newErrors);
     // 하나라도 에러가 있다면 false
     return Object.values(newErrors).every((e) => e === '');
@@ -131,13 +147,10 @@ const RegisterPage = () => {
   // 회원가입
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isPhoneChecked) {
-      setErrors((prev) => ({ ...prev, phone: '휴대폰 중복확인을 해주세요.' }));
-    }
-    if (!isEmailVerified) {
-      setErrors((prev) => ({ ...prev, verificationCode: '이메일 인증을 완료해주세요.' }));
-    }
-    if (!validateAll() || !isPhoneChecked || !isEmailVerified) return;
+    // 전체 유효성 검사
+    const allValid = validateAll();
+
+    if (!allValid) return;
     //성공 로직
     const requestData = {
       name: formData.name,
@@ -146,8 +159,9 @@ const RegisterPage = () => {
       phoneNumber: formData.phone,
       email: formData.email,
       password: formData.password,
-      phonePlan: Number(isPlan),
+      phonePlan: 1,
     };
+
     try {
       const res = await signUp(requestData);
       //성공시
@@ -169,6 +183,22 @@ const RegisterPage = () => {
   useEffect(() => {
     setIsPhoneChecked(false);
   }, [formData.phone]);
+
+  useEffect(() => {
+    let countdown: NodeJS.Timeout;
+
+    if (isCounting && timer > 0) {
+      countdown = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+
+    if (timer === 0) {
+      setIsCounting(false); // 타이머 종료
+    }
+
+    return () => clearInterval(countdown);
+  }, [isCounting, timer]);
 
   return (
     <form onSubmit={onSubmit} className=" w-[90%] max-w-[600px] mx-auto px-4 py-6">
@@ -235,6 +265,7 @@ const RegisterPage = () => {
         required
         error={errors.phone}
       />
+
       <InputField
         label="이메일"
         value={formData.email}
@@ -246,6 +277,8 @@ const RegisterPage = () => {
             email={formData.email}
             setError={(field, msg) => setErrors((prev) => ({ ...prev, [field]: msg }))}
             setSuccessFlag={setIsEmailClickd} // 이메일 인증 클릭 여부
+            Timer={setTimer}
+            Counting={setIsCounting}
           />
         }
         required
@@ -263,8 +296,10 @@ const RegisterPage = () => {
               code={formData.verificationCode}
               setError={(field, msg) => setErrors((prev) => ({ ...prev, [field]: msg }))}
               setSuccessFlag={setIsEmailVerified} // 인증번호 확인  체크여부
+              Counting={setIsCounting}
             />
           }
+          timer={isCounting ? `${formatTime(timer)}` : undefined}
           required
           error={errors.verificationCode}
         />
@@ -334,6 +369,7 @@ const RegisterPage = () => {
         />
       </div>
       <p className="text-xs md:text-s text-pink-500 mb-2">{errors.agreements}</p>
+
       <Button size="xl" fullWidth className="mt-6 rounded-xl h-14">
         회원가입
       </Button>

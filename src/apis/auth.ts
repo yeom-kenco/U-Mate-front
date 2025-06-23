@@ -1,11 +1,9 @@
 // src/api/auth.js
 import axios from './axios.ts';
 // 회원가입 & 로그인
-import { CodeCheck, SignUpRequest, SignUpResponse } from '../types/member';
+import { CodeCheck, SignUpRequest } from '../types/member';
 
-export const signUp = (data: SignUpRequest): Promise<{ data: SignUpResponse }> => {
-  return axios.post('/signUp', data);
-};
+export const signUp = (data: SignUpRequest) => axios.post('/signUp', data);
 
 export const login = (data) => axios.post('/login', data);
 export const logout = (data) => axios.post('/logout', data);

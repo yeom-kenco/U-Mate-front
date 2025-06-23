@@ -16,7 +16,7 @@ export interface CodeCheck {
 
 export interface SignUpSuccess {
   success?: true;
-  message: string;
+  message?: string;
 }
 
 export interface SignUpError {
