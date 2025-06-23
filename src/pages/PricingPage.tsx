@@ -307,7 +307,7 @@ const PricingPage = () => {
         </div>
 
         {/* 정렬 필터 바텀시트 */}
-        <BottomSheet isOpen={sortOpen} onClose={() => setSortOpen(false)} height="300px">
+        <BottomSheet isOpen={sortOpen} onClose={() => setSortOpen(false)}>
           <SortList onSelect={handleSortSelect} selected={isSorted} />
         </BottomSheet>
 
