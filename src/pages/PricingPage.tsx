@@ -6,6 +6,7 @@ import { HeaderProps } from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { closeModal, openModal } from '../store/modalSlice';
 import { useToast } from '../hooks/useToast';
+import { calculateDiscountedPrice } from '../utils/getDiscountFee';
 
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
@@ -94,15 +95,23 @@ const PricingPage = () => {
   };
 
   // 변경하기 모달 열기
-  const openChangeModal = (e: React.MouseEvent) => {
+  const openChangeModal = (e: React.MouseEvent, plan) => {
     e.stopPropagation();
     setModalType('change');
+    console.log('변경할 요금제', plan);
+    setSelectedPlan(plan);
     dispatch(openModal());
   };
 
   // 변경하기 확인 버튼 로직 (사용자 요금제 변경 필요)
   const handleChangePlans = async () => {
-    if (!selectedPlan || userId === null) {
+    const userId = 1; // 테스트용 임시 ID
+    if (!selectedPlan) {
+      toast?.showToast('요금제를 선택해주세요', 'black');
+      return;
+    }
+
+    if (userId === null) {
       toast?.showToast('로그인 후 이용해 주세요', 'black');
       return;
     }
@@ -223,14 +232,14 @@ const PricingPage = () => {
               dataInfo={plan.DATA_INFO}
               shareInfo={plan.SHARE_DATA}
               price={`${plan.MONTHLY_FEE.toLocaleString()}`}
-              discountedPrice={`${plan.MONTHLY_FEE * 0.75}`}
+              discountedPrice={`${calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME)}`}
               rating={{
                 score: +(plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT).toFixed(1),
                 count: plan.REVIEW_USER_COUNT,
               }}
               size="large"
               onCompareClick={(e) => openCompareModal(e, plan)}
-              onChangeClick={openChangeModal}
+              onChangeClick={(e) => openChangeModal(e, plan)}
               onClick={goToDetailPage}
             />
           ))}
