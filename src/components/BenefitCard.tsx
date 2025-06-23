@@ -10,7 +10,9 @@ interface BenefitCardProps {
 const BenefitCard = ({ img, title, descript, selected, onClick }: BenefitCardProps) => {
   return (
     <button
-      className={`flex flex-col cursor-pointer items-center justify-center w-[110px] max-[400px]:w-[100px] h-[140px] border-2 rounded-lg text-center ${selected ? 'border-pink-500' : 'border-zinc-300'}`}
+      className={`flex flex-col cursor-pointer items-center justify-center w-full h-[140px] border-2 rounded-lg text-center ${
+        selected ? 'border-pink-500' : 'border-zinc-300'
+      }`}
       onClick={onClick}
     >
       {img && (
