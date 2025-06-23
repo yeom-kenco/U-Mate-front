@@ -16,8 +16,9 @@ const LoginPage = () => {
       title: '로그인',
       showBackButton: true,
       showSearch: false,
+      hasShadow: true,
     });
-  }, []);
+  }, [setHeaderConfig]);
 
   const ChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);

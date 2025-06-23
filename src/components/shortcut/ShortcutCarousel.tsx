@@ -72,7 +72,8 @@ const cards = [
 const ShortcutCarousel = () => {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const initialSlideIndex = Math.floor(cards.length / 2);
+  const [activeIndex, setActiveIndex] = useState(initialSlideIndex);
 
   return (
     <div className="w-screen flex justify-center items-center relative py-8 overflow-x-clip">
@@ -98,6 +99,7 @@ const ShortcutCarousel = () => {
           centeredSlides
           loop
           spaceBetween={15}
+          initialSlide={initialSlideIndex}
           onBeforeInit={(swiper) => {
             if (
               typeof swiper.params.navigation === 'boolean' ||
