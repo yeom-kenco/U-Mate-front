@@ -14,10 +14,8 @@ import { useContext, useEffect } from 'react';
 import { ToastContext } from '../context/ToastContext';
 import Button from '../components/Button';
 import MyPage from '../pages/MyPage';
-import CheckBox from '../components/CheckBox';
 import MainPage from '../pages/MainPage';
 import RegisterPage from '../pages/RegisterPage';
-import ReviewTextarea from '../components/ReviewTextarea';
 import ShortcutPage from '../pages/ShortcutPage';
 
 // 테스트용 임시 페이지
@@ -95,14 +93,6 @@ const TempPage = () => {
         message="ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ?"
         time="16:00"
       />
-
-      {/* <Button onClick={() => dispatch(openModal())}>모달</Button>
-      {isOpen && (
-        <ReviewModal
-          type="reviewWrite"
-          onClose={handleClose} // 모달 닫기 테스트
-        ></ReviewModal>
-      )}
     </div>
   );
 };
