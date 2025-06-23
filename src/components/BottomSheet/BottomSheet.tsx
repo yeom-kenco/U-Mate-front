@@ -15,10 +15,14 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
   useEffect(() => {
     if (isOpen) {
       setVisible(true);
+      document.body.style.overflow = 'hidden';
     } else {
       // 애니메이션 후 언마운트
       const timer = setTimeout(() => setVisible(false), 300); // transition duration과 일치
-      return () => clearTimeout(timer);
+      document.body.style.overflow = 'auto';
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [isOpen]);
 
