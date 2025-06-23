@@ -2,6 +2,9 @@ import InputField from '../InputField';
 import Button from '../Button';
 import AccountToggleMenu from './AccountToggleMenu';
 import ResetPasswordForm from './ResetPasswordModal';
+import { useState } from 'react';
+import { useToast } from '../../hooks/useToast';
+import { emit } from 'process';
 
 type Props = {
   step: 'findId' | 'getId' | 'verify' | 'reset';
@@ -11,6 +14,10 @@ type Props = {
   onRequestAuth: () => void;
   onNext: () => void;
   onClose: () => void;
+  PhoneNumber: string;
+  setPhoneNumber: React.Dispatch<React.SetStateAction<string>>;
+  Email: string;
+  handlefindEmailByPhone: () => void;
 };
 
 const AccountStepContent = ({
@@ -21,14 +28,39 @@ const AccountStepContent = ({
   onRequestAuth,
   onNext,
   onClose,
+  PhoneNumber,
+  setPhoneNumber,
+  handlefindEmailByPhone,
+  Email,
 }: Props) => {
+  const isValidPhone = /^\d{10,11}$/;
+  const { showToast } = useToast();
+  const handlefindEmailByPhoneAndNext = () => {
+    if (!Email) {
+      showToast('등록된 이메일이 없습니다', 'black');
+    } else {
+      handlefindEmailByPhone();
+      onNext();
+    }
+  };
+
   switch (step) {
     case 'findId':
       return (
         <>
           <AccountToggleMenu active={flow} onChange={onChangeFlow} />
-          <InputField variant="box" placeholder="휴대폰 번호 입력 ex) 01012345678" />
-          <Button onClick={onNext} size="lg" fullWidth className="mt-4 max-[400px]:text-s">
+          <InputField
+            value={PhoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            variant="box"
+            placeholder="휴대폰 번호 입력 ex) 01012345678"
+          />
+          <Button
+            onClick={handlefindEmailByPhoneAndNext}
+            size="lg"
+            fullWidth
+            className="mt-4 max-[400px]:text-s"
+          >
             아이디 찾기
           </Button>
         </>
@@ -38,8 +70,8 @@ const AccountStepContent = ({
       return (
         <>
           <p className="text-sm border border-zinc-200 p-4 rounded-lg">
-            당신이 가입한 이메일은
-            <br /> <strong className="text-pink-500">sejin@naver.com</strong> 입니다.
+            등록된 이메일은
+            <br /> <strong className="text-pink-500">{Email || 'asd***@naver.com'}</strong> 입니다.
           </p>
           <p className="text-s mt-2 mb-2 max-[400px]:text-xs max-[320px]:text-[9px]">
             비밀번호도 잊으셨나요? 걱정하지 마세요.

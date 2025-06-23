@@ -2,6 +2,8 @@ import BaseModal from './BaseModal';
 import { useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import AccountStepRenderer from './AccountStepRenderer';
+import { findEmailByPhone } from '../../apis/auth';
+import { useToast } from '../../hooks/useToast';
 
 type FlowType = 'id' | 'password';
 type ModalStep = 'findId' | 'getId' | 'verify' | 'reset';
@@ -32,14 +34,35 @@ const titleMap: Record<ModalStep, { title: string; subtitle?: string }> = {
 const FindAccountModal = ({ onClose }: Props) => {
   const [flow, setFlow] = useState<FlowType>('id');
   const [step, setStep] = useState<ModalStep>('findId');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
-
-  const handleRequestAuth = () => {
+  const [findEmail, setFindEmail] = useState('');
+  const isValidPhone = /^\d{10,11}$/;
+  const { showToast } = useToast();
+  const handlefindEmailByPhone = async () => {
+    if (!isValidPhone.test(phoneNumber)) {
+      showToast('휴대폰 번호 형식을 확인해주세요.', 'error');
+      return;
+    }
     // API 로직 추가하기
+    try {
+      const res = await findEmailByPhone({ phoneNumber });
+      if (res.data.success === false || !res.data.message) {
+        showToast('등록된 이메일이 없습니다', 'black');
+        return false;
+      }
+      setFindEmail(res.data.message);
+      return true;
+    } catch (err) {
+      console.log(err);
+      showToast('오류가 발생했습니다', 'error');
+      return false;
+    }
+  };
+  const handleRequestAuth = () => {
     console.log('인증 요청됨');
     setIsCodeSent(true);
   };
-
   const handleNext = () => {
     switch (step) {
       case 'findId':
@@ -68,7 +91,7 @@ const FindAccountModal = ({ onClose }: Props) => {
   };
 
   const { title, subtitle } = titleMap[step];
-
+  const Email = findEmail.split(' : ')[1];
   return (
     <BaseModal onClose={onClose}>
       <div className="p-6">
@@ -86,6 +109,10 @@ const FindAccountModal = ({ onClose }: Props) => {
           isCodeSent={isCodeSent}
           onChangeFlow={handleTabChange}
           onRequestAuth={handleRequestAuth}
+          handlefindEmailByPhone={handlefindEmailByPhone}
+          phoneNumber={phoneNumber}
+          Email={Email}
+          setPhoneNumber={setPhoneNumber}
           onNext={handleNext}
           onClose={onClose}
         />
