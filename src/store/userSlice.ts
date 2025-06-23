@@ -9,6 +9,8 @@ interface UserState {
   name: string;
   birthDay: string; // 예: "1990-01-01T00:00:00.000Z"
   email: string;
+  plan: number;
+  membership: string | null; // "vvip", "vip", "우수", or null
 }
 
 const initialState: UserState = {
@@ -16,6 +18,8 @@ const initialState: UserState = {
   name: '',
   birthDay: '',
   email: '',
+  plan: 0,
+  membership: null,
 };
 
 const userSlice = createSlice({
