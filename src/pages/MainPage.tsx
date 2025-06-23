@@ -14,6 +14,7 @@ import '../index.css';
 import { calculateDiscountedPrice } from '../utils/getDiscountFree';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/userSlice';
+import { clearUser } from '../store/userSlice';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -39,46 +40,6 @@ type RecommendedPlan = {
   reviewCount: number;
 };
 
-const mockPlans = [
-  {
-    id: 1,
-    category: '청년',
-    name: '5G 프리미어 플러스',
-    description: '데이터 무제한 테더링+쉐어링 100GB',
-    price: '105,000원',
-    discountedPrice: '73,500원',
-    rating: { score: 3.0, count: 15 },
-  },
-  {
-    id: 2,
-    category: '시니어',
-    name: '시니어 스마트 요금제',
-    description: '기본 제공 3GB + 음성 무제한',
-    price: '45,000원',
-    discountedPrice: '29,500원',
-    rating: { score: 4.5, count: 30 },
-  },
-  {
-    id: 3,
-    category: '청년',
-    name: '5G 프리미어 플러스',
-    description: '데이터 무제한 테더링+쉐어링 100GB',
-    price: '105,000원',
-    discountedPrice: '73,500원',
-    rating: { score: 3.0, count: 15 },
-  },
-  {
-    id: 4,
-    category: '청년',
-    name: '5G 프리미어 플러스',
-    description: '데이터 무제한 테더링+쉐어링 100GB',
-    price: '105,000원',
-    discountedPrice: '73,500원',
-    rating: { score: 3.0, count: 15 },
-  },
-  //추후 백엔드 연동 시 상태 바인딩 바꿔줘야 함
-];
-
 const MainPage = () => {
   const dispatch = useDispatch();
 
@@ -90,17 +51,35 @@ const MainPage = () => {
         name: '홍길동',
         birthDay: '19200520',
         email: 'test@example.com',
+        plan: 7,
+        membership: 'vvip',
       })
     );
   }, []);
 
+  // useEffect(() => {
+  //   dispatch(clearUser()); // 테스트용 로그인 유저 상태 초기화할 때 사용하는 문장
+  // }, []);
+
+  // 1. Redux user 정보 가져오기
+  const user = useSelector((state: RootState) => state.user);
+
   const scrollRef = useHorizontalScroll();
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
-  const user = useSelector((state: RootState) => state.user);
   const [allPlans, setAllPlans] = useState<PlanListItem[]>([]);
   const [ageplans, setAgePlans] = useState<RecommendedPlan[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState<Category>('청년');
+
+  // 1. 유저 멤버십 뱃지
+  const membershipBadge = user.membership; // "vvip", "vip", "우수"
+  const myPlan = allPlans.find((plan) => plan.PLAN_ID === user.plan);
+  const isYouthPlan = myPlan?.PLAN_NAME.includes('유쓰');
+
+  // 2. 표기용 이름 (우측 뱃지에 보일 텍스트)
+  const membershipLabel = membershipBadge; // 멤버십은 항상 표기
+  const showYouth = isYouthPlan; // 유쓰는 해당할 경우만 표
+  const showMembership = Boolean(membershipLabel || showYouth);
 
   // 대표 페이지용 헤더 설정
   useEffect(() => {
@@ -275,7 +254,77 @@ const MainPage = () => {
 
       {/* 멤버십 혜택 영역 */}
       <div className="w-[90%] mx-auto pt-3 pb-16">
-        <LoginBanner type="mainWhite" />
+        {/* 로그인하지 않은 경우에만 배너 표시 */}
+        {!user.name && <LoginBanner type="mainWhite" />}
+
+        {/* 로그인한 경우에만 멤버십 카드 표시 */}
+        {user.name && showMembership && (
+          <div className="bg-horizontal rounded-[20px] shadow-[0_0_12px_rgba(0,0,0,0.08)] pb-5">
+            {/* 흰 배경: 타이틀 + 뱃지 + 설명 */}
+            <div className="bg-white w-full p-4 rounded-t-[20px]">
+              <div className="flex items-center justify-start">
+                <h2 className="text-lg font-bold px-2">나의 멤버십</h2>
+                <div className="flex gap-2 ml-1">
+                  {membershipLabel && (
+                    <span className="inline-flex items-center bg-pink-500 text-white text-m font-normal px-3 rounded-full leading-none h-7">
+                      {membershipLabel}
+                    </span>
+                  )}
+                  {showYouth && (
+                    <span className="inline-flex items-center bg-violet-500 text-white text-m font-medium px-3 rounded-full leading-none h-7">
+                      유쓰
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* 혜택 카드 목록 (그라데이션 배경) */}
+            <div className="space-y-3 p-5 pt-4">
+              <p className="text-m px-2">{membershipLabel} 멤버십 인기 혜택이에요!</p>
+              {/* 유튜브 프리미엄 */}
+              <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px]">
+                <img
+                  src="/images/membership/youtube.png"
+                  alt="유튜브 로고"
+                  className="w-12 h-12 ml-2 mr-3"
+                />
+                <div className="ml-3">
+                  <p className="text-s text-zinc-500">유튜브 프리미엄 x 넷플릭스</p>
+                  <p className="text-m font-regular">
+                    국내 유일! 최대 혜택가 11,900원에 이용하세요.
+                  </p>
+                </div>
+              </div>
+
+              {/* CGV */}
+              <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px]">
+                <img
+                  src="/images/membership/cgv.png"
+                  alt="CGV 로고"
+                  className="w-12 h-12 ml-2 mr-3"
+                />
+                <div className="ml-3">
+                  <p className="text-s text-zinc-500">CGV</p>
+                  <p className="text-m font-regular">2D영화 장당 2,000원 할인</p>
+                </div>
+              </div>
+
+              {/* 롯데시네마 */}
+              <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px]">
+                <img
+                  src="/images/membership/lotte-cinema.png"
+                  alt="롯데시네마 로고"
+                  className="w-18 h-12 mr-3"
+                />
+                <div>
+                  <p className="text-s text-zinc-500">롯데시네마</p>
+                  <p className="text-m font-regular">연 6회 4,000원 할인</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
