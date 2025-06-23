@@ -44,7 +44,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
         style={{ height }} // 받아온 height로 높이 bottomSheet 높이 지정
       >
         {/* Handle */}
-        <div className="pt-3 pb-[15px] flex justify-center items-center">
+        <div className="pt-3 pb-[15px] flex justify-center items-center" onClick={onClose}>
           <SlArrowDown className="size-5  text-gray-500 " />
         </div>
 
