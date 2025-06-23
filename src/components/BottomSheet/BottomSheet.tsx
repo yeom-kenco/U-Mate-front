@@ -8,7 +8,7 @@ interface BottomSheetProps {
   height?: string;
 }
 
-const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, height = '50%' }) => {
+const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, height }) => {
   const [visible, setVisible] = useState(false);
 
   // 트랜지션 처리를 위한 mount 제어
