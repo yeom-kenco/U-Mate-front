@@ -59,6 +59,7 @@ const PricingPage = () => {
   const dispatch = useAppDispatch();
 
   const isOpen = useAppSelector((state) => state.modal.isOpen);
+  // const userId = useAppSelector((state) => state.user.userId); 유저 아이디 리덕스에서 꺼내오기
 
   // 필터 선택 모달 열기
   const openFilterModal = () => {
@@ -101,7 +102,10 @@ const PricingPage = () => {
 
   // 변경하기 확인 버튼 로직 (사용자 요금제 변경 필요)
   const handleChangePlans = async () => {
-    if (!selectedPlan) return;
+    if (!selectedPlan || userId === null) {
+      toast?.showToast('로그인 후 이용해 주세요', 'black');
+      return;
+    }
 
     try {
       // userId는 리덕스에서 가져오기?
