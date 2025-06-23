@@ -83,7 +83,7 @@ const PricingPage = () => {
     }
   };
 
-  // 필터링된 개수 불러오기
+  // 필터링된 개수 불러오기 (버튼 반영)
   const debouncedFilters = useDebounce(filters, 300);
 
   useEffect(() => {
@@ -236,7 +236,13 @@ const PricingPage = () => {
             a.REVIEW_USER_COUNT === 0 ? 0 : a.RECEIVED_STAR_COUNT / a.REVIEW_USER_COUNT;
           const scoreB =
             b.REVIEW_USER_COUNT === 0 ? 0 : b.RECEIVED_STAR_COUNT / b.REVIEW_USER_COUNT;
-          return scoreB - scoreA;
+
+          if (scoreB !== scoreA) {
+            return scoreB - scoreA;
+          } else {
+            //평점이 같을 경우 리뷰 많은 순
+            return b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT;
+          }
         });
     }
   };
@@ -297,7 +303,7 @@ const PricingPage = () => {
               price={`${plan.MONTHLY_FEE.toLocaleString()}`}
               discountedPrice={`${calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME)}`}
               rating={{
-                score: +(plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT).toFixed(1),
+                score: plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT,
                 count: plan.REVIEW_USER_COUNT,
               }}
               size="large"

@@ -45,6 +45,6 @@ export const updatePlan = async (planData: UpdatePlanRequest): Promise<UpdatePla
 // 요금제 필터링 요청
 export const getFilteredPlans = async (filteredPlan: PlanFilterRequest) => {
   const response = await axiosInstance.post('/filterPlans', filteredPlan);
-  console.log('필터링 요청 성공');
+  console.log('필터링 요청 성공', filteredPlan);
   return response.data;
 };
