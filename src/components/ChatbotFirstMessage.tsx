@@ -4,7 +4,7 @@ interface FirstMessageProps {
   onQuestionClick?: (question: string) => void;
 }
 
-const FirstMessage: React.FC<FirstMessageProps> = ({ onQuestionClick }) => {
+const FirstMessage: React.FC<FirstMessageProps> = () => {
   const suggestedQuestions = [
     {
       iconSrc: '/images/chatbot/chatbot-coin.png',
@@ -26,14 +26,8 @@ const FirstMessage: React.FC<FirstMessageProps> = ({ onQuestionClick }) => {
     },
   ];
 
-  const handleQuestionClick = (question: string) => {
-    if (onQuestionClick) {
-      onQuestionClick(question);
-    }
-  };
-
   return (
-    <div className="w-full max-w-[315px] mx-auto bg-white rounded-t-none rounded-b-[22px] rounded-r-[22px] shadow-lg overflow-hidden">
+    <div className="w-full bg-white rounded-t-none rounded-b-[22px] rounded-r-[22px] shadow-lg overflow-hidden">
       {/* 상단 우주 배경 이미지 영역 */}
       <div className="relative w-full h-[177px] bg-gradient-to-br from-purple-600 via-blue-500 to-purple-800 rounded-t-none rounded-tr-[22px] overflow-hidden">
         <img
@@ -53,7 +47,7 @@ const FirstMessage: React.FC<FirstMessageProps> = ({ onQuestionClick }) => {
             저는 U:Mate의 상담챗봇 <span className="text-pink-500">유식이</span>입니다.
           </h2>
 
-          <p className="text-s text-gray-600 leading-4">
+          <p className="text-sm text-gray-600 leading-4">
             저는 이전 대화도 기억해서 나에게 맞는 정보를 바탕으로 똑똑하게 도와드릴 수 있어요.
             <br />
             <br />
@@ -63,7 +57,7 @@ const FirstMessage: React.FC<FirstMessageProps> = ({ onQuestionClick }) => {
 
         {/* 질문 제안 섹션 */}
         <div className="space-y-3">
-          <h3 className="text-m font-semibold text-pink-500">아래와 같이 질문해보세요!</h3>
+          <h3 className="text-sm font-semibold text-pink-500">아래와 같이 질문해보세요!</h3>
 
           <div className="space-y-3">
             {suggestedQuestions.map((item, index) => (
@@ -73,14 +67,14 @@ const FirstMessage: React.FC<FirstMessageProps> = ({ onQuestionClick }) => {
               >
                 <div className="flex-shrink-0 w-[42px] h-[37px] flex items-center justify-center">
                   <img
-                    src={item.iconSrc}
+                    src={item.iconSrc || '/placeholder.svg'}
                     alt={item.category}
                     className="w-full h-full object-contain"
                   />
                 </div>
                 <div className="flex-1 space-y-1">
                   <div className={`text-xs font-semibold ${item.color}`}>{item.category}</div>
-                  <div className="text-s font-semibold text-black">{item.question}</div>
+                  <div className="text-sm font-semibold text-black">{item.question}</div>
                 </div>
               </div>
             ))}

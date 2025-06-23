@@ -37,7 +37,7 @@ const Default = () => {
       {pathname !== '/chatbot' && <ChatbotButton />}
 
       {/* 푸터 */}
-      <Footer />
+      {pathname !== '/chatbot' && <Footer />}
     </div>
   );
 };
