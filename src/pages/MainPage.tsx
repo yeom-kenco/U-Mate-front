@@ -6,15 +6,16 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { useHorizontalScroll } from '../hooks/useHorizontalScroll';
-import LoginBanner from '../components/LoginBanner';
-import EventBannerCarousel from '../components/EventBanner/EventBannerCarousel';
-import Button from '../components/Button';
-import PlanCardSmall from '../components/PlanCardSmall';
-import '../index.css';
 import { calculateDiscountedPrice } from '../utils/getDiscountFree';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/userSlice';
 import { clearUser } from '../store/userSlice';
+import LoginBanner from '../components/LoginBanner';
+import EventBannerCarousel from '../components/EventBanner/EventBannerCarousel';
+import Button from '../components/Button';
+import PlanCardSmall from '../components/PlanCardSmall';
+import PlanInfoBanner from '../components/PlanInfoBanner';
+import '../index.css';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -25,6 +26,7 @@ type PlanListItem = {
   PLAN_NAME: string;
   MONTHLY_FEE: number;
   DATA_INFO: string;
+  DATA_INFO_DETAIL: string;
   RECEIVED_STAR_COUNT: number;
   REVIEW_USER_COUNT: number;
 };
@@ -51,7 +53,7 @@ const MainPage = () => {
         name: '홍길동',
         birthDay: '19200520',
         email: 'test@example.com',
-        plan: 7,
+        plan: 3,
         membership: 'vvip',
       })
     );
@@ -61,7 +63,7 @@ const MainPage = () => {
   //   dispatch(clearUser()); // 테스트용 로그인 유저 상태 초기화할 때 사용하는 문장
   // }, []);
 
-  // 1. Redux user 정보 가져오기
+  // Redux user 정보 가져오기
   const user = useSelector((state: RootState) => state.user);
 
   const scrollRef = useHorizontalScroll();
@@ -170,7 +172,15 @@ const MainPage = () => {
       {/* 하얀색 배너 영역 */}
       <div className="relative">
         <div className="bg-white rounded-b-[32px] shadow-[0_8px_15px_-4px_rgba(0,0,0,0.1)] w-full px-[5%] pt-2 pb-6">
-          <LoginBanner type="mainGradient" />
+          {user.name && myPlan ? (
+            <PlanInfoBanner
+              planName={myPlan.PLAN_NAME}
+              dataInfo={myPlan.DATA_INFO}
+              dataInfoDetail={myPlan.DATA_INFO_DETAIL}
+            />
+          ) : (
+            <LoginBanner type="mainGradient" />
+          )}
         </div>
       </div>
 
