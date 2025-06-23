@@ -17,6 +17,7 @@ import EventBannerCarousel from '../components/EventBanner/EventBannerCarousel';
 import Button from '../components/Button';
 import PlanCardSmall from '../components/PlanCardSmall';
 import PlanInfoBanner from '../components/MainPage/PlanInfoBanner';
+import HeroSection from '../components/MainPage/HeroSection';
 import '../index.css';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
@@ -60,6 +61,7 @@ const MainPage = () => {
       })
     );
   }, []);
+
   // useEffect(() => {
   //   dispatch(clearUser()); // 테스트용 로그인 유저 상태 초기화할 때 사용하는 문장
   // }, []);
@@ -167,30 +169,50 @@ const MainPage = () => {
   };
 
   const filteredPlans = filterPlansByCategory(selectedCategory, allPlans);
+  const isLoggedIn = Boolean(user.name && user.plan && allPlans.length > 0 && myPlan);
 
   return (
     <div className="bg-background">
       {/* 하얀색 배너 영역 */}
       <div className="relative">
-        <div className="bg-white rounded-b-[32px] shadow-[0_8px_15px_-4px_rgba(0,0,0,0.1)] w-full px-[5%] pt-2 pb-8">
-          {user.name && myPlan ? (
-            <>
-              <PlanInfoBanner
-                planName={myPlan.PLAN_NAME}
-                dataInfo={myPlan.DATA_INFO}
-                dataInfoDetail={myPlan.DATA_INFO_DETAIL}
-              />
-              <Link
-                to="/compare"
-                className="flex items-center justify-end mt-4 text-m text-black font-regular mb-[-20px]"
-              >
-                다른 요금제와 비교해보기
-                <FiChevronRight className="text-lm mt-[-3px]" />
-              </Link>
-            </>
-          ) : (
-            <LoginBanner type="mainGradient" />
-          )}
+        <div className="bg-white rounded-b-[32px] shadow-[0_8px_15px_-4px_rgba(0,0,0,0.1)] w-full px-[5%] pt-2 pb-8 md:rounded-b-[60px]">
+          {/* lg 이상일 때: HeroSection 내용 (대표페이지용 문구와 버튼) */}
+          <div className="hidden lg:block">
+            <HeroSection
+              isLoggedIn={isLoggedIn}
+              userName={user.name}
+              plan={
+                myPlan
+                  ? {
+                      name: myPlan.PLAN_NAME,
+                      dataInfo: myPlan.DATA_INFO,
+                      dataInfoDetail: myPlan.DATA_INFO_DETAIL,
+                    }
+                  : undefined
+              }
+            />
+          </div>
+          {/* lg 미만일 때: 기존 모바일 전용 내용 */}
+          <div className="lg:hidden">
+            {user.name && myPlan ? (
+              <>
+                <PlanInfoBanner
+                  planName={myPlan.PLAN_NAME}
+                  dataInfo={myPlan.DATA_INFO}
+                  dataInfoDetail={myPlan.DATA_INFO_DETAIL}
+                />
+                <Link
+                  to="/compare"
+                  className="flex items-center justify-end mt-4 text-m text-black font-regular mb-[-20px]"
+                >
+                  다른 요금제와 비교해보기
+                  <FiChevronRight className="text-lm mt-[-3px]" />
+                </Link>
+              </>
+            ) : (
+              <LoginBanner type="mainGradient" />
+            )}
+          </div>
         </div>
       </div>
 
