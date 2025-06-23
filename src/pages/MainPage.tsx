@@ -172,7 +172,7 @@ const MainPage = () => {
   const isLoggedIn = Boolean(user.name && user.plan && allPlans.length > 0 && myPlan);
 
   return (
-    <div className="bg-background">
+    <div className="bg-background md:bg-horizontal">
       {/* 하얀색 배너 영역 */}
       <div className="relative">
         <div className="bg-white rounded-b-[32px] shadow-[0_8px_15px_-4px_rgba(0,0,0,0.1)] w-full px-[5%] pt-2 pb-8 md:rounded-b-[60px]">
