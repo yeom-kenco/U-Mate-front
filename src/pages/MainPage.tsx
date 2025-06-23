@@ -207,8 +207,8 @@ const MainPage = () => {
           <p className="text-m mb-3 text-zinc-700">
             {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
           </p>
-
-          <div className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth ">
+          {/* 요금제 카드 좌측 shadow 가려지는 효과를 막기위한 마진과 패딩 추가(피그마 시안과 동일한 여백은 유지하도록) */}
+          <div className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth ml-[-2%] pl-[2%]">
             <div className="flex gap-4 flex-nowrap w-max pr-4">
               {ageplans.map((plan) => (
                 <PlanCardSmall
@@ -250,7 +250,7 @@ const MainPage = () => {
         {/* 요금제 카드 리스트 */}
         <div
           ref={scrollRef}
-          className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth cursor-grab "
+          className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth cursor-grab ml-[-2%] pl-[2%]"
         >
           <div className="flex gap-4 flex-nowrap w-max pr-4">
             {filteredPlans.map((plan) => {
