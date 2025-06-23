@@ -2,9 +2,12 @@ import InputField from '../InputField';
 import Button from '../Button';
 import AccountToggleMenu from './AccountToggleMenu';
 import ResetPasswordForm from './ResetPasswordModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useToast } from '../../hooks/useToast';
 import { emit } from 'process';
+import { findEmailByPhone } from '../../apis/auth';
+import { CodeCheckButton, EmailSendButton } from '../suffixButtons';
+import { formatTime } from '../../utils/formatTimer';
 
 type Props = {
   step: 'findId' | 'getId' | 'verify' | 'reset';
@@ -14,10 +17,6 @@ type Props = {
   onRequestAuth: () => void;
   onNext: () => void;
   onClose: () => void;
-  PhoneNumber: string;
-  setPhoneNumber: React.Dispatch<React.SetStateAction<string>>;
-  Email: string;
-  handlefindEmailByPhone: () => void;
 };
 
 const AccountStepContent = ({
@@ -28,35 +27,66 @@ const AccountStepContent = ({
   onRequestAuth,
   onNext,
   onClose,
-  PhoneNumber,
-  setPhoneNumber,
-  handlefindEmailByPhone,
-  Email,
 }: Props) => {
-  const isValidPhone = /^\d{10,11}$/;
   const { showToast } = useToast();
-  const handlefindEmailByPhoneAndNext = () => {
-    if (!Email) {
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [findEmail, setFindEmail] = useState('');
+  const isValidPhone = /^\d{10,11}$/;
+  const [email, setEmail] = useState('');
+  const [isEmailClicked, setIsEmailClicked] = useState<boolean>(false);
+  const [timer, setTimer] = useState<number>(180);
+  const [isCounting, setIsCounting] = useState<boolean>(false);
+  const [verificationCode, setVerifictionCode] = useState('');
+  const Email = findEmail.split(' : ')[1];
+  const handlefindEmailByPhone = async () => {
+    if (!isValidPhone.test(phoneNumber)) {
+      showToast('휴대폰 번호 형식이 유효하지 않습니다', 'error');
+    }
+    try {
+      const res = await findEmailByPhone({ phoneNumber });
+      console.log(res);
+      if (res.data.success === false) {
+        showToast('등록된 이메일이 없습니다', 'black');
+      } else {
+        setFindEmail(res.data.message);
+        onNext(); // 성공했을 때만 다음 단계로 이동
+      }
+    } catch (err) {
+      console.log(err);
       showToast('등록된 이메일이 없습니다', 'black');
-    } else {
-      handlefindEmailByPhone();
-      onNext();
     }
   };
 
+  useEffect(() => {
+    let countdown: NodeJS.Timeout;
+
+    if (isCounting && timer > 0) {
+      countdown = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+
+    if (timer === 0) {
+      setIsCounting(false); // 타이머 종료
+    }
+
+    return () => clearInterval(countdown);
+  }, [isCounting, timer]);
+
+  console.log(email, verificationCode);
   switch (step) {
     case 'findId':
       return (
         <>
           <AccountToggleMenu active={flow} onChange={onChangeFlow} />
           <InputField
-            value={PhoneNumber}
+            value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             variant="box"
             placeholder="휴대폰 번호 입력 ex) 01012345678"
           />
           <Button
-            onClick={handlefindEmailByPhoneAndNext}
+            onClick={handlefindEmailByPhone}
             size="lg"
             fullWidth
             className="mt-4 max-[400px]:text-s"
@@ -87,14 +117,33 @@ const AccountStepContent = ({
       return (
         <>
           <AccountToggleMenu active={flow} onChange={onChangeFlow} />
-          <InputField variant="box" placeholder="휴대폰 번호 입력" />
-          <Button onClick={onRequestAuth} size="s">
-            인증 요청
-          </Button>
-          <InputField variant="box" placeholder="인증번호 입력" />
-          <Button onClick={onNext} size="s">
-            확인
-          </Button>
+          <InputField
+            variant="box"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="이메일 입력 (예: lguplus@google.com)"
+            suffixButton={
+              <EmailSendButton
+                email={email}
+                setSuccessFlag={setIsEmailClicked} // 이메일 인증 클릭 여부
+                Timer={setTimer}
+                Counting={setIsCounting}
+              />
+            }
+          />
+
+          <InputField
+            variant="box"
+            label="이메일 인증번호"
+            value={verificationCode}
+            onChange={(e) => setVerifictionCode(e.target.value)}
+            placeholder="인증번호 6자리 입력"
+            suffixButton={
+              <CodeCheckButton email={email} code={verificationCode} Counting={setIsCounting} />
+            }
+            timer={isCounting ? `${formatTime(timer)}` : undefined}
+            required
+          />
           {isCodeSent && (
             <p className="text-s mt-2 text-pink-500 leading-4 max-[400px]:text-xs">
               인증번호가 발송되었습니다. 인증번호가 오지 않는다면, 입력하신 이메일이 정확한지
