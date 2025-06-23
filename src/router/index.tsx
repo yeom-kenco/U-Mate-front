@@ -8,22 +8,16 @@ import PricingPage from '../pages/PricingPage';
 import ChatBubble from '../components/ChatBubble';
 import OnBoarding from '../components/OnBoarding';
 import LoginPage from '../pages/LoginPage';
-import LoginBanner from '../components/LoginBanner';
 import { HeaderProps } from '../components/Header';
 import ReviewCard from '../components/ReviewCard';
 import { useContext, useEffect } from 'react';
 import { ToastContext } from '../context/ToastContext';
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
-import { RootState } from '../store/store'; // store.ts 위치에 맞게 경로 조정
-import { openModal, closeModal } from '../store/modalSlice';
 import Button from '../components/Button';
 import ReviewModal from '../components/Modal/Review/ReviewModal';
-import ConfirmModal from '../components/Modal/ConfirmModal';
-import InputField from '../components/InputField';
-import FindAccountModal from '../components/Modal/FindAccountModal';
 import MyPage from '../pages/MyPage';
-import CheckBox from '../components/CheckBox';
-import ReviewTextarea from '../components/ReviewTextarea';
+import MainPage from '../pages/MainPage';
+import RegisterPage from '../pages/RegisterPage';
+import ShortcutPage from '../pages/ShortcutPage';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -43,17 +37,17 @@ const TempPage = () => {
   };
 
   // 모달 테스트
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const handleOpen = () => {
-    dispatch(openModal());
-  };
+  // const handleOpen = () => {
+  //   dispatch(openModal());
+  // };
 
-  const handleClose = () => {
-    dispatch(closeModal());
-  };
+  // const handleClose = () => {
+  //   dispatch(closeModal());
+  // };
 
-  const isOpen = useAppSelector((state) => state.modal.isOpen);
+  // const isOpen = useAppSelector((state) => state.modal.isOpen);
 
   return (
     <div className="py-10">
@@ -100,18 +94,6 @@ const TempPage = () => {
         message="ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ?"
         time="16:00"
       />
-
-      <Button onClick={() => dispatch(openModal())}>모달</Button>
-      {isOpen && (
-        <ReviewModal
-          type="reviewWrite"
-          onClose={handleClose} // 모달 닫기 테스트
-        ></ReviewModal>
-      )}
-      <CheckBox showButton={false} />
-      <CheckBox title="개인정보 수집 및 이용 동의(필수)" />
-      <CheckBox title="개인정보 처리 위탁 동의(필수)" />
-      <CheckBox title="서비스 이용 약관 동의(필수)" />
     </div>
   );
 };
@@ -122,7 +104,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <TempPage />, // ✅ Outlet 채우기
+        element: <MainPage />,
+      },
+      {
+        path: '/test',
+        element: <TempPage />, // ✅ 테스트용 페이지 라우터 재정의
       },
       { path: 'chatbot', element: <ChatbotMain /> },
       {
@@ -132,11 +118,16 @@ const router = createBrowserRouter([
       { path: 'pricing', element: <PricingPage /> }, // 요금제 페이지
       { path: '/login', element: <LoginPage /> },
       { path: '/mypage', element: <MyPage /> },
+      { path: '/signup', element: <RegisterPage /> },
     ],
   },
   {
     path: '/onboarding',
     element: <OnBoarding />,
+  },
+  {
+    path: '/shortcut',
+    element: <ShortcutPage />,
   },
 ]);
 

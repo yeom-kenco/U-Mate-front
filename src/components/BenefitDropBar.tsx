@@ -26,7 +26,7 @@ const BenefitDropBar = ({ label, indexes, data }: BenefitDropProps) => {
             isOpen ? '-rotate-90' : 'rotate-90'
           }`}
         >
-          <FiChevronRight size={20} />
+          <FiChevronRight size={20} />  
         </span>
       </button>
       <div
