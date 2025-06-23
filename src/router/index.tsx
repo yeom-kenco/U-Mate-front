@@ -17,6 +17,7 @@ import MyPage from '../pages/MyPage';
 import MainPage from '../pages/MainPage';
 import RegisterPage from '../pages/RegisterPage';
 import ShortcutPage from '../pages/ShortcutPage';
+import NotFound from '../components/NotFound';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -119,6 +120,7 @@ const router = createBrowserRouter([
       { path: '/mypage', element: <MyPage /> },
       { path: '/signup', element: <RegisterPage /> },
     ],
+    errorElement: <NotFound />,
   },
   {
     path: '/onboarding',
