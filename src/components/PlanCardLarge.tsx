@@ -43,7 +43,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
 
       <div className="mt-2">
         <p className="text-xl font-bold text-black">월 {price}원</p>
-        {discountedPrice && <p className="text-sm ">약정 할인 시 {discountedPrice}</p>}
+        {discountedPrice && <p className="text-sm ">약정 할인 시 월{discountedPrice}원</p>}
       </div>
 
       {showButtons && (

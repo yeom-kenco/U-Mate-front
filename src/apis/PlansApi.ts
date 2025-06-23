@@ -1,6 +1,6 @@
 import axiosInstance from './axiosInstance.ts';
 
-export interface Plan {
+interface Plan {
   PLAN_ID: number;
   PLAN_NAME: string;
   MONTHLY_FEE: number;
@@ -9,6 +9,14 @@ export interface Plan {
   SHARE_DATA: string;
   RECEIVED_STAR_COUNT: number;
   REVIEW_USER_COUNT: number;
+}
+
+interface PlanFilterRequest {
+  ageGroup?: string;
+  minFee?: number;
+  maxFee?: number;
+  dataType?: string;
+  benefitIds?: string; // "1,2,3" 형식
 }
 
 export interface UpdatePlanRequest {
@@ -30,5 +38,13 @@ export const getPlanList = async (): Promise<{ data: Plan[] }> => {
 // 요금제 변경 요청
 export const updatePlan = async (planData: UpdatePlanRequest): Promise<UpdatePlanResponse> => {
   const response = await axiosInstance.post<UpdatePlanResponse>('/changeUserPlan', planData);
+  console.log('변경 요청 성공');
+  return response.data;
+};
+
+// 요금제 필터링 요청
+export const getFilteredPlans = async (filteredPlan: PlanFilterRequest) => {
+  const response = await axiosInstance.post('/filterPlans', filteredPlan);
+  console.log('필터링 요청 성공');
   return response.data;
 };

@@ -73,15 +73,15 @@ export const benefitCards = [
   },
   {
     id: 13,
-    img: '/images/benefitCard/vibe.png',
-    title: '바이브',
-    descript: '최대 8,800원 혜택',
-  },
-  {
-    id: 14,
     img: '/images/benefitCard/genie.png',
     title: '지니뮤직',
     descript: '최대 9,600원 혜택',
+  },
+  {
+    id: 14,
+    img: '/images/benefitCard/vibe.png',
+    title: '바이브',
+    descript: '최대 8,800원 혜택',
   },
   {
     id: 15,

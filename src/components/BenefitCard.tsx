@@ -1,12 +1,18 @@
 interface BenefitCardProps {
+  id?: number;
   img?: string;
   title: string;
   descript?: string;
+  selected?: boolean;
+  onClick?: () => void;
 }
 
-const BenefitCard = ({ img, title, descript }: BenefitCardProps) => {
+const BenefitCard = ({ img, title, descript, selected, onClick }: BenefitCardProps) => {
   return (
-    <button className="flex flex-col cursor-pointer items-center justify-center w-[110px] max-[400px]:w-[100px] h-[140px] border-2 border-zinc-300 rounded-lg text-center focus:border-pink-500">
+    <button
+      className={`flex flex-col cursor-pointer items-center justify-center w-[110px] max-[400px]:w-[100px] h-[140px] border-2 rounded-lg text-center ${selected ? 'border-pink-500' : 'border-zinc-300'}`}
+      onClick={onClick}
+    >
       {img && (
         <div className="w-[50px] h-[50px] rounded-full bg-background overflow-hidden flex-shrink-0 ">
           <img src={img} alt={title} className=" w-full h-full object-contain" />

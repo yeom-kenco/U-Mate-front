@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { SlArrowDown, SlArrowUp } from 'react-icons/sl';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
+import { useDebounce } from '../hooks/useDebounce';
 
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { closeModal, openModal } from '../store/modalSlice';
@@ -13,13 +14,13 @@ import SortList from '../components/BottomSheet/SortList';
 import AgeRangeList from '../components/BottomSheet/AgeRangeList';
 import PlanCard from '../components/PlanCard';
 import FilterButton from '../components/FilterButton';
-// import FilterModal from '../components/Modal/FilterModal';
+import FilterModal from '../components/Modal/FilterModal';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 import LoginBanner from '../components/LoginBanner';
 import Button from '../components/Button';
 
 // 요금제 리스트 불러오기
-import { getPlanList, updatePlan } from '../apis/PlansApi';
+import { getFilteredPlans, getPlanList, updatePlan } from '../apis/PlansApi';
 
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -27,29 +28,79 @@ const PricingPage = () => {
   const [ageOpen, setAgeOpen] = useState(false); // 연령 시트 토글
   const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
   const [ageRanges, SetAgeRanges] = useState(''); // 선택된 연령 기준
+  const [filteredCount, setFilteredCount] = useState(0); // 사용자 맞춤 필터링된 요금제 개수
   const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
   const [planList, setPlanList] = useState([]); // 불러온 요금제 리스트
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
+  const [filters, setFilters] = useState<{
+    ageGroup?: string;
+    minFee?: number;
+    maxFee?: number;
+    dataType?: string;
+    benefitIds?: number[];
+  }>({
+    ageGroup: '',
+    minFee: undefined,
+    maxFee: undefined,
+    dataType: '',
+    benefitIds: [],
+  });
+
+  // 요금제 리스트 불러오기
   useEffect(() => {
     const fetchPlanList = async () => {
       try {
         setLoading(true);
-        setError(null);
-        const planData = await getPlanList();
-        const data = planData.data;
+        const { data } = await getPlanList();
         console.log('planData', data);
         setPlanList(data);
-        setLoading(false);
+        setFilteredCount(data.length);
       } catch (error) {
         console.log(error);
-        setError('데이터 가져오는 중 오류 발생');
+      } finally {
+        setLoading(false);
       }
     };
     fetchPlanList();
   }, []);
+
+  // 필터링된 요금제 리스트 불러오기
+  const handleSelect = async () => {
+    const payload = {
+      ...filters,
+      benefitIds: filters.benefitIds?.join(','),
+    };
+    try {
+      const { data } = await getFilteredPlans(payload);
+      setPlanList(data);
+      setFilteredCount(data.length);
+      setVisibleCount(6);
+      dispatch(closeModal());
+    } catch (error) {
+      toast?.showToast('요금제 불러오기 실패', 'error');
+    }
+  };
+
+  // 필터링된 개수 불러오기
+  const debouncedFilters = useDebounce(filters, 300);
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const payload = {
+        ...debouncedFilters,
+        benefitIds: debouncedFilters.benefitIds?.join(','),
+      };
+      try {
+        const { data } = await getFilteredPlans(payload);
+        setFilteredCount(data.length);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCount();
+  }, [debouncedFilters]);
 
   const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
 
@@ -73,11 +124,22 @@ const PricingPage = () => {
     dispatch(closeModal());
   };
 
+  // 필터 초기화하기
+  const handleResetFilter = () => {
+    setFilters({
+      ageGroup: '',
+      minFee: undefined,
+      maxFee: undefined,
+      dataType: '',
+      benefitIds: [],
+    });
+  };
+
   // 비교하기 모달 열기
   const openCompareModal = (e: React.MouseEvent, plan) => {
     e.stopPropagation();
     setSelectedPlan(plan);
-    console.log(plan);
+    console.log('비교할 요금제', plan);
     setModalType('compare');
     dispatch(openModal());
   };
@@ -168,6 +230,7 @@ const PricingPage = () => {
       case '리뷰 많은 순':
         return filtered.sort((a, b) => b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT);
       default:
+        // 인기순: 평점 높은 순
         return filtered.sort((a, b) => {
           const scoreA =
             a.REVIEW_USER_COUNT === 0 ? 0 : a.RECEIVED_STAR_COUNT / a.REVIEW_USER_COUNT;
@@ -253,9 +316,12 @@ const PricingPage = () => {
             onClick={handleLoadMore}
             className="md:w-96"
           >
-            요금제 더보기 ({visibleCount}/{planList.length})
+            요금제 더보기 ({visibleCount > filteredCount ? filteredCount : visibleCount}/
+            {filteredCount})
           </Button>
         </div>
+
+        {/* 정렬 & 연령별 필터 바텀시트 */}
         <BottomSheet isOpen={sortOpen} onClose={() => setSortOpen(false)} height="300px">
           <SortList onSelect={handleSortSelect} selected={isSorted} />
         </BottomSheet>
@@ -280,13 +346,16 @@ const PricingPage = () => {
             onClose={closeCompareModal}
           />
         )}
-        {/* {modalType === 'filter' && isOpen && (
+        {modalType === 'filter' && isOpen && (
           <FilterModal
+            filters={filters} // 필터된 상태 관리
+            onChange={setFilters} // 변경 핸들러
+            onReset={handleResetFilter} // 초기화
             onClose={closeFilterModal}
-            onSelect={closeFilterModal}
-            onReset={closeFilterModal}
+            onApply={handleSelect}
+            planCount={filteredCount}
           />
-        )} */}
+        )}
       </div>
     </>
   );

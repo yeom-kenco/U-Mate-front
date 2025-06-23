@@ -10,7 +10,7 @@ export interface PlanCardProps {
   price: string;
   discountedPrice?: string;
   rating?: {
-    score: number;
+    score: string;
     count: number;
   };
   highlight?: boolean;
