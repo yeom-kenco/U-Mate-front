@@ -11,7 +11,6 @@ import { calculateDiscountedPrice } from '../utils/getDiscountFee';
 
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
-import AgeRangeList from '../components/BottomSheet/AgeRangeList';
 import PlanCard from '../components/PlanCard';
 import FilterButton from '../components/FilterButton';
 import FilterModal from '../components/Modal/FilterModal';
@@ -20,18 +19,16 @@ import LoginBanner from '../components/LoginBanner';
 import Button from '../components/Button';
 
 // 요금제 리스트 불러오기
-import { getFilteredPlans, getPlanList, updatePlan } from '../apis/PlansApi';
+import { getFilteredPlans, getPlanList, Plan, updatePlan } from '../apis/PlansApi';
 
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [sortOpen, setSortOpen] = useState(false); // 정렬 시트 토글
-  const [ageOpen, setAgeOpen] = useState(false); // 연령 시트 토글
   const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
-  const [ageRanges, SetAgeRanges] = useState(''); // 선택된 연령 기준
   const [filteredCount, setFilteredCount] = useState(0); // 사용자 맞춤 필터링된 요금제 개수
   const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
-  const [planList, setPlanList] = useState([]); // 불러온 요금제 리스트
+  const [planList, setPlanList] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [filters, setFilters] = useState<{
@@ -205,18 +202,7 @@ const PricingPage = () => {
     setSortOpen(false);
   };
 
-  // 연령대 선택 시
-  const handleAgeSelect = (value: string) => {
-    if (value === '전체') {
-      SetAgeRanges('');
-    } else {
-      SetAgeRanges(value);
-    }
-
-    setAgeOpen(false);
-  };
-
-  // 정렬 & 연령별 필터링 로직
+  // 정렬 로직
   const getSortedPlans = () => {
     switch (isSorted) {
       case '높은 가격순':
@@ -248,7 +234,7 @@ const PricingPage = () => {
   // 페이지네이션 로직
   const handleLoadMore = () => {
     if (visibleCount >= planList.length) {
-      toast?.showToast(`더 이상 요금제가 없어요`, 'black');
+      toast?.showToast(`더 이상 요금제가 없어요`, 'black'); // 불러올 요금제가 없을 경우 토스트 알림
       return;
     }
 
@@ -320,17 +306,16 @@ const PricingPage = () => {
           </Button>
         </div>
 
-        {/* 정렬 & 연령별 필터 바텀시트 */}
+        {/* 정렬 필터 바텀시트 */}
         <BottomSheet isOpen={sortOpen} onClose={() => setSortOpen(false)} height="300px">
           <SortList onSelect={handleSortSelect} selected={isSorted} />
         </BottomSheet>
-        <BottomSheet isOpen={ageOpen} onClose={() => setAgeOpen(false)} height="350px">
-          <AgeRangeList onSelect={handleAgeSelect} selected={ageRanges} />
-        </BottomSheet>
+
         {/* 변경하기 모달 (만약 현재 사용하고 있는 요금제가 없다면 신청하기로 띄우기?) */}
         {modalType === 'change' && isOpen && (
           <ConfirmModal
             title="해당 요금제로 변경하시겠습니까?"
+            confirmText="변경"
             onConfirm={handleChangePlans}
             onClose={closeChangeModal}
           />

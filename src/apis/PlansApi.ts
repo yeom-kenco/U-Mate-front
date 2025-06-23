@@ -1,6 +1,6 @@
 import axiosInstance from './axiosInstance.ts';
 
-interface Plan {
+export interface Plan {
   PLAN_ID: number;
   PLAN_NAME: string;
   MONTHLY_FEE: number;
