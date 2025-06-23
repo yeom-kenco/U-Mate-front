@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
 import { useEffect, useState } from 'react';
 import Button from '../components/Button';
@@ -9,6 +9,7 @@ import FindAccountModal from '../components/Modal/FindAccountModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, openModal } from '../store/modalSlice';
 import { RootState } from '../store/store';
+import { setUser } from '../store/userSlice';
 const LoginPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [email, setEmail] = useState('');
@@ -20,7 +21,7 @@ const LoginPage = () => {
   const { showToast } = useToast();
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   useEffect(() => {
     setHeaderConfig({
       title: '로그인',
@@ -63,11 +64,14 @@ const LoginPage = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      console.log(email, password);
       const res = await login({ id: email, password });
-
-      console.log(res.data.name);
+      // birthDay만 한국 시간 기준으로 변환
+      const date = new Date(res.data.birthDay);
+      const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+      res.data.birthDay = kstDate.toISOString().split('T')[0]; //YYYY-MM-DD
+      dispatch(setUser(res.data));
       showToast(`${email}님 환영합니다`, 'black');
+      navigate('/');
     } catch (err: any) {
       console.log(err.response.data);
       showToast(err.response.data, 'error');
