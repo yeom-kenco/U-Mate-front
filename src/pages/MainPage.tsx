@@ -12,11 +12,11 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../store/userSlice';
 import { clearUser } from '../store/userSlice';
 import { FiChevronRight } from 'react-icons/fi';
-import LoginBanner from '../components/MainPage/LoginBanner';
+import LoginBanner from '../components/LoginBanner';
 import EventBannerCarousel from '../components/EventBanner/EventBannerCarousel';
 import Button from '../components/Button';
 import PlanCardSmall from '../components/PlanCardSmall';
-import PlanInfoBanner from '../components/PlanInfoBanner';
+import PlanInfoBanner from '../components/MainPage/PlanInfoBanner';
 import '../index.css';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
