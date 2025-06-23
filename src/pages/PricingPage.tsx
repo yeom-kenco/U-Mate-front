@@ -218,20 +218,16 @@ const PricingPage = () => {
 
   // 정렬 & 연령별 필터링 로직
   const getSortedPlans = () => {
-    const filtered = ageRanges
-      ? planList.filter((plan) => plan.AGE_GROUP === ageRanges)
-      : [...planList];
-
     switch (isSorted) {
       case '높은 가격순':
-        return filtered.sort((a, b) => b.MONTHLY_FEE - a.MONTHLY_FEE);
+        return planList.sort((a, b) => b.MONTHLY_FEE - a.MONTHLY_FEE);
       case '낮은 가격순':
-        return filtered.sort((a, b) => a.MONTHLY_FEE - b.MONTHLY_FEE);
+        return planList.sort((a, b) => a.MONTHLY_FEE - b.MONTHLY_FEE);
       case '리뷰 많은 순':
-        return filtered.sort((a, b) => b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT);
+        return planList.sort((a, b) => b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT);
       default:
         // 인기순: 평점 높은 순
-        return filtered.sort((a, b) => {
+        return planList.sort((a, b) => {
           const scoreA =
             a.REVIEW_USER_COUNT === 0 ? 0 : a.RECEIVED_STAR_COUNT / a.REVIEW_USER_COUNT;
           const scoreB =
@@ -240,7 +236,7 @@ const PricingPage = () => {
           if (scoreB !== scoreA) {
             return scoreB - scoreA;
           } else {
-            //평점이 같을 경우 리뷰 많은 순
+            // 평점이 같을 경우 리뷰 많은 순
             return b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT;
           }
         });
@@ -282,9 +278,6 @@ const PricingPage = () => {
           <div className="flex gap-6 text-m">
             <button onClick={() => setSortOpen(true)} className="flex items-center gap-2">
               {isSorted || '인기순'} {sortOpen ? <SlArrowUp /> : <SlArrowDown />}
-            </button>
-            <button onClick={() => setAgeOpen(true)} className="flex items-center gap-2">
-              {ageRanges || '전체'} {ageOpen ? <SlArrowUp /> : <SlArrowDown />}
             </button>
           </div>
 
