@@ -1,5 +1,5 @@
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { HeaderProps } from '../components/Header';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
@@ -7,9 +7,14 @@ import CheckBox from '../components/CheckBox';
 import { SlArrowRight } from 'react-icons/sl';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import PlanList from '../components/BottomSheet/PlanList';
+import { signUp } from '../apis/auth';
+import { formatBirth } from '../utils/formatBirth';
+import { CodeCheckButton, EmailSendButton, PhoneCheckButton } from '../components/suffixButtons';
+import { ToastContext } from '../context/ToastContext';
 const RegisterPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const navigate = useNavigate();
+  const toastContext = useContext(ToastContext);
   const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
   const [isPlan, setisPlan] = useState(''); // 선택한 요금제
   // 입력값
@@ -23,6 +28,13 @@ const RegisterPage = () => {
     password: '',
     confirmPassword: '',
   });
+
+  // 휴대폰 중복 확인 여부
+  const [isPhoneChecked, setIsPhoneChecked] = useState(false);
+  // 이메일 인증버튼 클릭 여부
+  const [isEmailClickd, setIsEmailClickd] = useState(false);
+  // 이메일 인증코드 확인 여부
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
   //에러 Record사용하여 string string 으로 ex ) : name,name의 에러 메세지
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -34,15 +46,17 @@ const RegisterPage = () => {
       case 'birth':
         return /^\d{8}$/.test(value) ? '' : '생년월일 8자리를 정확히 입력해주세요.';
       case 'phone':
-        return /^010\d{8}$/.test(value) ? '' : '휴대폰 번호를 정확히 입력해주세요.';
+        return /^\d{10,11}$/.test(value) ? '' : '휴대폰 번호를 정확히 입력해주세요.';
       case 'email':
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : '이메일 형식이 올바르지 않습니다.';
+        return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value.trim())
+          ? ''
+          : '이메일 형식이 올바르지 않습니다.';
       case 'verificationCode':
         return value.length === 6 ? '' : '인증번호 6자리를 입력해주세요.';
       case 'password':
-        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/.test(value)
+        return /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,20}$/.test(value)
           ? ''
-          : '영문 대소문자, 숫자, 특수문자를 포함하여 12자 이상 입력해주세요.';
+          : '영문 대문자,소문자, 숫자, 특수문자를 포함하여 12자 이상 입력해주세요.';
       case 'confirmPassword':
         return value !== formData.password ? '비밀번호가 일치하지 않습니다.' : '';
       case 'gender':
@@ -114,9 +128,35 @@ const RegisterPage = () => {
     return Object.values(newErrors).every((e) => e === '');
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  // 회원가입
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateAll()) return;
+    if (!isPhoneChecked) {
+      setErrors((prev) => ({ ...prev, phone: '휴대폰 중복확인을 해주세요.' }));
+    }
+    if (!isEmailVerified) {
+      setErrors((prev) => ({ ...prev, verificationCode: '이메일 인증을 완료해주세요.' }));
+    }
+    if (!validateAll() || !isPhoneChecked || !isEmailVerified) return;
+    //성공 로직
+    const requestData = {
+      name: formData.name,
+      gender: formData.gender as 'M' | 'F',
+      birthDay: formatBirth(formData.birth), //YYYY-MM--DD로 변환
+      phoneNumber: formData.phone,
+      email: formData.email,
+      password: formData.password,
+      phonePlan: Number(isPlan),
+    };
+    try {
+      const res = await signUp(requestData);
+      if (res.data.success) {
+        toastContext?.showToast(res.data.message, 'black');
+        navigate('/login');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -137,11 +177,11 @@ const RegisterPage = () => {
       <div className="flex gap-4 my-2">
         <Button
           type="button"
-          variant={formData.gender === 'male' ? 'fill' : 'outline'}
+          variant={formData.gender === 'M' ? 'fill' : 'outline'}
           color="pink"
           size="lg"
           onClick={() => {
-            handleChange('gender', 'male');
+            handleChange('gender', 'M');
           }}
           className="w-1/2"
         >
@@ -149,11 +189,11 @@ const RegisterPage = () => {
         </Button>
         <Button
           type="button"
-          variant={formData.gender === 'female' ? 'fill' : 'outline'}
+          variant={formData.gender === 'F' ? 'fill' : 'outline'}
           color="pink"
           size="lg"
           onClick={() => {
-            handleChange('gender', 'femail');
+            handleChange('gender', 'F');
           }}
           className="w-1/2"
         >
@@ -174,7 +214,13 @@ const RegisterPage = () => {
         value={formData.phone}
         onChange={(e) => handleChange('phone', e.target.value)}
         placeholder="'-'없이 입력(예:01012345678)"
-        suffixButton="중복 확인"
+        suffixButton={
+          <PhoneCheckButton
+            phoneNumber={formData.phone}
+            setError={(field, msg) => setErrors((prev) => ({ ...prev, [field]: msg }))}
+            setSuccessFlag={setIsPhoneChecked} // 휴대폰 중복확인 체크여부
+          />
+        }
         required
         error={errors.phone}
       />
@@ -184,7 +230,13 @@ const RegisterPage = () => {
         onChange={(e) => handleChange('email', e.target.value)}
         placeholder="이메일 (예: lguplus@google.com)"
         type="email"
-        suffixButton="이메일 인증"
+        suffixButton={
+          <EmailSendButton
+            email={formData.email}
+            setError={(field, msg) => setErrors((prev) => ({ ...prev, [field]: msg }))}
+            setSuccessFlag={setIsEmailClickd} // 이메일 인증 클릭 여부
+          />
+        }
         required
         error={errors.email}
       />
@@ -193,7 +245,13 @@ const RegisterPage = () => {
         value={formData.verificationCode}
         onChange={(e) => handleChange('verificationCode', e.target.value)}
         placeholder="인증번호 6자리 입력"
-        suffixButton="인증 확인"
+        suffixButton={
+          <CodeCheckButton
+            email={formData.verificationCode}
+            setError={(field, msg) => setErrors((prev) => ({ ...prev, [field]: msg }))}
+            setSuccessFlag={setIsEmailVerified} // 인증번호 확인  체크여부
+          />
+        }
         required
         error={errors.verificationCode}
       />
