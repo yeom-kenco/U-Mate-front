@@ -204,7 +204,7 @@ const MainPage = () => {
       {user.birthDay && (
         <section className="ml-[5%] pt-6">
           <h2 className="text-lg font-semibold mb-1">{user.name}님을 위한 맞춤 요금제</h2>
-          <p className="text-m mb-3 text-zinc-700">
+          <p className="text-m mb-1 text-zinc-700">
             {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
           </p>
           {/* 요금제 카드 좌측 shadow 가려지는 효과를 막기위한 마진과 패딩 추가(피그마 시안과 동일한 여백은 유지하도록) */}
@@ -229,7 +229,7 @@ const MainPage = () => {
       )}
 
       {/* 추천 요금제 영역 */}
-      <section className="ml-[5%] pt-6">
+      <section className="ml-[5%] pt-2">
         <h2 className="text-lg font-semibold mb-2">추천 요금제</h2>
 
         {/* 카테고리 버튼 */}
@@ -274,7 +274,7 @@ const MainPage = () => {
       </section>
 
       {/* 멤버십 혜택 영역 */}
-      <div className="w-[90%] mx-auto pb-16">
+      <div className="w-[90%] mx-auto pt-3 pb-16">
         <LoginBanner type="mainWhite" />
       </div>
     </div>
