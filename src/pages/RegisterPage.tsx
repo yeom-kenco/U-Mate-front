@@ -164,10 +164,13 @@ const RegisterPage = () => {
     console.log(requestData);
     try {
       const res = await signUp(requestData);
+      console.log(res.data);
       //성공시
       if (res.data.success) {
         toastContext?.showToast(res.data.message, 'black');
         navigate('/login'); //로그인페이지 이동
+      } else {
+        toastContext?.showToast(res.data.message, 'error');
       }
     } catch (error) {
       console.log(error);

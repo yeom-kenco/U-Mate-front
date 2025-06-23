@@ -27,7 +27,10 @@ export const PhoneCheckButton = ({ phoneNumber, setError, setSuccessFlag }: Prop
           toastContext?.showToast(res.data.message, 'success');
           setSuccessFlag?.(true);
         } catch (err: any) {
-          toastContext?.showToast(err.response?.data?.message || '중복 확인 실패', 'error');
+          toastContext?.showToast(
+            err.response?.data?.message || '이미 가입된 휴대폰번호가 존재합니다.',
+            'error'
+          );
           setSuccessFlag?.(false);
         }
       }}
