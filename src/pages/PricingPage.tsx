@@ -17,8 +17,8 @@ import ConfirmModal from '../components/Modal/ConfirmModal';
 import LoginBanner from '../components/LoginBanner';
 import Button from '../components/Button';
 
-// 요금제 목데이터
-import { data } from '../data/plansMockData';
+// 요금제 리스트 불러오기
+import { getPlanList } from '../apis/PlansApi';
 
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -26,8 +26,29 @@ const PricingPage = () => {
   const [ageOpen, setAgeOpen] = useState(false); // 연령 시트 토글
   const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
   const [ageRanges, SetAgeRanges] = useState(''); // 선택된 연령 기준
-  const [selectedPlan, setSelectedPlan] = useState(null); // 변경할 요금제
+  const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
+  const [planList, setPlanList] = useState([]); // 불러온 요금제 리스트
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchPlanList = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const planData = await getPlanList();
+        const data = planData.data;
+        console.log('planData', data);
+        setPlanList(data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setError('데이터 가져오는 중 오류 발생');
+      }
+    };
+    fetchPlanList();
+  }, []);
 
   const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
 
@@ -63,7 +84,7 @@ const PricingPage = () => {
   const handleComparePlans = () => {
     setModalType('compare');
     dispatch(closeModal());
-    navigate('/', { state: { plan: selectedPlan } });
+    navigate('/compare', { state: { plan: selectedPlan } });
   };
 
   // 비교하기 모달 닫기
@@ -109,7 +130,9 @@ const PricingPage = () => {
 
   // 정렬 & 연령별 필터링 로직
   const getSortedPlans = () => {
-    const filtered = ageRanges ? data.filter((plan) => plan.AGE_GROUP === ageRanges) : [...data];
+    const filtered = ageRanges
+      ? planList.filter((plan) => plan.AGE_GROUP === ageRanges)
+      : [...planList];
 
     switch (isSorted) {
       case '높은 가격순':
@@ -119,7 +142,6 @@ const PricingPage = () => {
       case '리뷰 많은 순':
         return filtered.sort((a, b) => b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT);
       default:
-        // 인기순(평점 높은 순) 리뷰가 0개일 때는 평점 0으로 처리
         return filtered.sort((a, b) => {
           const scoreA =
             a.REVIEW_USER_COUNT === 0 ? 0 : a.RECEIVED_STAR_COUNT / a.REVIEW_USER_COUNT;
@@ -134,12 +156,12 @@ const PricingPage = () => {
 
   // 페이지네이션 로직
   const handleLoadMore = () => {
-    if (visibleCount >= data.length) {
+    if (visibleCount >= planList.length) {
       toast?.showToast(`더 이상 요금제가 없어요`, 'black');
       return;
     }
 
-    setVisibleCount((prev) => Math.min(prev + 3, data.length));
+    setVisibleCount((prev) => Math.min(prev + 6, planList.length));
   };
 
   // 요금제명 클릭 시 상세 페이지로 이동
@@ -181,7 +203,8 @@ const PricingPage = () => {
             <PlanCard
               key={plan.PLAN_ID}
               name={plan.PLAN_NAME}
-              description={plan.DATA_INFO}
+              dataInfo={plan.DATA_INFO}
+              shareInfo={plan.SHARE_DATA}
               price={`${plan.MONTHLY_FEE.toLocaleString()}`}
               discountedPrice={`${plan.MONTHLY_FEE * 0.75}`}
               rating={{
@@ -204,7 +227,7 @@ const PricingPage = () => {
             onClick={handleLoadMore}
             className="md:w-96"
           >
-            요금제 더보기 ({visibleCount}/{data.length})
+            요금제 더보기 ({visibleCount}/{planList.length})
           </Button>
         </div>
         <BottomSheet isOpen={sortOpen} onClose={() => setSortOpen(false)} height="300px">

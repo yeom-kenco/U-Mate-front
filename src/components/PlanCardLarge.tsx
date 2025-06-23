@@ -6,7 +6,8 @@ import { SlArrowRight } from 'react-icons/sl';
 
 const PlanCardLarge: React.FC<PlanCardProps> = ({
   name,
-  description,
+  dataInfo,
+  shareInfo,
   price,
   discountedPrice,
   rating,
@@ -37,7 +38,8 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
           <SlArrowRight />
         </span>
       </div>
-      <div className="text-lg text-black font-bold w-2/3">{description}</div>
+      <div className="text-lg text-black font-bold w-2/3">{dataInfo}</div>
+      <div className="text-lg text-black font-bold w-2/3">{shareInfo}</div>
 
       <div className="mt-2">
         <p className="text-xl font-bold text-black">월 {price}원</p>
