@@ -17,6 +17,8 @@ const Default = () => {
   });
   const [userLoading, setUserLoading] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
