@@ -7,7 +7,7 @@ interface Props {
   email?: string;
   phoneNumber?: string;
   code?: string;
-  setError: (field: string, message: string) => void;
+  setError?: (field: string, message: string) => void;
   setSuccessFlag?: (flag: boolean) => void;
   Timer?: React.Dispatch<React.SetStateAction<number>>; //카운트 (180초)
   Counting?: React.Dispatch<React.SetStateAction<boolean>>; //카운트 실행 여부
@@ -45,7 +45,7 @@ export const EmailSendButton = ({ email, setError, setSuccessFlag, Timer, Counti
     <span
       onClick={async () => {
         if (!email || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-          setError('email', '이메일 형식이 올바르지 않습니다.');
+          setError?.('email', '이메일 형식이 올바르지 않습니다.');
           return;
         }
         try {
@@ -71,11 +71,11 @@ export const CodeCheckButton = ({ email, code, setError, setSuccessFlag, Countin
     <span
       onClick={async () => {
         if (!email || !code || code.length !== 6) {
-          setError('code', '인증코드가 올바르지 않습니다.');
+          setError?.('code', '인증코드가 올바르지 않습니다.');
           return;
         }
         if (!Counting) {
-          setError('code', '인증 시간이 만료되었습니다. 다시 요청해주세요.');
+          setError?.('code', '인증 시간이 만료되었습니다. 다시 요청해주세요.');
         }
         try {
           const res = await verifyEmailCode({ email, auth: code });

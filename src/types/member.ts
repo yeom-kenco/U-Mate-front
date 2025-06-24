@@ -24,5 +24,16 @@ export interface SignUpError {
   message?: string;
   error?: string;
 }
+export interface LoginProps {
+  id: string;
+  password: string;
+}
+
+export interface ResetProps {
+  email: string;
+  password: string;
+  newPassword: string;
+}
+
 
 export type SignUpResponse = SignUpSuccess | SignUpError;
