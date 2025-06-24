@@ -56,7 +56,7 @@ const MainPage = () => {
         name: '홍길동',
         birthDay: '19200520',
         email: 'test@example.com',
-        plan: 3,
+        plan: 7,
         membership: 'vvip',
       })
     );
@@ -217,81 +217,87 @@ const MainPage = () => {
       </div>
 
       {/* 이벤트 영역 */}
-      <div className="pt-9">
+      <div className="pt-9 md:mt-16">
         <EventBannerCarousel />
       </div>
 
       {/* 맞춤 요금제 (로그인한 경우에만) */}
       {user.birthDay && (
-        <section className="ml-[5%] pt-6">
-          <h2 className="text-lg font-semibold mb-1 max-[400px]:text-[20px]">
-            {user.name}님을 위한 맞춤 요금제
-          </h2>
-          <p className="text-m mb-1 text-zinc-700">
-            {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
-          </p>
-          {/* 요금제 카드 좌측 shadow 가려지는 효과를 막기위한 마진과 패딩 추가(피그마 시안과 동일한 여백은 유지하도록) */}
-          <div className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth ml-[-2%] pl-[2%]">
-            <div className="flex gap-4 flex-nowrap w-max pr-4">
-              {ageplans.map((plan) => (
-                <PlanCardSmall
-                  key={plan.planId}
-                  name={plan.name}
-                  description={plan.dataInfo}
-                  price={`${plan.monthlyFee.toLocaleString()}원`}
-                  discountedPrice={`${calculateDiscountedPrice(plan.monthlyFee, plan.name).toLocaleString()}원`}
-                  rating={{
-                    score: parseFloat(plan.avgRating?.toString() || '0'),
-                    count: plan.reviewCount || 0,
-                  }}
-                />
-              ))}
+        <section className="ml-[5%] pt-6 md:mt-28">
+          <div className="md:max-w-[1025px] md:mx-auto">
+            <h2 className="text-lg font-semibold mb-1 max-[400px]:text-[20px] md:text-center md:text-xxl md:mb-5">
+              {user.name}님을 위한 맞춤 요금제
+            </h2>
+            <p className="text-m mb-1 text-zinc-700 md:text-center md:text-lg md:mb-6">
+              {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
+            </p>
+            {/* 요금제 카드 좌측 shadow 가려지는 효과를 막기위한 마진과 패딩 추가(피그마 시안과 동일한 여백은 유지하도록) */}
+            <div className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth ml-[-2%] pl-[2%] md:h-[260px] md:w-full">
+              <div className="flex gap-4 flex-nowrap pr-4 md:w-fit md:mx-auto">
+                {ageplans.map((plan) => (
+                  <PlanCardSmall
+                    key={plan.planId}
+                    name={plan.name}
+                    description={plan.dataInfo}
+                    price={`${plan.monthlyFee.toLocaleString()}원`}
+                    discountedPrice={`${calculateDiscountedPrice(plan.monthlyFee, plan.name).toLocaleString()}원`}
+                    rating={{
+                      score: parseFloat(plan.avgRating?.toString() || '0'),
+                      count: plan.reviewCount || 0,
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </section>
       )}
 
       {/* 추천 요금제 영역 */}
-      <section className="ml-[5%] pt-2">
-        <h2 className="text-lg font-semibold mb-2 max-[400px]:text-[20px]">추천 요금제</h2>
+      <section className="ml-[5%] pt-2 md:mt-28">
+        <div className="md:max-w-[1025px] md:mx-auto">
+          <h2 className="text-lg font-semibold mb-2 max-[400px]:text-[20px] md:text-center md:text-xxl md:mb-7">
+            추천 요금제
+          </h2>
 
-        {/* 카테고리 버튼 */}
-        <div className="flex gap-2 mb-1">
-          {CATEGORIES.map((category) => (
-            <Button
-              key={category}
-              size="sm"
-              variant="fill"
-              color={selectedCategory === category ? 'pink' : 'white'}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
+          {/* 카테고리 버튼 */}
+          <div className="flex gap-2 mb-1 md:justify-center md:mb-3">
+            {CATEGORIES.map((category) => (
+              <Button
+                key={category}
+                size="sm"
+                variant="fill"
+                color={selectedCategory === category ? 'pink' : 'white'}
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
 
-        {/* 요금제 카드 리스트 */}
-        <div
-          ref={scrollRef}
-          className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth cursor-grab ml-[-2%] pl-[2%]"
-        >
-          <div className="flex gap-4 flex-nowrap w-max pr-4">
-            {filteredPlans.map((plan) => {
-              const discounted = calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME);
-              return (
-                <PlanCardSmall
-                  key={plan.PLAN_ID}
-                  name={plan.PLAN_NAME}
-                  description={plan.DATA_INFO}
-                  price={`${plan.MONTHLY_FEE.toLocaleString()}원`}
-                  discountedPrice={`${discounted.toLocaleString()}원`}
-                  rating={{
-                    score: plan.RECEIVED_STAR_COUNT / Math.max(plan.REVIEW_USER_COUNT, 1),
-                    count: plan.REVIEW_USER_COUNT,
-                  }}
-                />
-              );
-            })}
+          {/* 요금제 카드 리스트 */}
+          <div
+            ref={scrollRef}
+            className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth cursor-grab ml-[-2%] pl-[2%] md:h-[260px] md:w-full"
+          >
+            <div className="flex gap-4 flex-nowrap w-max pr-4 md:justify-center">
+              {filteredPlans.map((plan) => {
+                const discounted = calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME);
+                return (
+                  <PlanCardSmall
+                    key={plan.PLAN_ID}
+                    name={plan.PLAN_NAME}
+                    description={plan.DATA_INFO}
+                    price={`${plan.MONTHLY_FEE.toLocaleString()}원`}
+                    discountedPrice={`${discounted.toLocaleString()}원`}
+                    rating={{
+                      score: plan.RECEIVED_STAR_COUNT / Math.max(plan.REVIEW_USER_COUNT, 1),
+                      count: plan.REVIEW_USER_COUNT,
+                    }}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -303,7 +309,7 @@ const MainPage = () => {
 
         {/* 로그인한 경우에만 멤버십 카드 표시 */}
         {user.name && showMembership && (
-          <div className="bg-horizontal rounded-[20px] shadow-[0_0_12px_rgba(0,0,0,0.08)] pb-5">
+          <div className="bg-horizontal md:bg-none md:bg-fuchsia-100  rounded-[20px] shadow-[0_0_12px_rgba(0,0,0,0.08)] pb-5">
             {/* 흰 배경: 타이틀 + 뱃지 + 설명 */}
             <div className="bg-white w-full p-4 rounded-t-[20px]">
               <div className="flex items-center justify-start">
