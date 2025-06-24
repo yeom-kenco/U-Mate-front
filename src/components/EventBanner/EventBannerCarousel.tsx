@@ -15,7 +15,7 @@ const images = [
 
 const EventBannerCarousel = () => {
   return (
-    <div className="relative w-full flex justify-center">
+    <div className="relative w-full flex justify-center md:mt-20">
       <Swiper
         modules={[Pagination, Autoplay]}
         spaceBetween={-2}
@@ -30,7 +30,7 @@ const EventBannerCarousel = () => {
         className="w-full pb-10"
       >
         {images.map((src, i) => (
-          <SwiperSlide key={i} className="!w-[80%] sm:!w-[400px] flex justify-center">
+          <SwiperSlide key={i} className="!w-[80%] sm:!w-[400px] md:!w-[520px] flex justify-center">
             <EventBannerCard imageSrc={src} />
           </SwiperSlide>
         ))}
