@@ -2,6 +2,7 @@ import BaseModal from '../BaseModal';
 import { IoCloseOutline } from 'react-icons/io5';
 import ReviewListContent from './ReviewListContent';
 import ReviewWriteContent from './ReviewWriteContent';
+import AllReviewListContent from './AllReviewListContent';
 
 // 리뷰 작성 모달 사용 예시
 // {isOpen && (
@@ -19,13 +20,14 @@ import ReviewWriteContent from './ReviewWriteContent';
 // )}
 
 type ReviewModalProps = {
-  type: 'reviewList' | 'reviewWrite';
+  type: 'reviewList' | 'reviewWrite' | 'allReviewList';
   onClose: () => void;
   onConfirm?: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   rating?: number;
   planName?: string;
   planPrice?: string;
+  reviews?: any[];
 };
 
 const ReviewModal = ({
@@ -36,6 +38,7 @@ const ReviewModal = ({
   rating,
   planName,
   planPrice,
+  reviews,
 }: ReviewModalProps) => {
   return (
     <BaseModal onClose={onClose}>
@@ -47,7 +50,7 @@ const ReviewModal = ({
         </div>
 
         {type === 'reviewList' && <ReviewListContent>{children}</ReviewListContent>}
-
+        {type === 'allReviewList' && <AllReviewListContent reviews={reviews ?? []} />}
         {type === 'reviewWrite' && (
           <ReviewWriteContent
             rating={rating}
