@@ -135,7 +135,6 @@ const AccountStepContent = ({
 
           <InputField
             variant="box"
-            label="이메일 인증번호"
             value={verificationCode}
             onChange={(e) => setVerificationCode(e.target.value)}
             placeholder="인증번호 6자리 입력"

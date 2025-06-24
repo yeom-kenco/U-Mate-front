@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Button from '../components/Button';
 import InputField from '../components/InputField';
 import { useToast } from '../hooks/useToast';
-import { login } from '../apis/auth';
+import { login, validateToken } from '../apis/auth';
 import FindAccountModal from '../components/Modal/FindAccountModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, openModal } from '../store/modalSlice';
@@ -66,8 +66,11 @@ const LoginPage = () => {
     if (!validate()) return;
     try {
       console.log(email, password);
-      const res = await login({ id: email, password });
-      showToast(`${user.name}님 환영합니다`, 'black');
+      await login({ id: email, password });
+      //name 불러오기 위해 token 정보 불러옴
+      const res = await validateToken();
+      const { name } = res.data.user;
+      showToast(`${name}님 환영합니다`, 'black');
       navigate('/');
     } catch (err: any) {
       console.log(err.response);
