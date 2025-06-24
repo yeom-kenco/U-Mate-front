@@ -2,6 +2,7 @@ import { HeaderProps } from '../components/Header';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useHorizontalScroll } from '../hooks/useHorizontalScroll';
 import { calculateDiscountedPrice } from '../utils/getDiscountFree';
@@ -50,6 +51,7 @@ type UserInfo = {
 };
 
 const MainPage = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<UserInfo | null>(null);
   const scrollRef = useHorizontalScroll();
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -256,7 +258,7 @@ const MainPage = () => {
                       score: parseFloat(plan.avgRating?.toString() || '0'),
                       count: plan.reviewCount || 0,
                     }}
-                    onClick={() => console.log('페이지이동')}
+                    onClick={() => navigate(`/plans/${plan.planId}`)}
                   />
                 ))}
               </div>
@@ -308,7 +310,7 @@ const MainPage = () => {
                       score: plan.RECEIVED_STAR_COUNT / Math.max(plan.REVIEW_USER_COUNT, 1),
                       count: plan.REVIEW_USER_COUNT,
                     }}
-                    onClick={() => console.log('페이지이동')}
+                    onClick={() => navigate(`/plans/${plan.PLAN_ID}`)}
                   />
                 );
               })}
