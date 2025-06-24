@@ -4,15 +4,15 @@ import footerBear from '../assets/footerBear.svg';
 const Footer = () => {
   return (
     <div className="bg-zinc-100 px-6 py-5">
-      <div className="text-[#737373] text-sm leading-relaxed md:flex md:flex-col md:items-center md:text-m">
+      <div className="text-[#737373] text-sm leading-relaxed sm:flex sm:flex-col sm:items-center sm:text-m">
         <div className="flex justify-center">
           <img
             src={footerBear}
             alt="푸터곰돌이"
-            className="w-[5vw] min-w-[100px] hidden md:block"
+            className="w-[5vw] min-w-[100px] hidden sm:block"
           />
         </div>
-        <p className="pb-3 mb-3 font-regular border-b border-[#A1A1A1] md:px-24">
+        <p className="pb-3 mb-3 font-regular border-b border-[#A1A1A1] sm:px-24">
           (주)유레카 사업자정보
         </p>
         <p className="mb-1">
@@ -70,7 +70,7 @@ const Footer = () => {
             이승우
           </a>
         </p>
-        <p className="text-xs mt-2 mb-2 md:text-s">Copyright ⓒ U:Mate. All Rights Reserved.</p>
+        <p className="text-xs mt-2 mb-2 sm:text-s">Copyright ⓒ U:Mate. All Rights Reserved.</p>
       </div>
     </div>
   );
