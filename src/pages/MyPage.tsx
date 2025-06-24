@@ -11,6 +11,8 @@ import { RootState } from '../store/store';
 import { closeModal, openModal } from '../store/modalSlice';
 import FindAccountModal from '../components/Modal/FindAccountModal';
 import ReviewModal from '../components/Modal/Review/ReviewModal';
+import { PlanDetailResponse, PlanListItem } from '../types/plan';
+import { getPlanDetail, getPlanList, Plan } from '../apis/PlansApi';
 
 interface userInfoProps {
   birthDay: string;
@@ -67,7 +69,30 @@ const MyPage = () => {
       setIsCheckPassword(false);
     }
   };
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [myPlan, setMyPlan] = useState<Plan | null>(null);
 
+  useEffect(() => {
+    const fetchPlans = async () => {
+      if (!userInfo && user) return;
+      try {
+        const allPlans = await getPlanList(); // 전체 요금제 목록 받아오기
+
+        setPlans(allPlans.data);
+
+        // 사용자 요금제 ID와 일치하는 요금제 찾기
+        const matched = allPlans.data.find(
+          (plan) => plan.PLAN_ID === userInfo.phonePlan || user.plan
+        );
+        setMyPlan(matched || null);
+      } catch (err) {
+        console.error('전체 요금제 불러오기 실패', err);
+      }
+    };
+
+    fetchPlans();
+  }, [userInfo.phonePlan]);
+  console.log(myPlan);
   const divClass = 'flex justify-between py-2 border-b';
   const titleClass = 'text-sm text-gray-500';
   const contentClass = 'text-sm font-medium text-gray-800 mr-4';
