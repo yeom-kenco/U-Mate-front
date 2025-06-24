@@ -22,6 +22,7 @@ export default {
         // shadow-[지정명]
         card: '0px 0px 15px rgba(0, 0, 0, 0.15)',
         header: '0px 2px 4px rgba(0,0,0,0.15)',
+        lilac: '0px 2px 26px 0px #E3CDFF',
       },
 
       fontSize: {
