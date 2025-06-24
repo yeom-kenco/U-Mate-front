@@ -5,8 +5,8 @@ import PlanCardLarge from './PlanCardLarge';
 export interface PlanCardProps {
   name: string;
   description: string;
-  dataInfo: string;
-  shareInfo: string;
+  dataInfo?: string;
+  shareInfo?: string;
   price: string;
   discountedPrice?: string;
   rating?: {

@@ -245,6 +245,7 @@ const MainPage = () => {
                       score: parseFloat(plan.avgRating?.toString() || '0'),
                       count: plan.reviewCount || 0,
                     }}
+                    onClick={() => console.log('페이지이동')}
                   />
                 ))}
               </div>
@@ -296,6 +297,7 @@ const MainPage = () => {
                       score: plan.RECEIVED_STAR_COUNT / Math.max(plan.REVIEW_USER_COUNT, 1),
                       count: plan.REVIEW_USER_COUNT,
                     }}
+                    onClick={() => console.log('페이지이동')}
                   />
                 );
               })}
