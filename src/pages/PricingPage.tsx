@@ -288,7 +288,7 @@ const PricingPage = () => {
   return (
     <>
       {/* 만약 사용자가 로그인 상태가 아니라면 배너 띄우기 */}
-      {!user.id && <LoginBanner type="default" />}
+      {!user?.id && <LoginBanner type="default" />}
       <div className="h-full px-4 md:px-10">
         {/* 필터 영역 */}
         <div className="flex items-center gap-4 py-4">
