@@ -13,7 +13,7 @@ export default {
         // bg-[지정명]
         chatbot: 'linear-gradient(180deg, #FFABC4 0%, #F254A3 45%, #6B12F5 100%)',
         diagonal: 'linear-gradient(135deg, #F3F4F8 0%, #F5EAFA 38%, #E4D9F9 87%)',
-        rdiagonal: 'linear-gradient(320deg, #F3F4F8 0%, #F5EAFA 38%, #E4D9F9 87%)',
+        rdiagonal: 'linear-gradient(320deg, #F3F4F8 0%, #F5EAFA 38%, #E4D9F9 100%)',
         horizontal: 'linear-gradient(180deg, #F3F4F8 0%, #F5EAFA 52%, #E4D9F9 71%)',
         primary: 'linear-gradient(90deg, #BA0087 0%, #33059C 62%)',
       },
