@@ -61,16 +61,13 @@ const LoginPage = () => {
     return Object.values(newErrors).every((e) => e === '');
   };
 
+  console.log(user);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      console.log(email, password);
       await login({ id: email, password });
-      //name 불러오기 위해 token 정보 불러옴
-      const res = await validateToken();
-      const { name } = res.data.user;
-      showToast(`${name}님 환영합니다`, 'black');
+      showToast(`${user?.name}님 환영합니다`, 'black');
       navigate('/');
     } catch (err: any) {
       console.log(err.response);

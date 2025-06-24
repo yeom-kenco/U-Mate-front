@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { validateToken } from './apis/auth';
 import { clearUser, setUser } from './store/userSlice';
 import { useToast } from './hooks/useToast';
+import { formatToKST } from './utils/formatDate';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
@@ -22,14 +23,14 @@ const Default = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        setUserLoading(true);
         const res = await validateToken();
         const { user } = res.data;
+        console.log(user);
         if (res && user) {
           const { email, birthDay, id, membership, name, plan } = user;
           //한국 날짜로
-          const date = new Date(birthDay);
-          const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-          const korBirthDay = kstDate.toISOString().split('T')[0];
+          const korBirthDay = formatToKST(birthDay);
           dispatch(
             setUser({
               id,
@@ -55,6 +56,7 @@ const Default = () => {
   if (userLoading) {
     return <div className="text-center mt-10">loading...</div>;
   }
+  console.log(user);
   return (
     <div className="flex flex-col min-h-[calc(100vh+1px)]">
       {/* 헤더 */}
