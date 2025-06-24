@@ -10,6 +10,8 @@ import { useHorizontalScroll } from '../hooks/useHorizontalScroll';
 import ReviewModal from '../components/Modal/Review/ReviewModal';
 import { benefitList } from '../data/benefits';
 import BenefitDropBar from '../components/BenefitDropBar';
+import PlanBottomSheet from '../components/BottomSheet/PlanBottomSheet';
+import PlanBottomBar from '../components/PlanDetail/PlanBottomBar';
 
 // 상단 import 아래에 위치시키기
 const benefitIdToIndexMap: Record<number, number> = {
@@ -50,6 +52,7 @@ interface Plan {
 
 const PlanDetailPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
+  const [bottomOpen, setBottomOpen] = useState(false);
   const [reviews, setReviews] = useState<any[]>([]);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const scrollRef = useHorizontalScroll();
@@ -206,6 +209,15 @@ const PlanDetailPage = () => {
         <BenefitDropBar label="할인혜택" indexes={discountBenefitIndexes} data={benefitList} />
         <BenefitDropBar label="기본혜택" indexes={basicBenefitIndexes} data={benefitList} />
       </section>
+
+      <PlanBottomSheet
+        isOpen={bottomOpen}
+        onClose={() => setBottomOpen(false)}
+        onOpen={() => setBottomOpen(true)}
+        height="140px"
+      >
+        <PlanBottomBar planId={plan.PLAN_ID} planName={plan.PLAN_NAME} price={plan.MONTHLY_FEE} />
+      </PlanBottomSheet>
     </div>
   );
 };
