@@ -29,4 +29,10 @@ export interface LoginProps {
   password: string;
 }
 
+export interface ResetProps {
+  email: string;
+  password: string;
+  newPassword: string;
+}
+
 export type SignUpResponse = SignUpSuccess | SignUpError;

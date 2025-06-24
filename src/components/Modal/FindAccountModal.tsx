@@ -1,5 +1,5 @@
 import BaseModal from './BaseModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import AccountStepRenderer from './AccountStepRenderer';
 import { findEmailByPhone } from '../../apis/auth';
@@ -35,6 +35,7 @@ const FindAccountModal = ({ onClose }: Props) => {
   const [flow, setFlow] = useState<FlowType>('id');
   const [step, setStep] = useState<ModalStep>('findId');
   const [isCodeSent, setIsCodeSent] = useState(false);
+  const [verificationCodeComplete, setVerificationCodeComplete] = useState(false); //인증코드 확인 여부
 
   const handleRequestAuth = () => {
     console.log('인증 요청됨');
@@ -69,6 +70,11 @@ const FindAccountModal = ({ onClose }: Props) => {
 
   const { title, subtitle } = titleMap[step];
 
+  useEffect(() => {
+    if (step === 'verify' && verificationCodeComplete) {
+      setStep('reset');
+    }
+  }, [verificationCodeComplete, step]);
   return (
     <BaseModal onClose={onClose}>
       <div className="p-6">
@@ -88,6 +94,7 @@ const FindAccountModal = ({ onClose }: Props) => {
           onRequestAuth={handleRequestAuth}
           onNext={handleNext}
           onClose={onClose}
+          setVerificationCodeComplete={setVerificationCodeComplete}
         />
       </div>
     </BaseModal>

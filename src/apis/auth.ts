@@ -2,7 +2,7 @@
 import axiosInstance from './axiosInst.ts';
 
 // 회원가입 & 로그인
-import { CodeCheck, LoginProps, SignUpRequest } from '../types/member';
+import { CodeCheck, LoginProps, ResetProps, SignUpRequest } from '../types/member';
 
 export const signUp = (data: SignUpRequest) => axiosInstance.post('/signUp', data);
 
@@ -14,7 +14,7 @@ export const sendEmailCode = (data: string) => axiosInstance.post('/email', data
 export const verifyEmailCode = (data: CodeCheck) => axiosInstance.post('/checkAuth', data);
 
 // 비밀번호 관리
-export const changePassword = (data) => axiosInstance.post('/passwordChange', data);
+export const changePassword = (data: ResetProps) => axiosInstance.post('/passwordChange', data);
 export const resetPassword = (data) => axiosInstance.post('/passwordReset', data);
 export const checkPassword = (data) => axiosInstance.post('/passwordCheck', data);
 

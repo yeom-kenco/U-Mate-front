@@ -17,6 +17,7 @@ type Props = {
   onRequestAuth: () => void;
   onNext: () => void;
   onClose: () => void;
+  setVerificationCodeComplet: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const AccountStepContent = ({
@@ -27,6 +28,7 @@ const AccountStepContent = ({
   onRequestAuth,
   onNext,
   onClose,
+  setVerificationCodeComplete,
 }: Props) => {
   const { showToast } = useToast();
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -34,9 +36,9 @@ const AccountStepContent = ({
   const isValidPhone = /^\d{10,11}$/;
   const [email, setEmail] = useState('');
   const [isEmailClicked, setIsEmailClicked] = useState<boolean>(false);
+  const [verificationCode, setVerificationCode] = useState<string>('');
   const [timer, setTimer] = useState<number>(180);
   const [isCounting, setIsCounting] = useState<boolean>(false);
-  const [verificationCode, setVerifictionCode] = useState('');
   const Email = findEmail.split(' : ')[1];
   const handlefindEmailByPhone = async () => {
     if (!isValidPhone.test(phoneNumber)) {
@@ -135,10 +137,18 @@ const AccountStepContent = ({
             variant="box"
             label="이메일 인증번호"
             value={verificationCode}
-            onChange={(e) => setVerifictionCode(e.target.value)}
+            onChange={(e) => setVerificationCode(e.target.value)}
             placeholder="인증번호 6자리 입력"
             suffixButton={
-              <CodeCheckButton email={email} code={verificationCode} Counting={setIsCounting} />
+              <CodeCheckButton
+                email={email}
+                code={verificationCode}
+                Counting={setIsCounting}
+                setSuccessFlag={(success) => {
+                  setVerificationCodeComplete(success);
+                  if (success) setFindEmail(email);
+                }}
+              />
             }
             timer={isCounting ? `${formatTime(timer)}` : undefined}
             required
@@ -153,7 +163,7 @@ const AccountStepContent = ({
       );
 
     case 'reset':
-      return <ResetPasswordForm onCancel={onClose} onComplete={onClose} />;
+      return <ResetPasswordForm onCancel={onClose} email={findEmail} />;
 
     default:
       return null;
