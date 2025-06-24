@@ -8,6 +8,45 @@ import ReviewCard from '../components/ReviewCard';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { useHorizontalScroll } from '../hooks/useHorizontalScroll';
 import ReviewModal from '../components/Modal/Review/ReviewModal';
+import { benefitList } from '../data/benefits';
+import BenefitDropBar from '../components/BenefitDropBar';
+
+// 상단 import 아래에 위치시키기
+const benefitIdToIndexMap: Record<number, number> = {
+  15: 0,
+  16: 1,
+  17: 2,
+  18: 3,
+  19: 4,
+  20: 5,
+  21: 5,
+  22: 6,
+  23: 7,
+  24: 8,
+  25: 9,
+};
+
+interface Benefit {
+  BENEFIT_ID: number;
+  NAME: string;
+  TYPE: string;
+}
+interface Plan {
+  PLAN_ID: number;
+  PLAN_NAME: string;
+  MONTHLY_FEE: number;
+  CALL_INFO: string;
+  CALL_INFO_DETAIL?: string;
+  SMS_INFO: string;
+  DATA_INFO: string;
+  DATA_INFO_DETAIL?: string;
+  SHARE_DATA: string;
+  AGE_GROUP: string;
+  USER_COUNT: number;
+  RECEIVED_STAR_COUNT: string;
+  REVIEW_USER_COUNT: number;
+  benefits: Benefit[];
+}
 
 const PlanDetailPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -69,7 +108,8 @@ const PlanDetailPage = () => {
   }, [reviews]);
 
   const { id } = useParams();
-  const [plan, setPlan] = useState<any>(null);
+  const [plan, setPlan] = useState<Plan | null>(null);
+  const [benefits, setBenefits] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchPlanDetail = async () => {
@@ -78,13 +118,28 @@ const PlanDetailPage = () => {
       if (json.success) {
         setPlan(json.data.plan);
         setReviews(json.data.reviews);
+        setBenefits(json.data.benefits);
       }
     };
 
     fetchPlanDetail();
   }, [id]);
 
-  if (!plan) return <div>로딩 중...</div>;
+  if (!plan) return <div>로딩 중...</div>; // 추후 컴포넌트 넣어주기
+
+  // 혜택 인덱스 매핑 처리
+  const discountBenefitIds = [15, 16, 17, 18, 19];
+  const basicBenefitIds = [20, 21, 22, 23, 24, 25]; // 20,21은 하나의 컴포넌트로 처리됨
+
+  const discountBenefitIndexes = benefits
+    .filter((b) => discountBenefitIds.includes(b.BENEFIT_ID))
+    .map((b) => benefitIdToIndexMap[b.BENEFIT_ID])
+    .filter((i) => i !== undefined);
+
+  const basicBenefitIndexes = benefits
+    .filter((b) => basicBenefitIds.includes(b.BENEFIT_ID))
+    .map((b) => benefitIdToIndexMap[b.BENEFIT_ID])
+    .filter((v, i, self) => v !== undefined && self.indexOf(v) === i); // 중복 제거
 
   const averageRating =
     plan.REVIEW_USER_COUNT > 0 ? parseFloat(plan.RECEIVED_STAR_COUNT) / plan.REVIEW_USER_COUNT : 0;
@@ -92,7 +147,7 @@ const PlanDetailPage = () => {
   const discounted = calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden bg-background">
       <PlanTopBanner
         planName={plan.PLAN_NAME}
         monthlyFee={plan.MONTHLY_FEE}
@@ -104,7 +159,7 @@ const PlanDetailPage = () => {
         discountedPrice={discounted}
       />
 
-      <section className="mt-10 ml-[5%] md:mx-52">
+      <section className="mt-10 ml-[5%] md:mx-52 md:mt-20">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-lg font-semibold">후기로 보는 요금제 ({reviews.length})</h2>
           <button
@@ -146,6 +201,11 @@ const PlanDetailPage = () => {
           onClose={() => setIsReviewModalOpen(false)}
         />
       )}
+
+      <section className="mt-10 px-6 md:px-52 mb-20 md:mt-20 md:mb-32">
+        <BenefitDropBar label="할인혜택" indexes={discountBenefitIndexes} data={benefitList} />
+        <BenefitDropBar label="기본혜택" indexes={basicBenefitIndexes} data={benefitList} />
+      </section>
     </div>
   );
 };
