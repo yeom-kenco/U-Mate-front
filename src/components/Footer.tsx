@@ -1,11 +1,20 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import footerBear from '../assets/footerBear.svg';
 
 const Footer = () => {
   return (
     <div className="bg-zinc-100 px-6 py-5">
-      <div className="text-[#737373] text-sm leading-relaxed">
-        <p className="pb-3 mb-3 font-regular border-b border-[#A1A1A1]">(주)유레카 사업자정보</p>
+      <div className="text-[#737373] text-sm leading-relaxed sm:flex sm:flex-col sm:items-center sm:text-m">
+        <div className="flex justify-center">
+          <img
+            src={footerBear}
+            alt="푸터곰돌이"
+            className="w-[5vw] min-w-[100px] hidden sm:block"
+          />
+        </div>
+        <p className="pb-3 mb-3 font-regular border-b border-[#A1A1A1] sm:px-24">
+          (주)유레카 사업자정보
+        </p>
         <p className="mb-1">
           <Link to="/" className="hover:underline hover:text-inherit">
             유메이트(U:Mate)
@@ -61,7 +70,7 @@ const Footer = () => {
             이승우
           </a>
         </p>
-        <p className="text-xs mt-2 mb-2">Copyright ⓒ U:Mate. All Rights Reserved.</p>
+        <p className="text-xs mt-2 mb-2 sm:text-s">Copyright ⓒ U:Mate. All Rights Reserved.</p>
       </div>
     </div>
   );
