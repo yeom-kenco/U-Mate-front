@@ -6,7 +6,7 @@ import Button from '../components/Button';
 import InputField from '../components/InputField';
 const MyPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
   useEffect(() => {
     setHeaderConfig({
       title: '마이페이지',
@@ -14,6 +14,14 @@ const MyPage = () => {
       showSearch: false,
     });
   }, []);
+
+  const handlePasswordCheck = () => {
+    try {
+      //await passwordCheck(email, password);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="h-screen pt-10  bg-background">
       <div className="flex flex-col justify-center items-center w-[90%] mx-auto gap-3">
@@ -49,12 +57,19 @@ const MyPage = () => {
         <div className="w-4/5 mx-auto">
           <InputField
             variant="box"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="휴대폰 번호 입력 ex) 01012345678"
+            value={password}
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="비밀번호 입력"
           />
         </div>
-        <Button color="pink" variant="fill" size="m" className="w-20 self-center">
+        <Button
+          color="pink"
+          onClick={handlePasswordCheck}
+          variant="fill"
+          size="m"
+          className="w-20 self-center"
+        >
           확인
         </Button>
       </div>
