@@ -25,7 +25,7 @@ const PlanTopBanner = ({
   isPopular = false,
 }: PlanTopBannerProps) => {
   return (
-    <div className="rounded-b-[20px] px-9 pt-9 pb-4 max-[400px]:px-7 max-[400px]:pt-7 max-[400px]:pb-3 md:px-40 bg-rdiagonal text-black shadow-[0_8px_15px_-4px_rgba(0,0,0,0.2)]">
+    <div className="rounded-b-[20px] px-9 pt-9 pb-4 max-[400px]:px-7 max-[400px]:pt-7 max-[400px]:pb-3 md:px-52 bg-rdiagonal text-black shadow-[0_8px_15px_-4px_rgba(0,0,0,0.2)]">
       {/* 인기 & 별점 */}
       <div className="flex items-center gap-1 mt-1 mb-1">
         {isPopular && (
@@ -64,21 +64,21 @@ const PlanTopBanner = ({
 
         {/* 요금제 슬라이드 카드 영역 */}
         <div className="relative w-screen left-1/2 -translate-x-1/2">
-          <div className="overflow-x-auto scrollbar-hide pl-9 py-6 md:pl-40">
-            <div className="inline-flex gap-2 pr-4">
-              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s">
+          <div className="overflow-x-auto scrollbar-hide pl-9 py-6 md:pl-52">
+            <div className="inline-flex gap-2 pr-4 md:gap-4">
+              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-28 md:max-h-28 md:min-w-[165px] md:max-w-[165px]">
                 <p className="text-gray-500">데이터</p>
                 <p className="font-bold">{dataInfo}</p>
               </div>
-              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s">
+              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-28 md:max-h-28 md:min-w-[165px] md:max-w-[165px]">
                 <p className="text-gray-500">공유 데이터</p>
                 <p className="font-bold">{shareData}</p>
               </div>
-              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s">
+              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-28 md:max-h-28 md:min-w-[165px] md:max-w-[165px]">
                 <p className="text-gray-500">음성 통화</p>
                 <p className="font-bold">{callInfo}</p>
               </div>
-              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s">
+              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-28 md:max-h-28 md:min-w-[165px] md:max-w-[165px]">
                 <p className="text-gray-500">문자메세지</p>
                 <p className="font-bold">{smsInfo}</p>
               </div>
