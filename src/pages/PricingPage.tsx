@@ -35,7 +35,13 @@ const PricingPage = () => {
   const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
   const [planList, setPlanList] = useState<Plan[]>([]);
-  const [filters, setFilters] = useState<PlanFilterRequest[]>([]);
+  const [filters, setFilters] = useState<PlanFilterRequest[]>({
+    ageGroup: '',
+    minFee: undefined,
+    maxFee: undefined,
+    dataType: '상관없어요',
+    benefitIds: '',
+  });
   const [loading, setLoading] = useState(true);
 
   // 모달 상태 관리
