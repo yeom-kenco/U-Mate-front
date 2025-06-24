@@ -6,6 +6,8 @@ import ChatbotInput from '../components/ChatbotInput';
 import FirstMessage from '../components/ChatbotFirstMessage';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SolutionList from '../components/BottomSheet/SolutionList';
+import LoginBanner from '../components/LoginBanner';
+import Research from '../components/BottomSheet/Research';
 
 type Message = {
   type: 'user' | 'bot';
@@ -35,6 +37,7 @@ export default function ChatbotMain() {
   const [input, setInput] = useState<string>('');
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showResearch, setShowResearch] = useState(false);
 
   const ws = useRef<WebSocket | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -131,6 +134,14 @@ export default function ChatbotMain() {
 
   return (
     <div className="flex flex-col h-full bg-background">
+      <LoginBanner type="chatbot" />
+      <LoginBanner type="research" />
+      <button
+        onClick={() => setShowResearch(true)}
+        className="fixed bottom-28 right-4 px-4 py-2 rounded-lg bg-pink-500 text-white"
+      >
+        만족도 조사
+      </button>
       {!connected && (
         <div className="p-4 bg-purple-600 border-b border-gray-200">
           <div className="flex gap-2">
@@ -191,6 +202,23 @@ export default function ChatbotMain() {
           placeholder="텍스트를 입력해주세요"
         />
       </div>
+      {showResearch && (
+        <div className="fixed bottom-0 left-0 right-0 z-20 px-4">
+          <BottomSheet
+            isOpen={showResearch}
+            onClose={() => setShowResearch(false)}
+            height="auto" // 또는 원하는 정적인 높이 e.g. "600px"
+          >
+            <Research
+              onSubmit={(rating, feedback) => {
+                console.log('제출됨:', rating, feedback);
+                setShowResearch(false);
+              }}
+              onClose={() => setShowResearch(false)}
+            />
+          </BottomSheet>
+        </div>
+      )}
     </div>
   );
 }

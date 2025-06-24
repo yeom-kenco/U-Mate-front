@@ -23,18 +23,27 @@ export default function ChatbotInput({
 }: ChatbotInputProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
 
+  // ✅ 처음 접속 시 툴팁 보여줄지 결정
+  useEffect(() => {
+    const seenTooltip = localStorage.getItem('seenPlusTooltip');
+    if (!seenTooltip) {
+      setShowTooltip(true);
+    }
+  }, []);
+
+  // ✅ 음성 인식 설정
   useEffect(() => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
       console.warn('이 브라우저는 SpeechRecognition을 지원하지 않습니다.');
       return;
     }
 
-    type SpeechRecognitionConstructor = new () => SpeechRecognition;
-    const SpeechRecognitionCtor: SpeechRecognitionConstructor =
+    const SpeechRecognitionCtor =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-
     const recog = new SpeechRecognitionCtor();
+
     recog.lang = 'ko-KR';
     recog.interimResults = true;
     recog.continuous = false;
@@ -67,8 +76,11 @@ export default function ChatbotInput({
     if (value.trim()) onSend();
   };
 
+  // ✅ + 버튼 클릭 시 툴팁 안 보이게 처리
   const handlePlusClick = () => {
-    if (onPlusClick) onPlusClick(); // ← 부모(ChatbotMain)로 신호 전달
+    if (onPlusClick) onPlusClick();
+    localStorage.setItem('seenPlusTooltip', 'true');
+    setShowTooltip(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -81,17 +93,31 @@ export default function ChatbotInput({
   const showSend = !!value.trim();
 
   return (
-    <div className="flex items-center gap-2 w-full">
-      <button
-        type="button"
-        onClick={handlePlusClick}
-        disabled={disabled}
-        className="flex-shrink-0 w-9 h-9 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
-      >
-        <FiPlusSquare size={20} />
-      </button>
+    <div className="flex items-center gap-2 w-full relative">
+      <div className="relative">
+        <button
+          type="button"
+          onClick={handlePlusClick}
+          disabled={disabled}
+          className="flex-shrink-0 w-9 h-9 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+        >
+          <FiPlusSquare size={20} />
+        </button>
 
-      <div className="flex flex-1 items-center gap-2 px-4 py-3 bg-gray-100 rounded-full border border-gray-200  transition-colors">
+        {showTooltip && (
+          <div
+            className="absolute z-10 bg-indigo-700 text-white text-xs px-3 py-2 rounded-lg max-w-[200px] w-max break-words shadow-md animate-bounce"
+            style={{ left: '3px', top: '-3rem' }}
+          >
+            버튼을 누르면 원하는 질문들을
+            <br />
+            빠르게 찾아볼 수 있어요!
+            <div className="absolute left-2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-[10px] border-t-indigo-700" />
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-1 items-center gap-2 px-4 py-3 bg-gray-100 rounded-full border border-gray-200 transition-colors">
         <input
           type="text"
           value={value}
