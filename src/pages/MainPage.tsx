@@ -223,8 +223,8 @@ const MainPage = () => {
 
       {/* 맞춤 요금제 (로그인한 경우에만) */}
       {user.birthDay && (
-        <section className="ml-[5%] pt-6 md:mt-28">
-          <div className="md:max-w-[1025px] md:mx-auto">
+        <section className="ml-[5%] pt-6 md:mt-28 md:ml-0">
+          <div className="md:max-w-[995px] md:mx-auto">
             <h2 className="text-lg font-semibold mb-1 max-[400px]:text-[20px] md:text-center md:text-xxl md:mb-5">
               {user.name}님을 위한 맞춤 요금제
             </h2>
@@ -232,7 +232,7 @@ const MainPage = () => {
               {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
             </p>
             {/* 요금제 카드 좌측 shadow 가려지는 효과를 막기위한 마진과 패딩 추가(피그마 시안과 동일한 여백은 유지하도록) */}
-            <div className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth ml-[-2%] pl-[2%] md:h-[260px] md:w-full">
+            <div className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth ml-[-2%] pl-[2%] md:h-[260px] md:w-full md:ml-0 md:pl-0">
               <div className="flex gap-4 flex-nowrap pr-4 md:w-fit md:mx-auto">
                 {ageplans.map((plan) => (
                   <PlanCardSmall
@@ -249,7 +249,7 @@ const MainPage = () => {
                 ))}
               </div>
             </div>
-            <p className="hidden text-end mr-12 text-m text-zinc-600 md:block animate-pulse">
+            <p className="hidden text-end text-m text-zinc-600 md:block animate-pulse">
               좌우로 밀어보세요 →
             </p>
           </div>
@@ -257,8 +257,8 @@ const MainPage = () => {
       )}
 
       {/* 추천 요금제 영역 */}
-      <section className="ml-[5%] pt-2 md:mt-28">
-        <div className="md:max-w-[1025px] md:mx-auto">
+      <section className="ml-[5%] pt-2 md:mt-28 md:ml-0">
+        <div className="md:max-w-[995px] md:mx-auto">
           <h2 className="text-lg font-semibold mb-2 max-[400px]:text-[20px] md:text-center md:text-xxl md:mb-7">
             추천 요금제
           </h2>
@@ -280,7 +280,7 @@ const MainPage = () => {
           {/* 요금제 카드 리스트 */}
           <div
             ref={scrollRef}
-            className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth cursor-grab ml-[-2%] pl-[2%] md:h-[260px] md:w-full"
+            className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth cursor-grab ml-[-2%] pl-[2%] md:h-[260px] md:w-full md:ml-0 md:pl-0"
           >
             <div className="flex gap-4 flex-nowrap w-max pr-4">
               {filteredPlans.map((plan) => {
@@ -301,32 +301,34 @@ const MainPage = () => {
               })}
             </div>
           </div>
-          <p className="hidden text-end mr-12 text-m text-zinc-600 md:block animate-pulse">
+          <p className="hidden text-end text-m text-zinc-600 md:block animate-pulse">
             좌우로 밀어보세요 →
           </p>
         </div>
       </section>
 
       {/* 멤버십 혜택 영역 */}
-      <div className="w-[90%] mx-auto pt-3 pb-16">
+      <div className="w-[90%] mx-auto pt-3 pb-16 md:max-w-[990px] md:mt-32 md:pb-36">
         {/* 로그인하지 않은 경우에만 배너 표시 */}
         {!user.name && <LoginBanner type="mainWhite" />}
 
         {/* 로그인한 경우에만 멤버십 카드 표시 */}
         {user.name && showMembership && (
-          <div className="bg-horizontal md:bg-none md:bg-fuchsia-100  rounded-[20px] shadow-[0_0_12px_rgba(0,0,0,0.08)] pb-5">
+          <div className="bg-horizontal md:bg-none md:bg-fuchsia-100 rounded-[20px] shadow-[0_0_12px_rgba(0,0,0,0.08)] pb-5">
             {/* 흰 배경: 타이틀 + 뱃지 + 설명 */}
             <div className="bg-white w-full p-4 rounded-t-[20px]">
               <div className="flex items-center justify-start">
-                <h2 className="text-lg font-bold px-2 max-[400px]:text-[20px]">나의 멤버십</h2>
+                <h2 className="text-lg font-bold px-2 max-[400px]:text-[20px] md:text-xxl md:px-14 md:py-4">
+                  나의 멤버십
+                </h2>
                 <div className="flex gap-2 ml-1">
                   {membershipLabel && (
-                    <span className="inline-flex items-center bg-pink-500 text-white text-m max-[400px]:text-sm font-normal px-3 rounded-full leading-none h-7">
+                    <span className="inline-flex items-center bg-pink-500 text-white text-m max-[400px]:text-sm font-normal px-3 rounded-full leading-none h-7 md:text-lg md:h-10 md:px-5">
                       {membershipLabel}
                     </span>
                   )}
                   {showYouth && (
-                    <span className="inline-flex items-center bg-violet-500 text-white text-m max-[400px]:text-sm font-medium px-3 rounded-full leading-none h-7">
+                    <span className="inline-flex items-center bg-violet-500 text-white text-m max-[400px]:text-sm font-medium px-3 rounded-full leading-none h-7 md:text-lg md:h-10 md:px-5">
                       유쓰
                     </span>
                   )}
@@ -335,48 +337,50 @@ const MainPage = () => {
             </div>
 
             {/* 혜택 카드 목록 (그라데이션 배경) */}
-            <div className="space-y-3 p-5 pt-4">
-              <p className="text-m px-2">{membershipLabel} 멤버십 인기 혜택이에요!</p>
+            <div className="space-y-3 p-5 pt-4 md:px-14">
+              <p className="text-sm pb-3 px-2 md:text-lg md:py-2">
+                {membershipLabel} 멤버십이 누릴 수 있는 인기 혜택이에요!
+              </p>
               {/* 유튜브 프리미엄 */}
-              <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px]">
+              <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px] md:h-[100px]">
                 <img
                   src="/images/membership/youtube.png"
                   alt="유튜브 로고"
-                  className="w-12 h-12 ml-2 mr-3"
+                  className="w-12 h-12 ml-2 mr-3 md:w-24 md:h-24 md:ml-8"
                 />
                 <div className="ml-3">
-                  <p className="text-s text-zinc-500">유튜브 프리미엄 x 넷플릭스</p>
-                  <p className="text-m font-regular max-[400px]:text-sm">
+                  <p className="text-s text-zinc-500 md:text-m">유튜브 프리미엄 x 넷플릭스</p>
+                  <p className="text-m font-regular max-[400px]:text-sm md:text-lm">
                     국내 유일! 최대 혜택가 11,900원에 이용하세요.
                   </p>
                 </div>
               </div>
 
               {/* CGV */}
-              <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px]">
+              <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px] md:h-[100px]">
                 <img
                   src="/images/membership/cgv.png"
                   alt="CGV 로고"
-                  className="w-12 h-12 ml-2 mr-3"
+                  className="w-12 h-12 ml-2 mr-3 md:w-24 md:h-24 md:ml-8"
                 />
                 <div className="ml-3">
-                  <p className="text-s text-zinc-500">CGV</p>
-                  <p className="text-m font-regular max-[400px]:text-sm">
+                  <p className="text-s text-zinc-500 md:text-m">CGV</p>
+                  <p className="text-m font-regular max-[400px]:text-sm md:text-lm">
                     2D영화 장당 2,000원 할인
                   </p>
                 </div>
               </div>
 
               {/* 롯데시네마 */}
-              <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px]">
+              <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px] md:h-[100px]">
                 <img
                   src="/images/membership/lotte-cinema.png"
                   alt="롯데시네마 로고"
-                  className="w-18 h-12 mr-3"
+                  className="w-18 h-12 mr-3 md:w-32 md:h-24 md:ml-3"
                 />
                 <div>
-                  <p className="text-s text-zinc-500">롯데시네마</p>
-                  <p className="text-m font-regular max-[400px]:text-sm">연 6회 4,000원 할인</p>
+                  <p className="text-s text-zinc-500 md:text-m">롯데시네마</p>
+                  <p className="text-m font-regular max-[400px]:text-lm">연 6회 4,000원 할인</p>
                 </div>
               </div>
             </div>
