@@ -10,13 +10,17 @@ import OnBoarding from '../components/OnBoarding';
 import LoginPage from '../pages/LoginPage';
 import { HeaderProps } from '../components/Header';
 import ReviewCard from '../components/ReviewCard';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ToastContext } from '../context/ToastContext';
 import Button from '../components/Button';
 import MyPage from '../pages/MyPage';
 import MainPage from '../pages/MainPage';
 import RegisterPage from '../pages/RegisterPage';
+import ReviewTextarea from '../components/ReviewTextarea';
+import BottomSheet from '../components/BottomSheet/BottomSheet';
+import SolutionList from '../components/BottomSheet/solutionList';
 import ShortcutPage from '../pages/ShortcutPage';
+
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -46,8 +50,17 @@ const TempPage = () => {
   //   dispatch(closeModal());
   // };
 
+
+  const isOpen = useAppSelector((state) => state.modal.isOpen);
+  const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
+  const [isPlan, setisPlan] = useState(''); // 선택한 요금제
   // const isOpen = useAppSelector((state) => state.modal.isOpen);
 
+
+  const handlePlanSelect = (value: string) => {
+    setisPlan(value);
+    setPlanOpen(false);
+  };
   return (
     <div className="py-10">
       <BenefitDropBar label="할인 혜택" indexes={[0, 1, 2, 3, 4]} data={benefitList} />
@@ -93,6 +106,19 @@ const TempPage = () => {
         message="ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ?"
         time="16:00"
       />
+
+
+      <Button onClick={() => dispatch(openModal())}>모달</Button>
+      {isOpen && (
+        <ReviewModal
+          type="reviewWrite"
+          onClose={handleClose} // 모달 닫기 테스트
+        ></ReviewModal>
+      )}
+      <button onClick={() => setPlanOpen(true)}>열기</button>
+      <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="400px">
+        <SolutionList onSelect={handlePlanSelect} selected={isPlan} />
+      </BottomSheet>
     </div>
   );
 };

@@ -2,10 +2,12 @@ import React from 'react';
 import clsx from 'clsx';
 import { PlanCardProps } from './PlanCard';
 import Button from './Button';
+import { SlArrowRight } from 'react-icons/sl';
 
 const PlanCardLarge: React.FC<PlanCardProps> = ({
   name,
-  description,
+  dataInfo,
+  shareInfo,
   price,
   discountedPrice,
   rating,
@@ -13,6 +15,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
   showButtons = true,
   onCompareClick,
   onChangeClick,
+  onClick,
 }) => {
   return (
     <div
@@ -29,20 +32,27 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
         </div>
       )}
 
-      <div className="text-base cursor-pointer">
-        {name} <span className="text-lg">›</span>
+      <div className="flex text-base cursor-pointer" onClick={onClick}>
+        {name}
+        <span className="text-sm mt-1">
+          <SlArrowRight />
+        </span>
       </div>
-      <div className="text-lg text-black font-bold w-2/3">{description}</div>
+      <div className="text-lg text-black font-bold w-2/3">{dataInfo}</div>
+      <div className="text-lg text-black font-bold w-2/3">{shareInfo}</div>
 
       <div className="mt-2">
-        <p className="text-xl font-bold text-black">{price}</p>
-        {discountedPrice && <p className="text-sm ">약정 할인 시 {discountedPrice}</p>}
+        <p className="text-xl font-bold text-black">월 {price}원</p>
+        {discountedPrice && <p className="text-sm ">약정 할인 시 월 {discountedPrice}원</p>}
       </div>
 
       {showButtons && (
-        <div className="flex gap-2 mt-3 text-sm">
+        <div className="flex gap-2 mt-auto pt-3 text-sm">
           <Button
-            onClick={onCompareClick}
+            onClick={(e) => {
+              e.stopPropagation(); // 카드 클릭 방지
+              onCompareClick?.(e);
+            }}
             variant="outline"
             color="gray"
             size="lg"
@@ -51,7 +61,10 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
             비교하기
           </Button>
           <Button
-            onClick={onChangeClick}
+            onClick={(e) => {
+              e.stopPropagation(); // 카드 클릭 방지
+              onChangeClick?.(e); // 부모 함수 호출
+            }}
             variant="outline"
             color="pink"
             size="lg"
