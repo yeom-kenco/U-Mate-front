@@ -82,7 +82,6 @@ export default function ChatbotInput({
 
   return (
     <div className="flex items-center gap-2 w-full">
-      {/* + 버튼 */}
       <button
         type="button"
         onClick={handlePlusClick}

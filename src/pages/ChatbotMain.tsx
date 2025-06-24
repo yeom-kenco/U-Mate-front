@@ -34,6 +34,7 @@ export default function ChatbotMain() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const ws = useRef<WebSocket | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -83,6 +84,7 @@ export default function ChatbotMain() {
       }
       if (data.type === 'text_done') {
         pushMsg('bot', data.text, formatTime(new Date()));
+        setIsLoading(false);
         if (!email) {
           const entry: GuestEntry = {
             MESSAGE_TYPE: 'assistant',
@@ -94,6 +96,7 @@ export default function ChatbotMain() {
         }
       }
     };
+
     ws.current.onclose = () => console.log('WebSocket 연결 해제');
     ws.current.onerror = (e) => console.error('WebSocket 에러', e);
 
@@ -105,6 +108,7 @@ export default function ChatbotMain() {
     if (!input.trim() || !connected) return;
     const now = formatTime(new Date());
     pushMsg('user', input.trim(), now);
+    setIsLoading(true);
 
     if (!email) {
       const entry: GuestEntry = {
@@ -155,6 +159,8 @@ export default function ChatbotMain() {
         {messages.map((m, i) => (
           <ChatBubble key={i} from={m.type} message={m.content} time={m.time ?? ''} />
         ))}
+        {isLoading && <ChatBubble from="bot" message="..." time={formatTime(new Date())} />}
+
         <div ref={endRef} />
       </div>
       {showBottomSheet && (

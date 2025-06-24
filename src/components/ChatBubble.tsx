@@ -63,7 +63,6 @@ export default function ChatBubble({
 
   return (
     <div className={containerClasses}>
-      {/* 유식이 아바타 */}
       {!isUser && (
         <div className="flex items-center gap-2 mb-1">
           <div className="w-[45px] h-[45px] rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
@@ -91,6 +90,12 @@ export default function ChatBubble({
           >
             {isFirst && children ? (
               children
+            ) : message === '...' ? (
+              <div className="flex items-center gap-1 h-6 px-2">
+                <span className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0s]" />
+                <span className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.15s]" />
+                <span className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.3s]" />
+              </div>
             ) : (
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
