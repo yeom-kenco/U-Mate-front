@@ -313,7 +313,10 @@ const PricingPage = () => {
               price={`${plan.MONTHLY_FEE.toLocaleString()}`}
               discountedPrice={`${calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME)}`}
               rating={{
-                score: plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT,
+                score:
+                  plan.REVIEW_USER_COUNT === 0
+                    ? 0
+                    : plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT,
                 count: plan.REVIEW_USER_COUNT,
               }}
               size="large"
