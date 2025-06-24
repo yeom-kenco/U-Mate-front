@@ -7,6 +7,7 @@ import { HeaderProps } from '../components/Header';
 import ReviewCard from '../components/ReviewCard';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { useHorizontalScroll } from '../hooks/useHorizontalScroll';
+import ReviewModal from '../components/Modal/Review/ReviewModal';
 
 const PlanDetailPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -103,19 +104,19 @@ const PlanDetailPage = () => {
         discountedPrice={discounted}
       />
 
-      {reviews.length > 0 && (
-        <section className="mt-10 ml-[5%] md:mx-52">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-lg font-semibold">후기로 보는 요금제 ({reviews.length})</h2>
-            <button
-              className="text-sm text-zinc-500 flex items-center gap-1 mr-[5%] md:text-m md:mr-0 hover:text-pink-500 active:text-pink-500"
-              onClick={() => setIsReviewModalOpen(true)}
-            >
-              전체
-              <HiOutlineMenuAlt2 className="text-lg" />
-            </button>
-          </div>
+      <section className="mt-10 ml-[5%] md:mx-52">
+        <div className="flex justify-between items-center mb-3">
+          <h2 className="text-lg font-semibold">후기로 보는 요금제 ({reviews.length})</h2>
+          <button
+            className="text-sm text-zinc-500 flex items-center gap-1 mr-[5%] md:text-m md:mr-0 hover:text-pink-500 active:text-pink-500"
+            onClick={() => setIsReviewModalOpen(true)}
+          >
+            전체
+            <HiOutlineMenuAlt2 className="text-lg" />
+          </button>
+        </div>
 
+        {reviews.length > 0 ? (
           <div
             ref={scrollRef}
             className="overflow-x-auto scrollbar-hide scroll-smooth h-[210px] ml-[-2%] pl-[2%] cursor-grab"
@@ -133,7 +134,17 @@ const PlanDetailPage = () => {
               ))}
             </div>
           </div>
-        </section>
+        ) : (
+          <p className="text-left text-zinc-400 text-sm mt-6">아직 리뷰가 한 개도 없어요🥲</p>
+        )}
+      </section>
+
+      {isReviewModalOpen && (
+        <ReviewModal
+          type="allReviewList"
+          reviews={reviews}
+          onClose={() => setIsReviewModalOpen(false)}
+        />
       )}
     </div>
   );
