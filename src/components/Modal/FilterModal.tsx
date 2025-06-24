@@ -53,6 +53,7 @@ const FilterModal = ({
     { label: '다쓰면 무제한', value: '다쓰면 무제한' },
     { label: '상관없어요', value: '상관없어요' },
   ];
+
   return (
     <BaseModal
       onClose={onClose}
@@ -120,7 +121,7 @@ const FilterModal = ({
                 <button
                   key={label}
                   className={`tag ${
-                    filters.dataType === (value ?? '')
+                    filters.dataType === (value ?? '상관없어요')
                       ? 'border-pink-500 border-2'
                       : 'border-zinc-200'
                   } rounded-full px-6 py-2 text-m font-semibold border`}

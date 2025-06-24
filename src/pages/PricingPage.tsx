@@ -41,7 +41,7 @@ const PricingPage = () => {
     ageGroup: '',
     minFee: undefined,
     maxFee: undefined,
-    dataType: '',
+    dataType: '상관없어요',
     benefitIds: [],
   });
 
@@ -81,22 +81,10 @@ const PricingPage = () => {
     };
 
     try {
-      const { data: allPlans } = await getFilteredPlans(payload);
-
-      // 필터링된 요금제 리스트
-      const filteredPlans =
-        filters.dataType === '다쓰면 무제한'
-          ? allPlans.filter(
-              (plan) => plan.DATA_INFO_DETAIL && plan.DATA_INFO_DETAIL.includes('다 쓰면')
-            )
-          : allPlans;
-
-      console.log('getFilteredPlans API', allPlans);
-
-      setPlanList(filteredPlans);
-      setFilteredCount(filteredPlans.length);
+      const { data } = await getFilteredPlans(payload);
+      setPlanList(data);
+      setFilteredCount(data.length);
       setVisibleCount(6);
-      dispatch(closeModal());
     } catch (error) {
       toast?.showToast('요금제 불러오기 실패', 'error');
       console.log(error);
