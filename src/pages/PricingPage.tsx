@@ -289,7 +289,7 @@ const PricingPage = () => {
     <>
       {/* 만약 사용자가 로그인 상태가 아니라면 배너 띄우기 */}
       {!user?.id && <LoginBanner type="default" />}
-      <div className="h-full px-4 md:px-10">
+      <div className="h-full px-4 md:px-10 bg-background">
         {/* 필터 영역 */}
         <div className="flex items-center gap-4 py-4">
           <div className="flex gap-6 text-m">
@@ -326,7 +326,7 @@ const PricingPage = () => {
             />
           ))}
         </div>
-        <div className="flex justify-center mt-8 mb-20">
+        <div className="flex justify-center mt-8 pb-20">
           <Button
             variant="outline"
             color="gray"
