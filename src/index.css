@@ -47,6 +47,7 @@ body {
   min-height: 100%;
   margin: auto;
   font-size: inherit; /* 16px */
+  overflow-x: hidden;
 }
 
 /*스크롤바 안보이게 */

@@ -9,7 +9,7 @@ interface PlanListProps {
 
 const PlanList: React.FC<PlanListProps> = ({ onSelect, selected }) => {
   return (
-    <ul className="flex flex-col px-3 py-2  gap-1">
+    <ul className="flex flex-col px-3 py-2 gap-1">
       <p className="font-bold  text-lg">정렬 기준</p>
       {plans.map((plan) => (
         <li
