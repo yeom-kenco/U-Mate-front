@@ -1,7 +1,7 @@
 // src/api/auth.js
 import axios from './axios.ts';
 // 회원가입 & 로그인
-import { CodeCheck, SignUpRequest } from '../types/member';
+import { CodeCheck, passwordCheckProps, SignUpRequest } from '../types/member';
 
 export const signUp = (data: SignUpRequest) => axios.post('/signUp', data);
 
@@ -15,7 +15,7 @@ export const verifyEmailCode = (data: CodeCheck) => axios.post('/checkAuth', dat
 // 비밀번호 관리
 export const changePassword = (data) => axios.post('/passwordChange', data);
 export const resetPassword = (data) => axios.post('/passwordReset', data);
-export const checkPassword = (data) => axios.post('/passwordCheck', data);
+export const checkPassword = (data: passwordCheckProps) => axios.post('/passwordCheck', data);
 
 // 계정 관리
 export const checkPhoneDuplicate = (data: string) => axios.post('/duplicateCheck', data);

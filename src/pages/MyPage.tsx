@@ -4,9 +4,12 @@ import { useEffect, useState } from 'react';
 import { SlArrowRight } from 'react-icons/sl';
 import Button from '../components/Button';
 import InputField from '../components/InputField';
+import { checkPassword } from '../apis/auth';
+import { useSelector } from 'react-redux';
 const MyPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
-  const [password, setPassword] = useState('');
+  const user = useSelector((state) => state.user);
+  const [password, setPassword] = useState<string>('');
   useEffect(() => {
     setHeaderConfig({
       title: '마이페이지',
@@ -15,9 +18,13 @@ const MyPage = () => {
     });
   }, []);
 
-  const handlePasswordCheck = () => {
+  const handlePasswordCheck = async () => {
+    if (!user || !password) {
+      return;
+    }
     try {
-      //await passwordCheck(email, password);
+      const res = await checkPassword({ email: user.email, password });
+      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
