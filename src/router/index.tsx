@@ -22,7 +22,6 @@ import SolutionList from '../components/BottomSheet/solutionList';
 import ShortcutPage from '../pages/ShortcutPage';
 import NotFound from '../components/NotFound';
 
-
 // 테스트용 임시 페이지
 const TempPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -51,12 +50,10 @@ const TempPage = () => {
   //   dispatch(closeModal());
   // };
 
-
   const isOpen = useAppSelector((state) => state.modal.isOpen);
   const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
   const [isPlan, setisPlan] = useState(''); // 선택한 요금제
   // const isOpen = useAppSelector((state) => state.modal.isOpen);
-
 
   const handlePlanSelect = (value: string) => {
     setisPlan(value);

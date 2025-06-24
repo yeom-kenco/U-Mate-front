@@ -14,6 +14,7 @@ interface InputFieldProps {
   suffixButton?: React.ReactNode; // ex: 중복 확인 버튼
   variant?: 'line' | 'box'; // input박스 유형
   timer?: React.ReactNode;
+  placeholderStyle?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -28,12 +29,13 @@ const InputField: React.FC<InputFieldProps> = ({
   suffixButton,
   variant = 'line',
   timer,
+  placeholderStyle = '',
 }) => {
   const wrapperClass = variant === 'line' ? 'flex flex-col   w-full' : 'flex flex-col gap-2 w-full';
   const inputWrapperClass =
     variant === 'line'
       ? `border-b mb-2 px-2  pb-1 bg-transparent ${suffixButton ? 'pt-2' : 'pt-4'}`
-      : 'border  rounded-lg px-2 py-2 bg-white';
+      : 'border  rounded-lg px-2 py-1 bg-white';
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -66,7 +68,9 @@ const InputField: React.FC<InputFieldProps> = ({
           className={clsx(
             'flex-1 text-sm mt-1 outline-none placeholder:font-normal placeholder-[#A9B3C2]',
             variant === 'line' ? 'bg-transparent' : 'bg-white',
-            suffixButton ? 'relative top-1' : ''
+            suffixButton ? 'relative top-1' : '',
+            variant === 'box' && suffixButton ? 'mb-2' : '',
+            placeholderStyle
           )}
         />
         {type === 'password' && (
@@ -96,7 +100,7 @@ const InputField: React.FC<InputFieldProps> = ({
         )}
       </div>
       {/*error영역*/}
-      {error && <p className="text-xs md:text-s text-pink-500 mb-2">{error}</p>}
+      {error && <p className="text-xs md:text-sm text-pink-500">{error}</p>}
     </div>
   );
 };
