@@ -6,7 +6,7 @@ const TermsOfUsePage = () => {
       <h1 className="text-lg font-bold mt-8 sm:text-4xl sm:mt-20">
         <span className="text-pink-500">유</span>메이트 {termsData.title}
       </h1>
-      <h2 className="text-m mt-5 sm:text-lm p-5 bg-diagonal rounded-lg">
+      <h2 className="text-m mt-3 sm:mt-5 sm:text-lm p-5 bg-diagonal rounded-lg">
         {termsData.introduction}
       </h2>
       <div className="mt-4 mb-16 p-5 border border-zinc-200 rounded-xl">
@@ -16,11 +16,13 @@ const TermsOfUsePage = () => {
             {Array.isArray(section.content) ? (
               <ul>
                 {section.content.map((content, idx) => (
-                  <li key={idx}>{content}</li>
+                  <li key={idx} className="text-sm sm:text-m">
+                    {content}
+                  </li>
                 ))}
               </ul>
             ) : (
-              <p>{section.content}</p>
+              <p className="text-sm sm:text-m">{section.content}</p>
             )}
           </div>
         ))}
