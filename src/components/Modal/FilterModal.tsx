@@ -47,7 +47,7 @@ const FilterModal = ({
     { label: '상관없어요', min: undefined, max: undefined },
   ];
 
-  //데이터 범위 리스트
+  // 데이터 범위 리스트
   const dataRanges: DataRange[] = [
     { label: '완전 무제한', value: '데이터 무제한' },
     { label: '다쓰면 무제한', value: '다쓰면 무제한' },

@@ -63,20 +63,43 @@ const PricingPage = () => {
     fetchPlanList();
   }, []);
 
-  // 필터링된 요금제 리스트 불러오기
-  const handleSelect = async () => {
+  // 필터링된 요금제 리스트 불러오기 및 필터링된 개수 계산
+  const handleFilter = async () => {
+    // 초기 로드 시 요청 방지
+    if (
+      !filters.dataType &&
+      !filters.ageGroup &&
+      filters.minFee === undefined &&
+      filters.maxFee === undefined
+    ) {
+      return;
+    }
+
     const payload = {
       ...filters,
       benefitIds: filters.benefitIds?.join(','),
     };
+
     try {
-      const { data } = await getFilteredPlans(payload);
-      setPlanList(data);
-      setFilteredCount(data.length);
+      const { data: allPlans } = await getFilteredPlans(payload);
+
+      // 필터링된 요금제 리스트
+      const filteredPlans =
+        filters.dataType === '다쓰면 무제한'
+          ? allPlans.filter(
+              (plan) => plan.DATA_INFO_DETAIL && plan.DATA_INFO_DETAIL.includes('다 쓰면')
+            )
+          : allPlans;
+
+      console.log('getFilteredPlans API', allPlans);
+
+      setPlanList(filteredPlans);
+      setFilteredCount(filteredPlans.length);
       setVisibleCount(6);
       dispatch(closeModal());
     } catch (error) {
       toast?.showToast('요금제 불러오기 실패', 'error');
+      console.log(error);
     }
   };
 
@@ -84,19 +107,15 @@ const PricingPage = () => {
   const debouncedFilters = useDebounce(filters, 300);
 
   useEffect(() => {
-    const fetchCount = async () => {
-      const payload = {
-        ...debouncedFilters,
-        benefitIds: debouncedFilters.benefitIds?.join(','),
-      };
-      try {
-        const { data } = await getFilteredPlans(payload);
-        setFilteredCount(data.length);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchCount();
+    if (
+      debouncedFilters.ageGroup ||
+      debouncedFilters.minFee ||
+      debouncedFilters.maxFee ||
+      debouncedFilters.dataType
+    ) {
+      // 필터 값이 변경될 때만 필터링 요청
+      handleFilter();
+    }
   }, [debouncedFilters]);
 
   const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
@@ -336,7 +355,7 @@ const PricingPage = () => {
             onChange={setFilters} // 변경 핸들러
             onReset={handleResetFilter} // 초기화
             onClose={closeFilterModal}
-            onApply={handleSelect}
+            onApply={handleFilter}
             planCount={filteredCount}
           />
         )}
