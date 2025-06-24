@@ -5,27 +5,25 @@ import { FocusTrap } from 'focus-trap-react';
 type BaseModalProps = {
   children: React.ReactNode;
   onClose: () => void;
-  closeOnOutsideClick?: boolean;
   className?: string;
   labelledBy?: string;
 };
 
-const BaseModal = ({
-  children,
-  onClose,
-  closeOnOutsideClick = true,
-  className = '',
-  labelledBy,
-}: BaseModalProps) => {
+const BaseModal = ({ children, onClose, className = '', labelledBy }: BaseModalProps) => {
   const modalRoot = document.getElementById('modal-root');
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 8);
+
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     return () => {
       clearTimeout(timer);
       document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
     };
   }, []);
 
@@ -53,7 +51,6 @@ const BaseModal = ({
       className={`fixed inset-0 z-50 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
-      onClick={closeOnOutsideClick ? onClose : undefined}
     >
       <FocusTrap>
         <div
