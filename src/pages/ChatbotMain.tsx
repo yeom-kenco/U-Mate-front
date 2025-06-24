@@ -1,4 +1,3 @@
-// src/pages/ChatbotMain.tsx
 import React, { useState, useEffect, useRef, KeyboardEvent } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
@@ -122,10 +121,10 @@ export default function ChatbotMain() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-100">
+    <div className="flex flex-col h-full bg-background">
       {/* 연결 영역 - 페이지 최상단 */}
       {!connected && (
-        <div className="p-4 bg-white border-b border-gray-200">
+        <div className="p-4 bg-pink-100 border-b border-gray-200">
           <div className="flex gap-2">
             <input
               type="email"

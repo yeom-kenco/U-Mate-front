@@ -47,8 +47,10 @@ const FirstMessage: React.FC<FirstMessageProps> = () => {
             저는 U:Mate의 상담챗봇 <span className="text-pink-500">유식이</span>입니다.
           </h2>
 
-          <p className="text-sm text-gray-600 leading-4">
-            저는 이전 대화도 기억해서 나에게 맞는 정보를 바탕으로 똑똑하게 도와드릴 수 있어요.
+          <p className="text-s text-gray-600 leading-4">
+            저는 이전 대화도 기억해서 나에게 맞는 정보를 바탕으로
+            <br />
+            똑똑하게 도와드릴 수 있어요.
             <br />
             <br />
             단, 서비스와 관련 없는 질문은 답변이 어려울 수 있어요🥲
@@ -74,7 +76,7 @@ const FirstMessage: React.FC<FirstMessageProps> = () => {
                 </div>
                 <div className="flex-1 space-y-1">
                   <div className={`text-xs font-semibold ${item.color}`}>{item.category}</div>
-                  <div className="text-sm font-semibold text-black">{item.question}</div>
+                  <div className="text-s font-semibold text-black">{item.question}</div>
                 </div>
               </div>
             ))}
