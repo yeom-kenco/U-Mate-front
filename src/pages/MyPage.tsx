@@ -30,6 +30,7 @@ const MyPage = () => {
   const [password, setPassword] = useState<string>('');
   const [isCheckPassword, setIsCheckPassword] = useState<boolean>(false);
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
+  const modalType = useSelector((state: RootState) => state.modal.type);
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState<userInfoProps>({
     birthDay: '',
@@ -98,12 +99,12 @@ const MyPage = () => {
             color="gray"
             size="lg"
             className="flex-1 text-sm"
-            onClick={() => dispatch(openModal())}
+            onClick={() => dispatch(openModal('reviewList'))}
           >
             내가 작성한 리뷰 보기
           </Button>
           <Button
-            onClick={() => dispatch(openModal())}
+            onClick={() => dispatch(openModal('reviewWrite'))}
             variant="fill"
             color="violet"
             size="lg"
@@ -142,7 +143,11 @@ const MyPage = () => {
                 <span className={titleClass}>비밀번호</span>
                 <div className="flex items-center gap-2">
                   <span className="tracking-widest text-gray-800 text-sm">●●●●●●●</span>
-                  <Button variant="ghost" size="m" onClick={() => dispatch(openModal())}>
+                  <Button
+                    variant="ghost"
+                    size="m"
+                    onClick={() => dispatch(openModal('findAccount'))}
+                  >
                     변경하기
                   </Button>
                 </div>
@@ -176,20 +181,14 @@ const MyPage = () => {
           </>
         )}
       </div>
-      {isOpen && <FindAccountModal onClose={() => dispatch(closeModal())} initialStep="reset" />}
-      {isOpen && (
-        <ReviewModal
-          type="reviewList"
-          children
-          onClose={() => dispatch(closeModal())}
-        ></ReviewModal>
+      {isOpen && modalType === 'findAccount' && (
+        <FindAccountModal onClose={() => dispatch(closeModal())} initialStep="reset" />
       )}
-      {isOpen && (
-        <ReviewModal
-          type="reviewWrite"
-          children
-          onClose={() => dispatch(closeModal())}
-        ></ReviewModal>
+      {isOpen && modalType === 'reviewList' && (
+        <ReviewModal type="reviewList" onClose={() => dispatch(closeModal())} />
+      )}
+      {isOpen && modalType === 'reviewWrite' && (
+        <ReviewModal type="reviewWrite" onClose={() => dispatch(closeModal())} />
       )}
     </div>
   );
