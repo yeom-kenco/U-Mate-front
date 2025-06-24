@@ -16,11 +16,8 @@ import Button from '../components/Button';
 import MyPage from '../pages/MyPage';
 import MainPage from '../pages/MainPage';
 import RegisterPage from '../pages/RegisterPage';
-import ReviewTextarea from '../components/ReviewTextarea';
-import BottomSheet from '../components/BottomSheet/BottomSheet';
-import SolutionList from '../components/BottomSheet/solutionList';
 import ShortcutPage from '../pages/ShortcutPage';
-
+import PlanDetailPage from '../pages/PlanDetailPage';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -50,12 +47,9 @@ const TempPage = () => {
   //   dispatch(closeModal());
   // };
 
-
-  const isOpen = useAppSelector((state) => state.modal.isOpen);
   const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
   const [isPlan, setisPlan] = useState(''); // 선택한 요금제
   // const isOpen = useAppSelector((state) => state.modal.isOpen);
-
 
   const handlePlanSelect = (value: string) => {
     setisPlan(value);
@@ -104,17 +98,6 @@ const TempPage = () => {
         message="ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ?"
         time="16:00"
       />
-      <Button onClick={() => dispatch(openModal())}>모달</Button>
-      {isOpen && (
-        <ReviewModal
-          type="reviewWrite"
-          onClose={handleClose} // 모달 닫기 테스트
-        ></ReviewModal>
-      )}
-      <button onClick={() => setPlanOpen(true)}>열기</button>
-      <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="400px">
-        <SolutionList onSelect={handlePlanSelect} selected={isPlan} />
-      </BottomSheet>
     </div>
   );
 };
@@ -125,18 +108,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <MainPage />,
+        element: <MainPage />, // 대표 페이지
+      },
+      {
+        path: '/shortcut',
+        element: <ShortcutPage />, // 바로가기 페이지
       },
       {
         path: '/test',
-        element: <TempPage />, // ✅ 테스트용 페이지 라우터 재정의
+        element: <TempPage />, // 테스트용 페이지 라우터 재정의
       },
       { path: 'chatbot', element: <ChatbotMain /> },
       {
-        path: '/terms',
+        path: '/terms', // 푸터 이용약관 페이지
         element: <TermsOfUsePage />,
       },
       { path: 'pricing', element: <PricingPage /> }, // 요금제 페이지
+      { path: '/plans/:id', element: <PlanDetailPage /> }, //요금제 상세 페이지
       { path: '/login', element: <LoginPage /> },
       { path: '/mypage', element: <MyPage /> },
       { path: '/signup', element: <RegisterPage /> },
@@ -145,10 +133,6 @@ const router = createBrowserRouter([
   {
     path: '/onboarding',
     element: <OnBoarding />,
-  },
-  {
-    path: '/shortcut',
-    element: <ShortcutPage />,
   },
 ]);
 
