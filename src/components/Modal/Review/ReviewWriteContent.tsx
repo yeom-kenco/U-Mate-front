@@ -2,9 +2,11 @@ import Button from '../../Button';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import ReviewTextarea from '../../ReviewTextarea';
 import { createReview, updateReview } from '../../../apis/ReviewApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useToast } from '../../../hooks/useToast';
+import ConfirmModal from '../ConfirmModal';
+import { closeModal } from '../../../store/modalSlice';
 
 type ReviewWriteContentProps = {
   planName?: string;
@@ -20,7 +22,9 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
   const user = useSelector((state) => state.user);
   const [content, setContent] = useState('');
   const [ratingValue, setRatingValue] = useState<number>(0);
+  const [isCancle, setIsCancle] = useState(false);
   const { showToast } = useToast();
+  const dispatch = useDispatch();
   const handleCreateOrUpdateReview = async () => {
     try {
       const res = await createReview({
@@ -94,7 +98,19 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
         <ReviewTextarea width="w-full" value={content} onChange={setContent} />
 
         <div className="flex gap-2 mt-6">
-          <Button variant="fill" color="gray" size="lg" onClick={onClose} className="flex-1">
+          <Button
+            variant="fill"
+            color="gray"
+            size="lg"
+            onClick={() => {
+              if (content.length > 0 || ratingValue) {
+                setIsCancle(true); // 확인 모달 띄우기
+              } else {
+                onClose(); // 바로 닫기
+              }
+            }}
+            className="flex-1"
+          >
             취소
           </Button>
           <Button
@@ -108,6 +124,20 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
           </Button>
         </div>
       </div>
+      {isCancle && (
+        <ConfirmModal
+          onConfirm={() => {
+            dispatch(closeModal()); //모든 모달 닫기
+          }}
+          onClose={() => {
+            setIsCancle(false); // 확인 모달만 닫음 (리뷰 작성 모달 유지)
+          }}
+          title="앗! 지금 작성 중인 내용이 있어요"
+          subtitle="지금 나가면 작성한 내용이 모두 지워져요 😢"
+          cancelText="취소"
+          confirmText="닫기"
+        />
+      )}
     </div>
   );
 };
