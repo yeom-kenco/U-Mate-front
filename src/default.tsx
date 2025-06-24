@@ -1,11 +1,12 @@
 import Header from './components/Header';
 import { Outlet } from 'react-router-dom';
 import Footer from './components/Footer';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ChatbotButton from './components/ChatbotButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { validateToken } from './apis/auth';
 import { clearUser, setUser } from './store/userSlice';
+import { useToast } from './hooks/useToast';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
@@ -14,25 +15,27 @@ const Default = () => {
     showSearch: false,
     hasShadow: false,
   });
-  const user = useSelector((state) => state.user);
-
+  const [userLoading, setUserLoading] = useState(false);
   const dispatch = useDispatch();
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await validateToken();
-        console.log(res.data);
-        if (res.data) {
-          const { email } = res.data.user;
+        const { user } = res.data;
+        if (res && user) {
+          const { email, birthDay, id, membership, name, plan } = user;
+          //한국 날짜로
+          const date = new Date(birthDay);
+          const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+          const korBirthDay = kstDate.toISOString().split('T')[0];
           dispatch(
             setUser({
-              id: 0,
-              name: '',
-              birthDay: '',
+              id,
+              name,
+              birthDay: korBirthDay,
               email,
-              plan: 0,
-              membership: null,
+              plan,
+              membership,
             })
           );
         } else {
@@ -40,13 +43,16 @@ const Default = () => {
         }
       } catch (err) {
         dispatch(clearUser());
+      } finally {
+        setUserLoading(false);
       }
     };
-
     fetchUser();
   }, [dispatch]);
 
-  console.log(user);
+  if (userLoading) {
+    return <div className="text-center mt-10">loading...</div>;
+  }
   return (
     <div className="flex flex-col min-h-[calc(100vh+1px)]">
       {/* 헤더 */}
@@ -60,8 +66,7 @@ const Default = () => {
       {/* 메인 콘텐츠 */}
       <main className="flex-grow">
         <div className="min-h-[calc(100vh-64px)]">
-          {' '}
-          {/* 64px는 Header 높이 */}
+          중 {/* 64px는 Header 높이 */}
           <Outlet context={setHeaderConfig} />
         </div>
       </main>

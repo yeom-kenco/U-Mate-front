@@ -22,6 +22,7 @@ const LoginPage = () => {
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   useEffect(() => {
     setHeaderConfig({
       title: '로그인',
@@ -66,17 +67,11 @@ const LoginPage = () => {
     try {
       console.log(email, password);
       const res = await login({ id: email, password });
-      console.log(res.data);
-      // birthDay만 한국 시간 기준으로 변환
-      const date = new Date(res.data.birthDay);
-      const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-      res.data.birthDay = kstDate.toISOString().split('T')[0]; //YYYY-MM-DD
-      dispatch(setUser(res.data));
-      showToast(`${email}님 환영합니다`, 'black');
+      showToast(`${user.name}님 환영합니다`, 'black');
       navigate('/');
     } catch (err: any) {
       console.log(err.response);
-      showToast(err.response.data, 'error');
+      showToast('로그인 실패', 'error');
     }
   };
 
