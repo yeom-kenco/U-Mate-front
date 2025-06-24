@@ -1,4 +1,4 @@
-import axios from './axiosInstance';
+import axiosInst from './axiosInst.ts';
 import {
   Review,
   CreateReviewRequest,
@@ -10,7 +10,7 @@ import {
 export const getMyReviews = async (
   userId: number
 ): Promise<{ success: boolean; message: string; reviews: Review[] }> => {
-  const res = await axios.get(`/myReview/${userId}`);
+  const res = await axiosInst.get(`/myReview/${userId}`);
   return res.data;
 };
 
@@ -18,7 +18,7 @@ export const getMyReviews = async (
 export const createReview = async (
   data: CreateReviewRequest
 ): Promise<{ success: boolean; message: string }> => {
-  const res = await axios.post('/createReview', data);
+  const res = await axiosInst.post('/createReview', data);
   return res.data;
 };
 
@@ -26,7 +26,7 @@ export const createReview = async (
 export const updateReview = async (
   data: UpdateReviewRequest
 ): Promise<{ success: boolean; message: string }> => {
-  const res = await axios.post('/updateReview', data);
+  const res = await axiosInst.post('/updateReview', data);
   return res.data;
 };
 
@@ -34,6 +34,6 @@ export const updateReview = async (
 export const deleteReview = async (
   data: DeleteReviewRequest
 ): Promise<{ success: boolean; message: string }> => {
-  const res = await axios.post('/deleteReview', data);
+  const res = await axiosInst.post('/deleteReview', data);
   return res.data;
 };

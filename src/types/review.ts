@@ -2,6 +2,7 @@ export interface Review {
   REVIEW_ID: number;
   USER_ID: number;
   PLAN_ID: number;
+  PLAN_NAME: string;
   STAR_RATING: number;
   REVIEW_CONTENT: string;
   CREATED_AT: string;

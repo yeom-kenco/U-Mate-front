@@ -68,34 +68,34 @@ const MainPage = () => {
   }, [setHeaderConfig]);
 
   // 토큰 기반 유저 정보 요청
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch('https://seungwoo.i234.me:3333/tokenCheck', {
-          method: 'GET',
-          credentials: 'include',
-        });
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const res = await fetch('https://seungwoo.i234.me:3333/tokenCheck', {
+  //         method: 'GET',
+  //         credentials: 'include',
+  //       });
 
-        if (res.status === 401) {
-          const msg = await res.text();
-          console.warn('로그아웃 처리:', msg);
-          setUser(null);
-          return;
-        }
+  //       if (res.status === 401) {
+  //         const msg = await res.text();
+  //         console.warn('로그아웃 처리:', msg);
+  //         setUser(null);
+  //         return;
+  //       }
 
-        const data = await res.json();
+  //       const data = await res.json();
 
-        if (data.success && data.authenticated && data.user) {
-          const birth = data.user.birthDay.split('T')[0]; // '1990-01-01'
-          setUser({ ...data.user, birthDay: birth });
-        }
-      } catch (err) {
-        console.error('유저 정보 요청 중 오류:', err);
-      }
-    };
+  //       if (data.success && data.authenticated && data.user) {
+  //         const birth = data.user.birthDay.split('T')[0]; // '1990-01-01'
+  //         setUser({ ...data.user, birthDay: birth });
+  //       }
+  //     } catch (err) {
+  //       console.error('유저 정보 요청 중 오류:', err);
+  //     }
+  //   };
 
-    fetchUser();
-  }, []);
+  //   fetchUser();
+  // }, []);
 
   // 전체 요금제 데이터 가져오기
   useEffect(() => {
@@ -182,6 +182,7 @@ const MainPage = () => {
   const filteredPlans = filterPlansByCategory(selectedCategory, allPlans);
   const isLoggedIn = Boolean(user?.name && user?.plan && allPlans.length > 0 && myPlan);
 
+  console.log(user);
   return (
     <div className="bg-background md:bg-horizontal">
       {/* 하얀색 배너 영역 */}

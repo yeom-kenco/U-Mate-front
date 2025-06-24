@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Review } from '../../../types/review';
 import { RootState } from '../../../store/store';
 import ReviewCard from '../../ReviewCard';
+import { formatToShortKoreanDate } from '../../../utils/formatDate';
 
 type ReviewListContentProps = {
   children: React.ReactNode;
@@ -34,11 +35,14 @@ const ReviewListContent = ({ children }: ReviewListContentProps) => {
           <div className="flex flex-col items-center space-y-4">
             {reviews.map((review) => (
               <ReviewCard
+                key={review.REVIEW_ID}
+                reviewId={review.REVIEW_ID}
+                planName={review.PLAN_NAME}
                 isMyPage={true}
                 writerName={user.name}
                 writerAge={user.birthDay}
                 content={review.REVIEW_CONTENT}
-                date={review.UPDATED_AT}
+                date={formatToShortKoreanDate(review.UPDATED_AT)}
                 rating={review.STAR_RATING}
               />
             ))}

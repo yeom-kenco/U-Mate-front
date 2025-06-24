@@ -88,8 +88,8 @@ const MyPage = () => {
     fetchPlanList();
   }, []);
   // 내 요금제
-  const myplan = plans.find((plan) => plan.PLAN_ID === userInfo.phonePlan);
-  console.log(myplan);
+  const myplan = plans.find((plan) => plan.PLAN_ID === user?.plan);
+
   const divClass = 'flex justify-between py-2 border-b';
   const titleClass = 'text-sm text-gray-500';
   const contentClass = 'text-sm font-medium text-gray-800 mr-4';
@@ -101,7 +101,7 @@ const MyPage = () => {
           <img src="/images/bear/gom.png" alt="" className="w-20 h-20 mx-auto mb-2 " />
         </div>
         <p className="text-lm font-semibold">
-          <span className="text-pink-500">OOO님</span> 안녕하세요
+          <span className="text-pink-500">{user?.name}님</span> 안녕하세요
         </p>
         <div className="flex flex-col bg-diagonal w-full h-32 rounded-xl py-4 px-4 ">
           <p className="text-sm text-zinc-800">사용하고 있는 요금제 (관심 요금제)</p>
@@ -209,7 +209,12 @@ const MyPage = () => {
         <ReviewModal type="reviewList" onClose={() => dispatch(closeModal())} />
       )}
       {isOpen && modalType === 'reviewWrite' && (
-        <ReviewModal type="reviewWrite" onClose={() => dispatch(closeModal())} />
+        <ReviewModal
+          type="reviewWrite"
+          planName={myplan?.PLAN_NAME}
+          planPrice={myplan?.MONTHLY_FEE}
+          onClose={() => dispatch(closeModal())}
+        />
       )}
     </div>
   );

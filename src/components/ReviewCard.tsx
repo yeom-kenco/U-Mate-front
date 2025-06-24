@@ -1,8 +1,9 @@
 import { AiFillStar } from 'react-icons/ai';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { updateReview } from '../apis/ReviewApi';
 
-// ✅ props 타입 정의
 interface ReviewCardProps {
+  reviewId: number;
   isMyPage?: boolean;
   writerName?: string;
   writerAge?: string;
@@ -16,6 +17,7 @@ interface ReviewCardProps {
 
 const ReviewCard = ({
   isMyPage = false,
+  reviewId,
   writerName,
   writerAge,
   planName,
@@ -25,6 +27,16 @@ const ReviewCard = ({
   onEdit,
   onDelete,
 }: ReviewCardProps) => {
+  const handleupdateReview = async () => {
+    try {
+      await updateReview({ reviewId, rating, review: content });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleWriteModal =() => {
+    
+  }
   return (
     <div className="rounded-[20px] bg-white shadow-card overflow-hidden w-[332px] h-[197px] flex max-[390px]:w-[300px] flex-col">
       {/* 상단 */}
@@ -66,7 +78,7 @@ const ReviewCard = ({
               </>
             )}
             <AiFillStar className="text-yellow-400 text-sm" />
-            <span className="font-normal text-sm">{rating.toFixed(1)}</span>
+            <span className="font-normal text-sm">{rating}</span>
           </div>
         </div>
       </div>
