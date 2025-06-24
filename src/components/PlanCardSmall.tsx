@@ -9,6 +9,7 @@ const PlanCardSmall: React.FC<PlanCardProps> = ({
   discountedPrice,
   rating,
   highlight,
+  onClick,
 }) => {
   return (
     <div
@@ -16,6 +17,7 @@ const PlanCardSmall: React.FC<PlanCardProps> = ({
         'rounded-2xl cursor-pointer bg-white shadow-[0_0_12px_rgba(0,0,0,0.08)] px-6 my-4 py-4 min-w-[254px] max-w-[254px] min-h-[166px] flex flex-col justify-between',
         highlight && 'border-pink-500'
       )}
+      onClick={onClick}
     >
       <div className="flex justify-between items-center">
         <p className="text-s cursor-pointer">
