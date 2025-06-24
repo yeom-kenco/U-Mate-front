@@ -1,6 +1,7 @@
-import { HiVolumeUp } from 'react-icons/hi';
+import { HiVolumeUp, HiStop } from 'react-icons/hi';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type React from 'react';
 
 type ChatBubbleProps = {
@@ -11,7 +12,13 @@ type ChatBubbleProps = {
   children?: React.ReactNode;
 };
 
-const ChatBubble = ({ from, message, time, variant = 'default', children }: ChatBubbleProps) => {
+export default function ChatBubble({
+  from,
+  message,
+  time,
+  variant = 'default',
+  children,
+}: ChatBubbleProps) {
   const isUser = from === 'user';
   const isFirst = variant === 'first';
 
@@ -25,12 +32,40 @@ const ChatBubble = ({ from, message, time, variant = 'default', children }: Chat
 
   const bubbleWidthClass = isFirst ? 'w-full max-w-sm' : 'w-fit max-w-64';
 
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  const toggleSpeech = useCallback(() => {
+    if (!message) return;
+
+    if (isSpeaking) {
+      speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const utter = new SpeechSynthesisUtterance(message);
+    utter.lang = 'ko-KR';
+    utter.onend = () => setIsSpeaking(false);
+    utter.onerror = () => setIsSpeaking(false);
+
+    utterRef.current = utter;
+    speechSynthesis.speak(utter);
+    setIsSpeaking(true);
+  }, [message, isSpeaking]);
+
+  useEffect(() => {
+    return () => {
+      speechSynthesis.cancel();
+      setIsSpeaking(false);
+    };
+  }, []);
+
   return (
     <div className={containerClasses}>
-      {/* Bot name with avatar */}
+      {/* 유식이 아바타 */}
       {!isUser && (
         <div className="flex items-center gap-2 mb-1">
-          {/* Avatar */}
           <div className="w-[45px] h-[45px] rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
             <img
               src="/images/chatbot/chatbot-avatar.png"
@@ -43,7 +78,7 @@ const ChatBubble = ({ from, message, time, variant = 'default', children }: Chat
       )}
 
       <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} w-full`}>
-        <div className={`${!isUser ? 'ml-[53px]' : ''}`}>
+        <div className={!isUser ? 'ml-[53px]' : undefined}>
           <div
             className={
               `${bubbleWidthClass} rounded-3xl ${isFirst ? '' : 'py-3 px-4'} ` +
@@ -72,16 +107,18 @@ const ChatBubble = ({ from, message, time, variant = 'default', children }: Chat
 
       {!isFirst && (
         <div className={`flex items-center mt-1 gap-2 ${!isUser ? 'ml-[53px]' : ''}`}>
-          {time && (
-            <p className={`text-sm text-zinc-400 ${isUser ? 'justify-end' : 'justify-start'}`}>
-              {time}
-            </p>
+          {time && <p className="text-sm text-zinc-400">{time}</p>}
+          {!isUser && (
+            <button onClick={toggleSpeech} aria-label="음성 재생 또는 정지">
+              {isSpeaking ? (
+                <HiStop className="text-red-500 w-4 h-4 hover:text-red-700" />
+              ) : (
+                <HiVolumeUp className="text-violet-400 w-4 h-4 hover:text-violet-600" />
+              )}
+            </button>
           )}
-          {!isUser && <HiVolumeUp className="text-violet-400 w-3 h-3 mt-[-1px]" />}
         </div>
       )}
     </div>
   );
-};
-
-export default ChatBubble;
+}

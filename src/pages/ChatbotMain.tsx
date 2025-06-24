@@ -125,7 +125,7 @@ export default function ChatbotMain() {
   return (
     <div className="flex flex-col h-full bg-background">
       {!connected && (
-        <div className="p-4 bg-pink-100 border-b border-gray-200">
+        <div className="p-4 bg-purple-600 border-b border-gray-200">
           <div className="flex gap-2">
             <input
               type="email"
@@ -155,7 +155,7 @@ export default function ChatbotMain() {
         <div ref={endRef} />
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 p-4 bg-white border-t border-gray-200">
+      <div className="fixed bottom-0 left-0 right-0 z-10 p-4 bg-white border-t border-gray-200 shadow-[0_-3px_6px_rgba(0,0,0,0.1)]">
         <ChatbotInput
           value={input}
           onChange={setInput}
