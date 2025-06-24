@@ -249,6 +249,9 @@ const MainPage = () => {
                 ))}
               </div>
             </div>
+            <p className="hidden text-end mr-12 text-m text-zinc-600 md:block animate-pulse">
+              좌우로 밀어보세요 →
+            </p>
           </div>
         </section>
       )}
@@ -259,7 +262,6 @@ const MainPage = () => {
           <h2 className="text-lg font-semibold mb-2 max-[400px]:text-[20px] md:text-center md:text-xxl md:mb-7">
             추천 요금제
           </h2>
-
           {/* 카테고리 버튼 */}
           <div className="flex gap-2 mb-1 md:justify-center md:mb-3">
             {CATEGORIES.map((category) => (
@@ -280,7 +282,7 @@ const MainPage = () => {
             ref={scrollRef}
             className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth cursor-grab ml-[-2%] pl-[2%] md:h-[260px] md:w-full"
           >
-            <div className="flex gap-4 flex-nowrap w-max pr-4 md:justify-center">
+            <div className="flex gap-4 flex-nowrap w-max pr-4">
               {filteredPlans.map((plan) => {
                 const discounted = calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME);
                 return (
@@ -299,6 +301,9 @@ const MainPage = () => {
               })}
             </div>
           </div>
+          <p className="hidden text-end mr-12 text-m text-zinc-600 md:block animate-pulse">
+            좌우로 밀어보세요 →
+          </p>
         </div>
       </section>
 
