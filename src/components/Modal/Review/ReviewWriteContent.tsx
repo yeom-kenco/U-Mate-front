@@ -1,6 +1,9 @@
 import Button from '../../Button';
 import { AiFillStar } from 'react-icons/ai';
 import ReviewTextarea from '../../ReviewTextarea';
+import { createReview } from '../../../apis/ReviewApi';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 type ReviewWriteContentProps = {
   rating?: number;
@@ -17,6 +20,16 @@ const ReviewWriteContent = ({
   onClose,
   onConfirm,
 }: ReviewWriteContentProps) => {
+  const user = useSelector((state) => state.user);
+  const [content, setContent] = useState('');
+  const handlecreatReview = async () => {
+    try {
+      await createReview({ userId: user.id, planId: user.plan, rating: 5, review: content });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  console.log(content);
   return (
     <div className="p-6 flex flex-col min-h-0">
       <h2 className="text-m font-bold text-center mb-4 shrink-0 md:text-lm">리뷰 작성</h2>
@@ -40,13 +53,19 @@ const ReviewWriteContent = ({
           </div>
         </div>
 
-        <ReviewTextarea width="w-full" />
+        <ReviewTextarea width="w-full" value={content} onChange={setContent} />
 
         <div className="flex gap-2 mt-6">
           <Button variant="fill" color="gray" size="lg" onClick={onClose} className="flex-1">
             취소
           </Button>
-          <Button variant="fill" color="pink" size="lg" onClick={onConfirm} className="flex-1">
+          <Button
+            variant="fill"
+            color="pink"
+            size="lg"
+            onClick={handlecreatReview}
+            className="flex-1"
+          >
             작성하기
           </Button>
         </div>

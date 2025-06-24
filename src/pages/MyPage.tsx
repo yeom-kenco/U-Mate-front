@@ -11,7 +11,6 @@ import { RootState } from '../store/store';
 import { closeModal, openModal } from '../store/modalSlice';
 import FindAccountModal from '../components/Modal/FindAccountModal';
 import ReviewModal from '../components/Modal/Review/ReviewModal';
-import ReviewListContent from '../components/Modal/Review/ReviewListContent';
 
 interface userInfoProps {
   birthDay: string;
