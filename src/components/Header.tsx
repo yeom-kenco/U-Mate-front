@@ -72,7 +72,7 @@ const Header = ({
   return (
     <header
       className={`relative z-10 w-full h-16 flex justify-center items-center px-[5%] py-6 bg-white 
-        ${hasShadow ? 'shadow-header' : 'shadow-none'} md:shadow-none`}
+        ${hasShadow ? 'shadow-header' : 'shadow-none'} md:shadow-none md:px-10`}
     >
       <div className="relative w-full h-full flex items-center justify-between">
         {/* 뒤로가기: md 미만에서만 */}

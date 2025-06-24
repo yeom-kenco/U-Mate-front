@@ -22,10 +22,15 @@ const BaseModal = ({
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 8);
+
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     return () => {
       clearTimeout(timer);
       document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
     };
   }, []);
 
