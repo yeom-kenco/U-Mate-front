@@ -26,7 +26,9 @@ const ReviewCard = ({
   onDelete,
 }: ReviewCardProps) => {
   return (
-    <div className="rounded-[20px] bg-white shadow-card overflow-hidden w-[332px] h-[197px] flex max-[390px]:w-[300px] flex-col">
+    // ReviewCard.tsx
+
+    <div className="pointer-events-none select-none rounded-[20px] bg-white shadow-card overflow-hidden w-[332px] h-[197px] flex max-[390px]:w-[300px] flex-col flex-shrink-0">
       {/* 상단 */}
       <div className="bg-primary text-white px-5 py-3 flex justify-between items-center text-m font-bold">
         {isMyPage ? (
