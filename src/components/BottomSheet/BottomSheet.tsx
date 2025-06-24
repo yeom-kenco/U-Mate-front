@@ -38,7 +38,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
       {/* Bottom Sheet */}
       <div
         className={clsx(
-          ' relative w-full max-w-screen bg-white  dark:bg-neutral-900 rounded-t-[20px] shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500',
+          ' relative w-full max-w-screen bg-white rounded-t-[20px] shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500',
           isOpen ? 'translate-y-0' : 'translate-y-full'
         )}
         style={{ height }} // 받아온 height로 높이 bottomSheet 높이 지정

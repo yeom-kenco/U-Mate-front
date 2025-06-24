@@ -7,6 +7,7 @@ interface ChatbotInputProps {
   onSend: () => void;
   disabled?: boolean;
   placeholder?: string;
+  onPlusClick?: () => void;
 }
 
 type SpeechRecognition = any;
@@ -18,6 +19,7 @@ export default function ChatbotInput({
   onSend,
   disabled = false,
   placeholder = '텍스트를 입력해주세요',
+  onPlusClick,
 }: ChatbotInputProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
@@ -65,7 +67,9 @@ export default function ChatbotInput({
     if (value.trim()) onSend();
   };
 
-  const handlePlusClick = () => console.log('Plus button clicked');
+  const handlePlusClick = () => {
+    if (onPlusClick) onPlusClick(); // ← 부모(ChatbotMain)로 신호 전달
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -93,7 +97,7 @@ export default function ChatbotInput({
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
           placeholder={placeholder}
           disabled={disabled}
           className="flex-1 bg-transparent border-none outline-none text-gray-800 placeholder-gray-500 text-sm"

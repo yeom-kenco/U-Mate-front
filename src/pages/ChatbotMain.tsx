@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef, KeyboardEvent } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
 import ChatBubble from '../components/ChatBubble';
 import ChatbotInput from '../components/ChatbotInput';
 import FirstMessage from '../components/ChatbotFirstMessage';
+import BottomSheet from '../components/BottomSheet/BottomSheet';
+import SolutionList from '../components/BottomSheet/SolutionList';
 
 type Message = {
   type: 'user' | 'bot';
@@ -31,6 +33,7 @@ export default function ChatbotMain() {
   const [connected, setConnected] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
 
   const ws = useRef<WebSocket | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -154,12 +157,30 @@ export default function ChatbotMain() {
         ))}
         <div ref={endRef} />
       </div>
-
+      {showBottomSheet && (
+        <div className="absolute bottom-20 left-0 right-0 z-20 px-4">
+          <BottomSheet
+            isOpen={showBottomSheet}
+            onClose={() => setShowBottomSheet(false)}
+            height="auto"
+          >
+            <SolutionList
+              onSelect={(q) => {
+                setInput(q);
+                send();
+                setShowBottomSheet(false);
+              }}
+              selected={input}
+            />
+          </BottomSheet>
+        </div>
+      )}
       <div className="fixed bottom-0 left-0 right-0 z-10 p-4 bg-white border-t border-gray-200 shadow-[0_-3px_6px_rgba(0,0,0,0.1)]">
         <ChatbotInput
           value={input}
           onChange={setInput}
           onSend={send}
+          onPlusClick={() => setShowBottomSheet(true)}
           disabled={!connected}
           placeholder="텍스트를 입력해주세요"
         />

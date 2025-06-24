@@ -6,7 +6,7 @@ interface PlanListProps {
 
 const solutions = [
   '맞춤 요금제 찾기',
-  '챗봇 유세이 알아보기',
+  '챗봇 유식이 알아보기',
   '해외 로밍 설정 안내',
   '위약금 정책 안내',
   '내 멤버십 확인',
