@@ -1,16 +1,10 @@
-import React from 'react';
 import { HeaderProps } from '../components/Header';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
 import { useHorizontalScroll } from '../hooks/useHorizontalScroll';
 import { calculateDiscountedPrice } from '../utils/getDiscountFree';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../store/userSlice';
-import { clearUser } from '../store/userSlice';
 import { FiChevronRight } from 'react-icons/fi';
 import LoginBanner from '../components/LoginBanner';
 import EventBannerCarousel from '../components/EventBanner/EventBannerCarousel';
@@ -45,46 +39,23 @@ type RecommendedPlan = {
   reviewCount: number;
 };
 
+// 로그인한 사용자 정보
+type UserInfo = {
+  email: string;
+  id: number;
+  name: string;
+  plan: number;
+  membership: string;
+  birthDay: string; // '1990-01-01'
+};
+
 const MainPage = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    // 테스트용 로그인 유저 강제 주입
-    dispatch(
-      setUser({
-        id: 1,
-        name: '홍길동',
-        birthDay: '19200520',
-        email: 'test@example.com',
-        plan: 7,
-        membership: 'vvip',
-      })
-    );
-  }, []);
-
-  // useEffect(() => {
-  //   dispatch(clearUser()); // 테스트용 로그인 유저 상태 초기화할 때 사용하는 문장
-  // }, []);
-
-  // Redux user 정보 가져오기
-  const user = useSelector((state: RootState) => state.user);
-
+  const [user, setUser] = useState<UserInfo | null>(null);
   const scrollRef = useHorizontalScroll();
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [allPlans, setAllPlans] = useState<PlanListItem[]>([]);
   const [ageplans, setAgePlans] = useState<RecommendedPlan[]>([]);
-
   const [selectedCategory, setSelectedCategory] = useState<Category>('청년');
-
-  // 1. 유저 멤버십 뱃지
-  const membershipBadge = user.membership; // "vvip", "vip", "우수"
-  const myPlan = allPlans.find((plan) => plan.PLAN_ID === user.plan);
-  const isYouthPlan = myPlan?.PLAN_NAME.includes('유쓰');
-
-  // 2. 표기용 이름 (우측 뱃지에 보일 텍스트)
-  const membershipLabel = membershipBadge; // 멤버십은 항상 표기
-  const showYouth = isYouthPlan; // 유쓰는 해당할 경우만 표
-  const showMembership = Boolean(membershipLabel || showYouth);
 
   // 대표 페이지용 헤더 설정
   useEffect(() => {
@@ -95,6 +66,36 @@ const MainPage = () => {
       hasShadow: false,
     });
   }, [setHeaderConfig]);
+
+  // 토큰 기반 유저 정보 요청
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const res = await fetch('https://seungwoo.i234.me:3333/tokenCheck', {
+  //         method: 'GET',
+  //         credentials: 'include',
+  //       });
+
+  //       if (res.status === 401) {
+  //         const msg = await res.text();
+  //         console.warn('로그아웃 처리:', msg);
+  //         setUser(null);
+  //         return;
+  //       }
+
+  //       const data = await res.json();
+
+  //       if (data.success && data.authenticated && data.user) {
+  //         const birth = data.user.birthDay.split('T')[0]; // '1990-01-01'
+  //         setUser({ ...data.user, birthDay: birth });
+  //       }
+  //     } catch (err) {
+  //       console.error('유저 정보 요청 중 오류:', err);
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, []);
 
   // 전체 요금제 데이터 가져오기
   useEffect(() => {
@@ -118,7 +119,7 @@ const MainPage = () => {
 
   // 연령대별 추천 요금제 데이터 가져오기
   useEffect(() => {
-    if (!user.birthDay) return;
+    if (!user?.birthDay) return;
 
     const fetchRecommendedPlans = async () => {
       try {
@@ -139,7 +140,7 @@ const MainPage = () => {
     };
 
     fetchRecommendedPlans();
-  }, [user.birthDay]);
+  }, [user?.birthDay]);
 
   // ageGroup 계산
   const getAgeGroup = (birth: string) => {
@@ -168,9 +169,20 @@ const MainPage = () => {
     });
   };
 
-  const filteredPlans = filterPlansByCategory(selectedCategory, allPlans);
-  const isLoggedIn = Boolean(user.name && user.plan && allPlans.length > 0 && myPlan);
+  // 1. 유저 멤버십 뱃지
+  const membershipBadge = user?.membership; // "vvip", "vip", "우수"
+  const myPlan = allPlans.find((plan) => plan.PLAN_ID === user?.plan);
+  const isYouthPlan = myPlan?.PLAN_NAME.includes('유쓰');
 
+  // 2. 표기용 이름 (우측 뱃지에 보일 텍스트)
+  const membershipLabel = membershipBadge; // 멤버십은 항상 표기
+  const showYouth = isYouthPlan; // 유쓰는 해당할 경우만 표시
+  const showMembership = Boolean(membershipLabel || showYouth);
+
+  const filteredPlans = filterPlansByCategory(selectedCategory, allPlans);
+  const isLoggedIn = Boolean(user?.name && user?.plan && allPlans.length > 0 && myPlan);
+
+  console.log(user);
   return (
     <div className="bg-background md:bg-horizontal">
       {/* 하얀색 배너 영역 */}
@@ -180,7 +192,7 @@ const MainPage = () => {
           <div className="hidden lg:block">
             <HeroSection
               isLoggedIn={isLoggedIn}
-              userName={user.name}
+              userName={user?.name}
               plan={
                 myPlan
                   ? {
@@ -194,7 +206,7 @@ const MainPage = () => {
           </div>
           {/* lg 미만일 때: 기존 모바일 전용 내용 */}
           <div className="lg:hidden">
-            {user.name && myPlan ? (
+            {user?.name && myPlan ? (
               <>
                 <PlanInfoBanner
                   planName={myPlan.PLAN_NAME}
@@ -222,7 +234,7 @@ const MainPage = () => {
       </div>
 
       {/* 맞춤 요금제 (로그인한 경우에만) */}
-      {user.birthDay && (
+      {user?.birthDay && (
         <section className="ml-[5%] pt-6 md:mt-28 md:ml-0">
           <div className="md:max-w-[995px] md:mx-auto">
             <h2 className="text-lg font-semibold mb-1 max-[400px]:text-[20px] md:text-center md:text-xxl md:mb-5">
@@ -245,6 +257,7 @@ const MainPage = () => {
                       score: parseFloat(plan.avgRating?.toString() || '0'),
                       count: plan.reviewCount || 0,
                     }}
+                    onClick={() => console.log('페이지이동')}
                   />
                 ))}
               </div>
@@ -296,6 +309,7 @@ const MainPage = () => {
                       score: plan.RECEIVED_STAR_COUNT / Math.max(plan.REVIEW_USER_COUNT, 1),
                       count: plan.REVIEW_USER_COUNT,
                     }}
+                    onClick={() => console.log('페이지이동')}
                   />
                 );
               })}
@@ -310,10 +324,10 @@ const MainPage = () => {
       {/* 멤버십 혜택 영역 */}
       <div className="w-[90%] mx-auto pt-3 pb-16 md:max-w-[990px] md:mt-32 md:pb-36">
         {/* 로그인하지 않은 경우에만 배너 표시 */}
-        {!user.name && <LoginBanner type="mainWhite" />}
+        {!user?.name && <LoginBanner type="mainWhite" />}
 
         {/* 로그인한 경우에만 멤버십 카드 표시 */}
-        {user.name && showMembership && (
+        {user?.name && showMembership && (
           <div className="bg-horizontal md:bg-none md:bg-fuchsia-100 rounded-[20px] shadow-[0_0_12px_rgba(0,0,0,0.08)] pb-5">
             {/* 흰 배경: 타이틀 + 뱃지 + 설명 */}
             <div className="bg-white w-full p-4 rounded-t-[20px]">
