@@ -40,7 +40,7 @@ const PricingPage = () => {
     minFee: undefined,
     maxFee: undefined,
     dataType: '상관없어요',
-    benefitIds: '',
+    benefitIds: [],
   });
   const [loading, setLoading] = useState(true);
 
@@ -50,12 +50,12 @@ const PricingPage = () => {
   const dispatch = useAppDispatch();
 
   const isOpen = useAppSelector((state) => state.modal.isOpen);
-  // const userId = useAppSelector((state) => state.user.userId); 유저 아이디 리덕스에서 꺼내오기
+  const user = useAppSelector((state) => state.user);
 
   const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
 
   // 초기 로드 시 필터링 함수 호출 방지하는 함수
-  const shouldFetchData = (filters: any) => {
+  const shouldFetchData = (filters: PlanFilterRequest) => {
     return (
       filters.ageGroup !== '' ||
       filters.minFee !== undefined ||
@@ -89,7 +89,7 @@ const PricingPage = () => {
 
     const payload = {
       ...filters,
-      benefitIds: filters.benefitIds?.join(','),
+      benefitIds: filters.benefitIds.length ? filters.benefitIds.join(',') : '',
     };
 
     try {
@@ -116,7 +116,7 @@ const PricingPage = () => {
 
       const payload = {
         ...debouncedFilters,
-        benefitIds: debouncedFilters.benefitIds?.join(','),
+        benefitIds: filters.benefitIds.length ? filters.benefitIds.join(',') : '',
       };
       try {
         setLoading(true);
@@ -130,6 +130,7 @@ const PricingPage = () => {
         setLoading(false);
       }
     };
+
     fetchCount();
   }, [debouncedFilters]);
 
@@ -194,21 +195,15 @@ const PricingPage = () => {
 
   // 변경하기 확인 버튼 로직 (사용자 요금제 변경 필요)
   const handleChangePlans = async () => {
-    const userId = 1; // 테스트용 임시 ID
-    if (!selectedPlan) {
-      toast?.showToast('요금제를 선택해주세요', 'black');
-      return;
-    }
-
-    if (userId === null) {
+    if (user.id === 0) {
       toast?.showToast('로그인 후 이용해 주세요', 'black');
+      dispatch(closeModal());
       return;
     }
 
     try {
-      // userId는 리덕스에서 가져오기?
       await updatePlan({
-        userId,
+        userId: user.id,
         newPlanId: selectedPlan.PLAN_ID,
       });
       setModalType('change');
@@ -289,7 +284,7 @@ const PricingPage = () => {
   return (
     <>
       {/* 만약 사용자가 로그인 상태가 아니라면 배너 띄우기 */}
-      <LoginBanner type="default" />
+      {!user.id && <LoginBanner type="default" />}
       <div className="h-full px-4 md:px-10">
         {/* 필터 영역 */}
         <div className="flex items-center gap-4 py-4">
