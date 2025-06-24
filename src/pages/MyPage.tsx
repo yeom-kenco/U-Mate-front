@@ -11,8 +11,8 @@ import { RootState } from '../store/store';
 import { closeModal, openModal } from '../store/modalSlice';
 import FindAccountModal from '../components/Modal/FindAccountModal';
 import ReviewModal from '../components/Modal/Review/ReviewModal';
-import { PlanDetailResponse, PlanListItem } from '../types/plan';
-import { getPlanDetail, getPlanList, Plan } from '../apis/PlansApi';
+import { getPlanList, Plan } from '../apis/PlansApi';
+import { calculateDiscountedPrice } from '../utils/getDiscountFree';
 
 interface userInfoProps {
   birthDay: string;
@@ -32,6 +32,7 @@ const MyPage = () => {
   const [isCheckPassword, setIsCheckPassword] = useState<boolean>(false);
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
   const modalType = useSelector((state: RootState) => state.modal.type);
+  const [isloading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState<userInfoProps>({
     birthDay: '',
@@ -70,29 +71,25 @@ const MyPage = () => {
     }
   };
   const [plans, setPlans] = useState<Plan[]>([]);
-  const [myPlan, setMyPlan] = useState<Plan | null>(null);
 
+  // 요금제 리스트 불러오기
   useEffect(() => {
-    const fetchPlans = async () => {
-      if (!userInfo && user) return;
+    const fetchPlanList = async () => {
       try {
-        const allPlans = await getPlanList(); // 전체 요금제 목록 받아오기
-
-        setPlans(allPlans.data);
-
-        // 사용자 요금제 ID와 일치하는 요금제 찾기
-        const matched = allPlans.data.find(
-          (plan) => plan.PLAN_ID === userInfo.phonePlan || user.plan
-        );
-        setMyPlan(matched || null);
-      } catch (err) {
-        console.error('전체 요금제 불러오기 실패', err);
+        setIsLoading(true);
+        const res = await getPlanList();
+        setPlans(res.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
-
-    fetchPlans();
-  }, [userInfo.phonePlan]);
-  console.log(myPlan);
+    fetchPlanList();
+  }, []);
+  // 내 요금제
+  const myplan = plans.find((plan) => plan.PLAN_ID === userInfo.phonePlan);
+  console.log(myplan);
   const divClass = 'flex justify-between py-2 border-b';
   const titleClass = 'text-sm text-gray-500';
   const contentClass = 'text-sm font-medium text-gray-800 mr-4';
@@ -108,9 +105,9 @@ const MyPage = () => {
         </p>
         <div className="flex flex-col bg-diagonal w-full h-32 rounded-xl py-4 px-4 ">
           <p className="text-sm text-zinc-800">사용하고 있는 요금제 (관심 요금제)</p>
-          <p className="text-lg font-semibold text-violet-500">5G 프리미어 에센셜</p>
+          <p className="text-lg font-semibold text-violet-500">{myplan?.PLAN_NAME}</p>
           <div className="flex items-end">
-            <p className="text-lg font-semibold flex-1">월 85,500원</p>
+            <p className="text-lg font-semibold flex-1">{myplan?.MONTHLY_FEE.toLocaleString()}원</p>
             <div className="flex  items-center  justify-end text-xs">
               <p>요금제 자세히보기</p>
               <SlArrowRight className="w-2 h-4 " />
