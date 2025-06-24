@@ -10,11 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, openModal } from '../store/modalSlice';
 import { RootState } from '../store/store';
 
-import leftCircle from '../../public/images/login/big-circle-2.png';
-import rightCircle from '../../public/images/login/big-circle-1.png';
-import leftU from '../../public/images/login/big-u-1.png';
-import rightU from '../../public/images/login/big-u-3.png';
-
 const LoginPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [email, setEmail] = useState('');
@@ -88,25 +83,25 @@ const LoginPage = () => {
       <div className="absolute w-full top-[-60px] left-0 h-[300px] md:h-[500px] z-[-1] overflow-hidden">
         {/* 왼쪽 원 - 데스크탑에서 더 큼 */}
         <img
-          src={leftCircle}
+          src="images/login/big-circle-2.png"
           alt="배경"
           className="absolute top-36 left-[-30px] object-cover w-16 md:top-44 md:w-28 md:left-[-60px]"
         />
         {/* 오른쪽 원 */}
         <img
-          src={rightCircle}
+          src="images/login/big-circle-1.png"
           alt="배경"
           className="absolute top-36 right-[-70px] w-24 md:w-44 md:top-48 md:right-[-100px] object-cover"
         />
         {/* 왼쪽 유자형 */}
         <img
-          src={leftU}
+          src="images/login/big-u-1.png"
           alt="배경"
           className="absolute w-32 top-4 left-[15%] rotate-[5deg] md:w-52 md:top-0 md:left-[10%] object-cover"
         />
         {/* 오른쪽 유자형 */}
         <img
-          src={rightU}
+          src="images/login/big-u-3.png"
           alt="배경"
           className="absolute w-28 top-[80px] left-[55%] md:w-40 md:top-[90px] md:left-[75%] object-cover"
         />
