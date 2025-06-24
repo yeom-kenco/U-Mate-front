@@ -277,8 +277,8 @@ const PricingPage = () => {
   };
 
   // 요금제명 클릭 시 상세 페이지로 이동
-  const goToDetailPage = () => {
-    navigate('/');
+  const goToDetailPage = (planId) => {
+    navigate(`/plans/${planId}`);
   };
 
   useEffect(() => {
@@ -328,7 +328,7 @@ const PricingPage = () => {
               size="large"
               onCompareClick={(e) => openCompareModal(e, plan)}
               onChangeClick={(e) => openChangeModal(e, plan)}
-              onClick={goToDetailPage}
+              onClick={() => goToDetailPage(plan.PLAN_ID)}
             />
           ))}
         </div>
