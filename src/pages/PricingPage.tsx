@@ -87,6 +87,7 @@ const PricingPage = () => {
     };
 
     try {
+      setLoading(true);
       const { data, count } = await getFilteredPlans(payload);
       setPlanList(data);
       setFilteredCount(count); // 필터링된 개수 설정
@@ -94,6 +95,8 @@ const PricingPage = () => {
       dispatch(closeModal());
     } catch (error) {
       toast?.showToast('요금제 불러오기 실패', 'error');
+    } finally {
+      setLoading(false);
     }
   }, [filters, dispatch, toast]);
 
@@ -110,12 +113,15 @@ const PricingPage = () => {
         benefitIds: debouncedFilters.benefitIds?.join(','),
       };
       try {
+        setLoading(true);
         const { data } = await getFilteredPlans(payload);
         setFilteredCount(data.length); // 필터링된 개수만 업데이트
         console.log('가져온 요금제', data);
         console.log('필터링된 개수', data.length);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCount();
@@ -358,6 +364,7 @@ const PricingPage = () => {
             onClose={closeFilterModal}
             onApply={handleSelect}
             planCount={filteredCount}
+            loading={loading}
           />
         )}
       </div>

@@ -17,6 +17,7 @@ type FilterModalProps = {
   onReset: () => void;
   onClose: () => void;
   planCount: number;
+  loading: boolean;
 };
 
 type ageOptions = { label: string; value?: string };
@@ -30,6 +31,7 @@ const FilterModal = ({
   onApply,
   onReset,
   planCount,
+  loading,
 }: FilterModalProps) => {
   // 연령 범위 리스트
   const ageOptions: ageOptions[] = [
@@ -200,9 +202,9 @@ const FilterModal = ({
                 onApply();
                 onClose();
               }}
-              disabled={planCount === 0}
+              disabled={planCount === 0 || loading}
             >
-              {planCount}개 요금제 보기
+              {loading ? '로딩중' : `${planCount}개 요금제 보기`}
             </Button>
           </div>
         </div>
