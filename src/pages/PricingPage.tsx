@@ -195,16 +195,20 @@ const PricingPage = () => {
 
   // 변경하기 확인 버튼 로직 (사용자 요금제 변경 필요)
   const handleChangePlans = async () => {
-    if (user.id === 0) {
+    if (user.id === 0 || user.id === null) {
       toast?.showToast('로그인 후 이용해 주세요', 'black');
       dispatch(closeModal());
+      return;
+    }
+
+    if (!selectedPlan) {
       return;
     }
 
     try {
       await updatePlan({
         userId: user.id,
-        newPlanId: selectedPlan.PLAN_ID,
+        newPlanId: selectedPlan?.PLAN_ID,
       });
       setModalType('change');
       toast?.showToast('해당 요금제로 변경되었습니다', 'black');
