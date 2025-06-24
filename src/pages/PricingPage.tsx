@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SlArrowDown, SlArrowUp } from 'react-icons/sl';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { HeaderProps } from '../components/Header';
-import { useDebounce } from '../hooks/useDebounce';
 
+import { HeaderProps } from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { useDebounce } from '../hooks/useDebounce';
 import { closeModal, openModal } from '../store/modalSlice';
 import { useToast } from '../hooks/useToast';
 import { calculateDiscountedPrice } from '../utils/getDiscountFee';
+import { Loading } from '../components/Loading';
 
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
@@ -308,42 +309,49 @@ const PricingPage = () => {
           </div>
         </div>
         {/* 요금제 카드 영역 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
-          {sortedPlans.slice(0, visibleCount).map((plan) => (
-            <PlanCardMemo
-              key={plan.PLAN_ID}
-              name={plan.PLAN_NAME}
-              dataInfo={plan.DATA_INFO}
-              shareInfo={plan.SHARE_DATA}
-              price={`${plan.MONTHLY_FEE.toLocaleString()}`}
-              discountedPrice={`${calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME)}`}
-              rating={{
-                score:
-                  plan.REVIEW_USER_COUNT === 0
-                    ? 0
-                    : plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT,
-                count: plan.REVIEW_USER_COUNT,
-              }}
-              size="large"
-              onCompareClick={(e) => openCompareModal(e, plan)}
-              onChangeClick={(e) => openChangeModal(e, plan)}
-              onClick={() => goToDetailPage(plan.PLAN_ID)}
-            />
-          ))}
-        </div>
-        <div className="flex justify-center mt-8 pb-20">
-          <Button
-            variant="outline"
-            color="gray"
-            size="xl"
-            rounded="full"
-            onClick={handleLoadMore}
-            className="md:w-96"
-          >
-            요금제 더보기 ({visibleCount > filteredCount ? filteredCount : visibleCount}/
-            {filteredCount})
-          </Button>
-        </div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            {' '}
+            <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
+              {sortedPlans.slice(0, visibleCount).map((plan) => (
+                <PlanCardMemo
+                  key={plan.PLAN_ID}
+                  name={plan.PLAN_NAME}
+                  dataInfo={plan.DATA_INFO}
+                  shareInfo={plan.SHARE_DATA}
+                  price={`${plan.MONTHLY_FEE.toLocaleString()}`}
+                  discountedPrice={`${calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME)}`}
+                  rating={{
+                    score:
+                      plan.REVIEW_USER_COUNT === 0
+                        ? 0
+                        : plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT,
+                    count: plan.REVIEW_USER_COUNT,
+                  }}
+                  size="large"
+                  onCompareClick={(e) => openCompareModal(e, plan)}
+                  onChangeClick={(e) => openChangeModal(e, plan)}
+                  onClick={() => goToDetailPage(plan.PLAN_ID)}
+                />
+              ))}
+            </div>
+            <div className="flex justify-center mt-8 pb-44">
+              <Button
+                variant="outline"
+                color="gray"
+                size="xl"
+                rounded="full"
+                onClick={handleLoadMore}
+                className="md:w-96"
+              >
+                요금제 더보기 ({visibleCount > filteredCount ? filteredCount : visibleCount}/
+                {filteredCount})
+              </Button>
+            </div>
+          </>
+        )}
 
         {/* 정렬 필터 바텀시트 */}
         <BottomSheet isOpen={sortOpen} onClose={() => setSortOpen(false)}>
