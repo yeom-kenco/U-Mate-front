@@ -35,4 +35,5 @@ export interface ResetProps {
   newPassword: string;
 }
 
+
 export type SignUpResponse = SignUpSuccess | SignUpError;

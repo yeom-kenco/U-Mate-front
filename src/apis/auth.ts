@@ -23,5 +23,5 @@ export const checkPhoneDuplicate = (data: string) => axiosInstance.post('/duplic
 export const findEmailByPhone = (data: string) => axiosInstance.post('/phoneNumberCheck', data);
 export const getUserInfo = (data) => axiosInstance.post('/userInfo', data); // 서버는 '/getUserInfo'인데 명세대로면 '/userInfo'임
 export const deleteAccount = (data) => axiosInstance.post('/withDrawal', data);
-
 export const validateToken = () => axiosInstance.get('/tokenCheck');
+
