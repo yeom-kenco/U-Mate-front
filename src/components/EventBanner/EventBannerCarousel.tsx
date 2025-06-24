@@ -15,7 +15,7 @@ const images = [
 
 const EventBannerCarousel = () => {
   return (
-    <div className="relative w-full flex justify-center md: mt-20">
+    <div className="relative w-full flex justify-center md:mt-20">
       <Swiper
         modules={[Pagination, Autoplay]}
         spaceBetween={-2}
