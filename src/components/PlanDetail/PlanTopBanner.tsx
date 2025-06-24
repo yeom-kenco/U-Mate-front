@@ -25,19 +25,21 @@ const PlanTopBanner = ({
   isPopular = false,
 }: PlanTopBannerProps) => {
   return (
-    <div className="rounded-b-[20px] px-9 pt-9 pb-4 bg-rdiagonal text-black shadow-[0_8px_15px_-4px_rgba(0,0,0,0.2)]">
+    <div className="rounded-b-[20px] px-9 pt-9 pb-4 max-[400px]:px-7 max-[400px]:pt-7 max-[400px]:pb-3 bg-rdiagonal text-black shadow-[0_8px_15px_-4px_rgba(0,0,0,0.2)]">
       {/* 인기 & 별점 */}
-      <div className="flex items-center gap-2 mt-1 mb-1">
+      <div className="flex items-center gap-1 mt-1 mb-1">
         {isPopular && (
-          <span className="text-xs px-2 py-1 rounded-full bg-pink-500 text-white">인기</span>
+          <span className="text-m px-2 py-1 rounded-full bg-pink-500 text-white">인기</span>
         )}
-        <span className="text-yellow-400">⭐</span>
-        <span className="text-sm">{starRating.toFixed(1)}</span>
+        <span className="text-yellow-400 text-m">⭐</span>
+        <span className="text-m">{starRating.toFixed(1)}</span>
       </div>
 
       {/* 요금제명 & 월정액 */}
-      <h1 className="text-xl font-bold">{planName}</h1>
-      <p className="text-lg mt-1 font-semibold text-black">월 {monthlyFee.toLocaleString()}원</p>
+      <h1 className="text-xl font-bold max-[400px]:text-lg">{planName}</h1>
+      <p className="text-lg mt-1 font-semibold max-[400px]:text-lm text-black">
+        월 {monthlyFee.toLocaleString()}원
+      </p>
 
       {/* 할인 정보 */}
       <div className="text-s mt-8 text-gray-500 space-y-1">
@@ -63,20 +65,20 @@ const PlanTopBanner = ({
         {/* 요금제 슬라이드 카드 영역 */}
         <div className="relative w-screen left-1/2 -translate-x-1/2">
           <div className="overflow-x-auto scrollbar-hide pl-9 py-6">
-            <div className="inline-flex gap-4 pr-4">
-              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[130px] max-w-[130px] h-24">
+            <div className="inline-flex gap-2 pr-4">
+              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s">
                 <p className="text-gray-500">데이터</p>
                 <p className="font-bold">{dataInfo}</p>
               </div>
-              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[130px] max-w-[130px]">
+              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s">
                 <p className="text-gray-500">공유 데이터</p>
                 <p className="font-bold">{shareData}</p>
               </div>
-              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[130px] max-w-[130px]">
+              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s">
                 <p className="text-gray-500">음성 통화</p>
                 <p className="font-bold">{callInfo}</p>
               </div>
-              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[130px] max-w-[130px]">
+              <div className="bg-white rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s">
                 <p className="text-gray-500">문자메세지</p>
                 <p className="font-bold">{smsInfo}</p>
               </div>
