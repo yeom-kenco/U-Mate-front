@@ -20,6 +20,7 @@ import ReviewTextarea from '../components/ReviewTextarea';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SolutionList from '../components/BottomSheet/solutionList';
 import ShortcutPage from '../pages/ShortcutPage';
+import NotFound from '../components/NotFound';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -138,6 +139,7 @@ const router = createBrowserRouter([
       { path: '/mypage', element: <MyPage /> },
       { path: '/signup', element: <RegisterPage /> },
     ],
+    errorElement: <NotFound />,
   },
   {
     path: '/onboarding',

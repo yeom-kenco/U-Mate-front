@@ -20,6 +20,7 @@ import Button from '../components/Button';
 
 // 요금제 리스트 불러오기
 import { getFilteredPlans, getPlanList, Plan, updatePlan } from '../apis/PlansApi';
+import { Loading } from '../components/Loading';
 
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -271,40 +272,45 @@ const PricingPage = () => {
             <FilterButton onClick={openFilterModal} />
           </div>
         </div>
-        {/* 요금제 카드 영역 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
-          {sortedPlans.slice(0, visibleCount).map((plan) => (
-            <PlanCard
-              key={plan.PLAN_ID}
-              name={plan.PLAN_NAME}
-              dataInfo={plan.DATA_INFO}
-              shareInfo={plan.SHARE_DATA}
-              price={`${plan.MONTHLY_FEE.toLocaleString()}`}
-              discountedPrice={`${calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME)}`}
-              rating={{
-                score: plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT,
-                count: plan.REVIEW_USER_COUNT,
-              }}
-              size="large"
-              onCompareClick={(e) => openCompareModal(e, plan)}
-              onChangeClick={(e) => openChangeModal(e, plan)}
-              onClick={goToDetailPage}
-            />
-          ))}
-        </div>
-        <div className="flex justify-center mt-8 mb-20">
-          <Button
-            variant="outline"
-            color="gray"
-            size="xl"
-            rounded="full"
-            onClick={handleLoadMore}
-            className="md:w-96"
-          >
-            요금제 더보기 ({visibleCount > filteredCount ? filteredCount : visibleCount}/
-            {filteredCount})
-          </Button>
-        </div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
+              {sortedPlans.slice(0, visibleCount).map((plan) => (
+                <PlanCard
+                  key={plan.PLAN_ID}
+                  name={plan.PLAN_NAME}
+                  dataInfo={plan.DATA_INFO}
+                  shareInfo={plan.SHARE_DATA}
+                  price={`${plan.MONTHLY_FEE.toLocaleString()}`}
+                  discountedPrice={`${calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME)}`}
+                  rating={{
+                    score: plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT,
+                    count: plan.REVIEW_USER_COUNT,
+                  }}
+                  size="large"
+                  onCompareClick={(e) => openCompareModal(e, plan)}
+                  onChangeClick={(e) => openChangeModal(e, plan)}
+                  onClick={goToDetailPage}
+                />
+              ))}
+            </div>
+            <div className="flex justify-center mt-8 mb-20">
+              <Button
+                variant="outline"
+                color="gray"
+                size="xl"
+                rounded="full"
+                onClick={handleLoadMore}
+                className="md:w-96"
+              >
+                요금제 더보기 ({visibleCount > filteredCount ? filteredCount : visibleCount}/
+                {filteredCount})
+              </Button>
+            </div>
+          </>
+        )}
 
         {/* 정렬 필터 바텀시트 */}
         <BottomSheet isOpen={sortOpen} onClose={() => setSortOpen(false)}>
