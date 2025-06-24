@@ -22,7 +22,7 @@ type ReviewModalProps = {
   type: 'reviewList' | 'reviewWrite';
   onClose: () => void;
   onConfirm?: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   rating?: number;
   planName?: string;
   planPrice?: number;
