@@ -293,7 +293,7 @@ const PricingPage = () => {
   return (
     <div className={`h-full ${loading ? 'min-h-screen' : ''} bg-background`}>
       {/* 만약 사용자가 로그인 상태가 아니라면 배너 띄우기 */}
-      {!user?.id && <LoginBanner type="default" />}
+      {(!user?.id || user?.id === null || user?.id === undefined) && <LoginBanner type="default" />}
       <div className="h-full px-4 md:px-10">
         {/* 필터 영역 */}
         <div className="flex items-center gap-4 py-4">
