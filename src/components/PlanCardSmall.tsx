@@ -13,7 +13,7 @@ const PlanCardSmall: React.FC<PlanCardProps> = ({
   return (
     <div
       className={clsx(
-        'select-none rounded-2xl cursor-pointer bg-white shadow-[0_0_12px_rgba(0,0,0,0.08)] px-6 my-4 py-4 min-w-[254px] min-h-[166px] flex flex-col justify-between md:rounded-3xl md:w-[300px] md:min-w-[320px] md:h-[230px]',
+        'select-none rounded-2xl cursor-pointer bg-white shadow-[0_0_12px_rgba(0,0,0,0.08)] px-6 my-4 py-4 min-w-[254px] min-h-[166px] flex flex-col justify-between md:rounded-3xl md:w-[300px] md:min-w-[320px] md:h-[230px] transition transform duration-150 active:scale-95 hover:shadow-lg',
         highlight && 'border-pink-500'
       )}
     >
