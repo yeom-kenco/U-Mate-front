@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 import Button from './Button';
 interface InputFieldProps {
@@ -13,6 +13,7 @@ interface InputFieldProps {
   error?: string;
   suffixButton?: React.ReactNode; // ex: 중복 확인 버튼
   variant?: 'line' | 'box'; // input박스 유형
+  timer?: React.ReactNode;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -26,6 +27,7 @@ const InputField: React.FC<InputFieldProps> = ({
   error,
   suffixButton,
   variant = 'line',
+  timer,
 }) => {
   const wrapperClass = variant === 'line' ? 'flex flex-col   w-full' : 'flex flex-col gap-2 w-full';
   const inputWrapperClass =
@@ -80,6 +82,7 @@ const InputField: React.FC<InputFieldProps> = ({
             )}
           </button>
         )}
+        {timer && <span className=" text-xs mt-3 text-pink-500 whitespace-nowrap">{timer}</span>}
         {suffixButton && (
           <Button
             variant="outline"
