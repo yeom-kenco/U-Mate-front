@@ -205,6 +205,12 @@ const PricingPage = () => {
       return;
     }
 
+    if (selectedPlan.PLAN_ID === user.plan) {
+      toast?.showToast('현재 사용하시는 요금제입니다', 'error');
+      dispatch(closeModal());
+      return;
+    }
+
     try {
       await updatePlan({
         userId: user?.id,
