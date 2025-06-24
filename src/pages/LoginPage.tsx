@@ -1,16 +1,28 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
 import { useEffect, useState } from 'react';
 import Button from '../components/Button';
 import InputField from '../components/InputField';
 import { useToast } from '../hooks/useToast';
-
+import { login, validateToken } from '../apis/auth';
+import FindAccountModal from '../components/Modal/FindAccountModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeModal, openModal } from '../store/modalSlice';
+import { RootState } from '../store/store';
+import { setUser } from '../store/userSlice';
 const LoginPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const isValid = email.trim().length >= 10 && password.trim().length >= 12;
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValidPhone = /^\d{10,11}$/;
+  const isValidPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/;
   const { showToast } = useToast();
+  const isOpen = useSelector((state: RootState) => state.modal.isOpen);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   useEffect(() => {
     setHeaderConfig({
       title: '로그인',
@@ -28,10 +40,42 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validate = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (email.trim() === '') {
+      newErrors.email = '이메일 또는 휴대폰 번호를 입력해주세요.';
+    } else if (!isValidEmail.test(email) && !isValidPhone.test(email)) {
+      newErrors.email = '올바른 이메일 또는 휴대폰 번호 형식이 아닙니다.';
+    }
+
+    if (!password.trim()) {
+      newErrors.password = '비밀번호를 입력해주세요.';
+    } else if (!isValidPassword.test(password)) {
+      newErrors.password =
+        '비밀번호는 영문 대소문자, 숫자, 특수문자를 포함하여 12자 이상 입력해주세요.';
+    }
+
+    setErrors(newErrors);
+    // 하나도 없어야 통과
+    return Object.values(newErrors).every((e) => e === '');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    showToast(`${email}님 환영합니다`, 'black');
-    console.log(email, password);
+    if (!validate()) return;
+    try {
+      console.log(email, password);
+      await login({ id: email, password });
+      //name 불러오기 위해 token 정보 불러옴
+      const res = await validateToken();
+      const { name } = res.data.user;
+      showToast(`${name}님 환영합니다`, 'black');
+      navigate('/');
+    } catch (err: any) {
+      console.log(err.response);
+      showToast('로그인 실패', 'error');
+    }
   };
 
   return (
@@ -76,32 +120,38 @@ const LoginPage = () => {
           </p>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          <InputField value={email} onChange={ChangeEmail} placeholder="이메일 또는 휴대폰 번호" />
+          <InputField
+            value={email}
+            onChange={ChangeEmail}
+            placeholder="이메일 또는 휴대폰 번호"
+            error={errors.email}
+          />
           <InputField
             value={password}
             onChange={ChangePassword}
             placeholder="비밀번호"
             type="password"
+            error={errors.password}
           />
           <Button
             variant="fill"
             size="xl"
             fullWidth
             className="mt-8 rounded-xl h-16 sm:text-[1.3rem] md:text-lg "
-            disabled={!isValid}
           >
             로그인
           </Button>
         </form>
         <div className="flex pt-6 justify-center gap-4 text-sm text-zinc-500 md:text-m lg:text-lm mb-6">
-          <Link to="/" className="pr-4 border-r border-gray-300">
+          <span onClick={() => dispatch(openModal())} className="pr-4 border-r border-gray-300">
             아이디 / 비밀번호 찾기
-          </Link>
-          <Link to="/register" className="mr-4">
+          </span>
+          <Link to="/signup" className="mr-4">
             회원가입
           </Link>
         </div>
       </div>
+      {isOpen && <FindAccountModal onClose={() => dispatch(closeModal())} />}
     </div>
   );
 };

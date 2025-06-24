@@ -33,7 +33,7 @@ const InputField: React.FC<InputFieldProps> = ({
   const inputWrapperClass =
     variant === 'line'
       ? `border-b mb-2 px-2  pb-1 bg-transparent ${suffixButton ? 'pt-2' : 'pt-4'}`
-      : 'border  rounded-lg px-2 py-2 bg-white';
+      : 'border  rounded-lg px-2 py-1 bg-white';
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -66,7 +66,8 @@ const InputField: React.FC<InputFieldProps> = ({
           className={clsx(
             'flex-1 text-sm mt-1 outline-none placeholder:font-normal placeholder-[#A9B3C2]',
             variant === 'line' ? 'bg-transparent' : 'bg-white',
-            suffixButton ? 'relative top-1' : ''
+            suffixButton ? 'relative top-1' : '',
+            variant === 'box' && suffixButton ? 'mb-2' : ''
           )}
         />
         {type === 'password' && (
