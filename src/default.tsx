@@ -24,6 +24,7 @@ const Default = () => {
       try {
         const res = await validateToken();
         const { user } = res.data;
+        console.log(user);
         if (res && user) {
           const { email, birthDay, id, membership, name, plan } = user;
           //한국 날짜로
