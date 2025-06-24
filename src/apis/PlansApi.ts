@@ -48,3 +48,13 @@ export const getFilteredPlans = async (filteredPlan: PlanFilterRequest) => {
   console.log('필터링 요청 성공', filteredPlan);
   return response.data;
 };
+
+export const getPlanDetail = async (planId: number) => {
+  try {
+    const response = await axiosInstance.get(`/planDetail/${planId}`);
+    return response.data;
+  } catch (error) {
+    console.error('요금제 상세 정보 조회 실패:', error);
+    throw error;
+  }
+};
