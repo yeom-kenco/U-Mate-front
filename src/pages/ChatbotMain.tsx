@@ -27,47 +27,49 @@ export default function ChatbotMain() {
     });
   }, [setHeaderConfig]);
 
-  // 상태 관리
   const [email, setEmail] = useState<string>('');
   const [connected, setConnected] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
 
-  // 웹소켓 & 스크롤
   const ws = useRef<WebSocket | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
-  // 게스트 히스토리
   const guestHistoryRef = useRef<GuestEntry[]>(
     JSON.parse(localStorage.getItem('guestChat') || '[]')
   );
 
-  // 새로운 메시지가 들어올 때마다 스크롤
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // 메시지 도움 함수
+  const formatTime = (date: Date) =>
+    date.toLocaleTimeString('ko-KR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+
   const pushMsg = (type: Message['type'], content: string, time?: string) => {
     setMessages((m) => [...m, { type, content, time }]);
   };
 
-  // 연결 함수
   const connect = () => {
     if (email && !email.includes('@')) {
       alert('올바른 이메일을 입력해주세요');
       return;
     }
-    // 로컬 히스토리 로드
+
     if (!email && guestHistoryRef.current.length) {
       guestHistoryRef.current.forEach((entry) => {
         const from: Message['type'] = entry.MESSAGE_TYPE === 'assistant' ? 'bot' : 'user';
-        pushMsg(from, entry.MESSAGE, new Date(entry.CREATED_AT).toLocaleTimeString());
+        pushMsg(from, entry.MESSAGE, formatTime(new Date(entry.CREATED_AT)));
       });
     }
-    // WebSocket 연결
+
     const query = email ? `email=${encodeURIComponent(email)}&history=true` : 'history=false';
     ws.current = new WebSocket(`wss://seungwoo.i234.me:3333/realtime-chat?${query}`);
+
     ws.current.onopen = () => console.log('WebSocket 연결됨');
     ws.current.onmessage = (ev) => {
       let data;
@@ -77,8 +79,7 @@ export default function ChatbotMain() {
         return;
       }
       if (data.type === 'text_done') {
-        pushMsg('bot', data.text, new Date().toLocaleTimeString());
-        // 게스트 저장
+        pushMsg('bot', data.text, formatTime(new Date()));
         if (!email) {
           const entry: GuestEntry = {
             MESSAGE_TYPE: 'assistant',
@@ -92,16 +93,16 @@ export default function ChatbotMain() {
     };
     ws.current.onclose = () => console.log('WebSocket 연결 해제');
     ws.current.onerror = (e) => console.error('WebSocket 에러', e);
+
     console.log(email ? `${email} 연결 시도중…` : '게스트 모드 연결 시도중…');
     setConnected(true);
   };
 
-  // 메시지 전송
   const send = () => {
     if (!input.trim() || !connected) return;
-    const now = new Date().toLocaleTimeString();
+    const now = formatTime(new Date());
     pushMsg('user', input.trim(), now);
-    // 게스트 저장
+
     if (!email) {
       const entry: GuestEntry = {
         MESSAGE_TYPE: 'user',
@@ -111,6 +112,7 @@ export default function ChatbotMain() {
       guestHistoryRef.current.push(entry);
       localStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
     }
+
     ws.current?.send(JSON.stringify({ type: 'user_message', message: input.trim() }));
     setInput('');
   };
@@ -122,7 +124,6 @@ export default function ChatbotMain() {
 
   return (
     <div className="flex flex-col h-full bg-background">
-      {/* 연결 영역 - 페이지 최상단 */}
       {!connected && (
         <div className="p-4 bg-pink-100 border-b border-gray-200">
           <div className="flex gap-2">
@@ -144,19 +145,17 @@ export default function ChatbotMain() {
         </div>
       )}
 
-      {/* 메시지 영역 */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        <ChatBubble from="bot" variant="first" time={new Date().toLocaleTimeString()}>
+      <div className="flex-1 overflow-y-auto p-4 pb-32 space-y-4">
+        <ChatBubble from="bot" variant="first" time={formatTime(new Date())}>
           <FirstMessage onQuestionClick={handleQuestionClick} />
-        </ChatBubble>{' '}
+        </ChatBubble>
         {messages.map((m, i) => (
           <ChatBubble key={i} from={m.type} message={m.content} time={m.time ?? ''} />
         ))}
         <div ref={endRef} />
       </div>
 
-      {/* 입력 영역 - 페이지 최하단 */}
-      <div className="p-4 bg-white border-t border-gray-200">
+      <div className="fixed bottom-0 left-0 right-0 z-10 p-4 bg-white border-t border-gray-200">
         <ChatbotInput
           value={input}
           onChange={setInput}
