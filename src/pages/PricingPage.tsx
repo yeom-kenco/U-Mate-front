@@ -60,7 +60,7 @@ const PricingPage = () => {
       filters.ageGroup !== '' ||
       filters.minFee !== undefined ||
       filters.maxFee !== undefined ||
-      filters.dataType !== '' ||
+      filters.dataType !== '상관없어요' ||
       (filters.benefitIds && filters.benefitIds.length > 0)
     );
   };
@@ -130,7 +130,6 @@ const PricingPage = () => {
         setLoading(false);
       }
     };
-
     fetchCount();
   }, [debouncedFilters]);
 
