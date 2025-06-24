@@ -1,10 +1,10 @@
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
 import { useEffect, useState } from 'react';
 import { SlArrowRight } from 'react-icons/sl';
 import Button from '../components/Button';
 import InputField from '../components/InputField';
-import { checkPassword, getUserInfo } from '../apis/auth';
+import { checkPassword, deleteAccount, getUserInfo } from '../apis/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '../hooks/useToast';
 import { RootState } from '../store/store';
@@ -13,6 +13,7 @@ import FindAccountModal from '../components/Modal/FindAccountModal';
 import ReviewModal from '../components/Modal/Review/ReviewModal';
 import { getPlanList, Plan } from '../apis/PlansApi';
 import { calculateDiscountedPrice } from '../utils/getDiscountFree';
+import ConfirmModal from '../components/Modal/ConfirmModal';
 
 interface userInfoProps {
   birthDay: string;
@@ -32,8 +33,10 @@ const MyPage = () => {
   const [isCheckPassword, setIsCheckPassword] = useState<boolean>(false);
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
   const modalType = useSelector((state: RootState) => state.modal.type);
+  const navigate = useNavigate();
   const [isloading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const [isDelete, setIsDelete] = useState(false);
   const [userInfo, setUserInfo] = useState<userInfoProps>({
     birthDay: '',
     email: '',
@@ -64,6 +67,7 @@ const MyPage = () => {
       setUserInfo(userinfo.data);
       showToast(res.data.message, 'success');
       setIsCheckPassword(true);
+      setPassword('');
     } catch (err) {
       console.log(err);
       showToast('비밀번호가 맞지 않습니다.', 'error');
@@ -87,6 +91,17 @@ const MyPage = () => {
     };
     fetchPlanList();
   }, []);
+
+  const handledeleteUser = async () => {
+    try {
+      const res = await deleteAccount({ email: userInfo.email, password });
+      showToast(res.data.message, 'success');
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+      showToast('비밀번호가 맞지 않습니다.', 'error');
+    }
+  };
   // 내 요금제
   const myplan = plans.find((plan) => plan.PLAN_ID === user?.plan);
 
@@ -174,6 +189,14 @@ const MyPage = () => {
                 </div>
               </div>
             </div>
+            <Button
+              variant="fill"
+              size="m"
+              className="w-24 flex self-end"
+              onClick={() => setIsDelete(true)}
+            >
+              회원탈퇴
+            </Button>
           </>
         ) : (
           <>
@@ -202,6 +225,25 @@ const MyPage = () => {
           </>
         )}
       </div>
+      {isDelete && (
+        <ConfirmModal
+          title="정말 탈퇴하시겠습니까?"
+          subtitle="탈퇴를 희망하면 현재 비밀번호를 입력해주세요."
+          onClose={() => setIsDelete(false)}
+          onConfirm={handledeleteUser}
+          cancelText="취소"
+          confirmText="탈퇴하기"
+          children={
+            <InputField
+              variant="box"
+              value={password}
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="비밀번호 입력"
+            />
+          }
+        ></ConfirmModal>
+      )}
       {isOpen && modalType === 'findAccount' && (
         <FindAccountModal onClose={() => dispatch(closeModal())} initialStep="reset" />
       )}

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { closeModal, openModal } from '../store/modalSlice';
 import ConfirmModal from './Modal/ConfirmModal';
+import { useToast } from '../hooks/useToast';
 
 interface ReviewCardProps {
   reviewId: number;
@@ -39,16 +40,18 @@ const ReviewCard = ({
   const [editedRating, setEditedRating] = useState(rating);
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
+  const { showToast } = useToast();
   console.log(reviewId, editedContent, editedContent);
-  const handleSubmit = async () => {
+  const handleUpdateReview = async () => {
     try {
-      await updateReview({
+      const res = await updateReview({
         reviewId,
         rating: editedRating,
         review: editedContent,
       });
+      showToast(res.message, 'success');
       setIsEditing(false);
-      //onRefresh?.();
+      onRefresh?.();
     } catch (error) {
       console.error('리뷰 수정 실패:', error);
     }
@@ -57,8 +60,8 @@ const ReviewCard = ({
   const handledeleteReview = async () => {
     try {
       const res = await deleteReview({ reviewId });
-      console.log(res);
-      //onRefresh?.();
+      showToast(res.message, 'success');
+      onRefresh?.();
     } catch (error) {
       console.error('리뷰 삭제 실패:', error);
     }
@@ -105,8 +108,11 @@ const ReviewCard = ({
               <>
                 {isEditing ? (
                   <>
-                    <button onClick={handleSubmit} className="text-blue-600 text-sm font-bold mr-2">
-                      저장
+                    <button
+                      onClick={handleUpdateReview}
+                      className="text-pink-500 text-sm font-bold mr-2"
+                    >
+                      수정
                     </button>
                     <button onClick={() => setIsEditing(false)} className="text-zinc-500 text-sm">
                       취소
@@ -143,7 +149,7 @@ const ReviewCard = ({
       </div>
       {isOpen && (
         <ConfirmModal
-          onClose={() => dispatch(closeModal())}
+          onClose={() => setIsOpen(false)}
           title="정말 삭제하시겠습니까?"
           subtitle="삭제한 리뷰는 되돌릴 수 없어요."
           onConfirm={handledeleteReview}

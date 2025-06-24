@@ -13,16 +13,18 @@ type ReviewListContentProps = {
 const ReviewListContent = ({ children }: ReviewListContentProps) => {
   const user = useSelector((state: RootState) => state.user);
   const [reviews, setReviews] = useState<Review[]>([]);
+
+  const fetchReview = async () => {
+    if (!user?.id) return;
+    try {
+      const res = await getMyReviews(user?.id);
+      setReviews(res.reviews);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchReview = async () => {
-      if (!user?.id) return;
-      try {
-        const res = await getMyReviews(user?.id);
-        setReviews(res.reviews);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchReview();
   }, [user?.id]);
 

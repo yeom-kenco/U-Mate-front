@@ -61,13 +61,12 @@ const LoginPage = () => {
     return Object.values(newErrors).every((e) => e === '');
   };
 
-  console.log(user);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
     try {
       await login({ id: email, password });
-      showToast(`${user?.name}님 환영합니다`, 'black');
+      showToast(`환영합니다`, 'black');
       navigate('/');
     } catch (err: any) {
       console.log(err.response);

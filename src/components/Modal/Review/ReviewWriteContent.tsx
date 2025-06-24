@@ -103,7 +103,7 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
             color="gray"
             size="lg"
             onClick={() => {
-              if (content.length > 0 || ratingValue) {
+              if (content.length > 3) {
                 setIsCancle(true); // 확인 모달 띄우기
               } else {
                 onClose(); // 바로 닫기

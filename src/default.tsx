@@ -56,7 +56,7 @@ const Default = () => {
   if (userLoading) {
     return <div className="text-center mt-10">loading...</div>;
   }
-  console.log(user);
+
   return (
     <div className="flex flex-col min-h-[calc(100vh+1px)]">
       {/* 헤더 */}
