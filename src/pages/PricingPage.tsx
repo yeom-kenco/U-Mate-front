@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SlArrowDown, SlArrowUp } from 'react-icons/sl';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
@@ -19,7 +19,13 @@ import LoginBanner from '../components/LoginBanner';
 import Button from '../components/Button';
 
 // 요금제 리스트 불러오기
-import { getFilteredPlans, getPlanList, Plan, updatePlan } from '../apis/PlansApi';
+import {
+  getFilteredPlans,
+  getPlanList,
+  Plan,
+  PlanFilterRequest,
+  updatePlan,
+} from '../apis/PlansApi';
 
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -29,21 +35,29 @@ const PricingPage = () => {
   const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
   const [planList, setPlanList] = useState<Plan[]>([]);
+  const [filters, setFilters] = useState<PlanFilterRequest[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [filters, setFilters] = useState<{
-    ageGroup?: string;
-    minFee?: number;
-    maxFee?: number;
-    dataType?: string;
-    benefitIds?: number[];
-  }>({
-    ageGroup: '',
-    minFee: undefined,
-    maxFee: undefined,
-    dataType: '상관없어요',
-    benefitIds: [],
-  });
+  // 모달 상태 관리
+  const toast = useToast();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const isOpen = useAppSelector((state) => state.modal.isOpen);
+  // const userId = useAppSelector((state) => state.user.userId); 유저 아이디 리덕스에서 꺼내오기
+
+  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
+
+  // 초기 로드 시 필터링 함수 호출 방지하는 함수
+  const shouldFetchData = (filters: any) => {
+    return (
+      filters.ageGroup !== '' ||
+      filters.minFee !== undefined ||
+      filters.maxFee !== undefined ||
+      filters.dataType !== '' ||
+      (filters.benefitIds && filters.benefitIds.length > 0)
+    );
+  };
 
   // 요금제 리스트 불러오기
   useEffect(() => {
@@ -63,17 +77,9 @@ const PricingPage = () => {
     fetchPlanList();
   }, []);
 
-  // 필터링된 요금제 리스트 불러오기 및 필터링된 개수 계산
-  const handleFilter = async () => {
-    // 초기 로드 시 요청 방지
-    if (
-      !filters.dataType &&
-      !filters.ageGroup &&
-      filters.minFee === undefined &&
-      filters.maxFee === undefined
-    ) {
-      return;
-    }
+  // 필터링된 요금제 리스트 불러오기
+  const handleSelect = useCallback(async () => {
+    if (!shouldFetchData(filters)) return;
 
     const payload = {
       ...filters,
@@ -81,41 +87,45 @@ const PricingPage = () => {
     };
 
     try {
-      const { data } = await getFilteredPlans(payload);
+      const { data, count } = await getFilteredPlans(payload);
       setPlanList(data);
-      setFilteredCount(data.length);
-      setVisibleCount(6);
+      setFilteredCount(count); // 필터링된 개수 설정
+      setVisibleCount((prev) => (prev > count ? count : prev)); // visibleCount 업데이트
+      dispatch(closeModal());
     } catch (error) {
       toast?.showToast('요금제 불러오기 실패', 'error');
-      console.log(error);
     }
-  };
+  }, [filters, dispatch, toast]);
 
-  // 필터링된 개수 불러오기 (버튼 반영)
+  // 필터링된 요금제 개수 불러오기 (버튼 실시간 반영)
   const debouncedFilters = useDebounce(filters, 300);
 
   useEffect(() => {
-    if (
-      debouncedFilters.ageGroup ||
-      debouncedFilters.minFee ||
-      debouncedFilters.maxFee ||
-      debouncedFilters.dataType
-    ) {
-      // 필터 값이 변경될 때만 필터링 요청
-      handleFilter();
-    }
+    const fetchCount = async () => {
+      // 초기 로드 시 요청 방지
+      if (!shouldFetchData(filters)) return;
+
+      const payload = {
+        ...debouncedFilters,
+        benefitIds: debouncedFilters.benefitIds?.join(','),
+      };
+      try {
+        const { data } = await getFilteredPlans(payload);
+        setFilteredCount(data.length); // 필터링된 개수만 업데이트
+        console.log('가져온 요금제', data);
+        console.log('필터링된 개수', data.length);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCount();
   }, [debouncedFilters]);
 
-  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
-
-  const toast = useToast();
-  const navigate = useNavigate();
-
-  // 모달 상태 관리
-  const dispatch = useAppDispatch();
-
-  const isOpen = useAppSelector((state) => state.modal.isOpen);
-  // const userId = useAppSelector((state) => state.user.userId); 유저 아이디 리덕스에서 꺼내오기
+  // 모달 닫을 때 필터링된 개수 업데이트
+  useEffect(() => {
+    // 모달이 닫혔을 때 filteredCount를 업데이트하여 초기화 방지
+    setFilteredCount(planList.length);
+  }, [planList]);
 
   // 필터 선택 모달 열기
   const openFilterModal = () => {
@@ -126,6 +136,7 @@ const PricingPage = () => {
   // 필터 선택 모달 닫기
   const closeFilterModal = () => {
     dispatch(closeModal());
+    setFilteredCount(planList.length);
   };
 
   // 필터 초기화하기
@@ -261,6 +272,8 @@ const PricingPage = () => {
     });
   }, []);
 
+  const PlanCardMemo = React.memo(PlanCard);
+
   return (
     <>
       {/* 만약 사용자가 로그인 상태가 아니라면 배너 띄우기 */}
@@ -281,7 +294,7 @@ const PricingPage = () => {
         {/* 요금제 카드 영역 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
           {sortedPlans.slice(0, visibleCount).map((plan) => (
-            <PlanCard
+            <PlanCardMemo
               key={plan.PLAN_ID}
               name={plan.PLAN_NAME}
               dataInfo={plan.DATA_INFO}
@@ -343,7 +356,7 @@ const PricingPage = () => {
             onChange={setFilters} // 변경 핸들러
             onReset={handleResetFilter} // 초기화
             onClose={closeFilterModal}
-            onApply={handleFilter}
+            onApply={handleSelect}
             planCount={filteredCount}
           />
         )}
