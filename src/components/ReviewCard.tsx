@@ -1,6 +1,11 @@
 import { AiFillStar } from 'react-icons/ai';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { updateReview } from '../apis/ReviewApi';
+import { deleteReview, updateReview } from '../apis/ReviewApi';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { closeModal, openModal } from '../store/modalSlice';
+import ConfirmModal from './Modal/ConfirmModal';
 
 interface ReviewCardProps {
   reviewId: number;
@@ -8,11 +13,12 @@ interface ReviewCardProps {
   writerName?: string;
   writerAge?: string;
   planName?: string;
+  planPrice?: number;
   content: string;
   date: string;
   rating: number;
-  onEdit?: () => void;
   onDelete?: () => void;
+  onRefresh?: () => void;
 }
 
 const ReviewCard = ({
@@ -21,22 +27,42 @@ const ReviewCard = ({
   writerName,
   writerAge,
   planName,
+  planPrice,
   content,
   date,
   rating,
-  onEdit,
   onDelete,
+  onRefresh,
 }: ReviewCardProps) => {
-  const handleupdateReview = async () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(content);
+  const [editedRating, setEditedRating] = useState(rating);
+  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  console.log(reviewId, editedContent, editedContent);
+  const handleSubmit = async () => {
     try {
-      await updateReview({ reviewId, rating, review: content });
-    } catch (err) {
-      console.log(err);
+      await updateReview({
+        reviewId,
+        rating: editedRating,
+        review: editedContent,
+      });
+      setIsEditing(false);
+      //onRefresh?.();
+    } catch (error) {
+      console.error('리뷰 수정 실패:', error);
     }
   };
-  const handleWriteModal =() => {
-    
-  }
+
+  const handledeleteReview = async () => {
+    try {
+      const res = await deleteReview({ reviewId });
+      console.log(res);
+      //onRefresh?.();
+    } catch (error) {
+      console.error('리뷰 삭제 실패:', error);
+    }
+  };
   return (
     <div className="rounded-[20px] bg-white shadow-card overflow-hidden w-[332px] h-[197px] flex max-[390px]:w-[300px] flex-col">
       {/* 상단 */}
@@ -56,8 +82,16 @@ const ReviewCard = ({
       {/* 내용 */}
       <div className="pl-5 pr-5 pt-3 pb-1 text-gray-700 text-s relative flex-1 flex items-center">
         <div className="w-full">
-          <img src="/images/double-quotes.png" className="text-violet-300 text-m mb-2" />
-          <p className="whitespace-pre-wrap">{content}</p>
+          <img src="/images/double-quotes.png" className="mb-2" />
+          {isEditing ? (
+            <textarea
+              className="w-full border rounded p-2"
+              value={editedContent}
+              onChange={(e) => setEditedContent(e.target.value)}
+            />
+          ) : (
+            <p className="whitespace-pre-wrap">{content}</p>
+          )}
         </div>
       </div>
 
@@ -69,19 +103,54 @@ const ReviewCard = ({
           <div className="flex items-center gap-1">
             {isMyPage && (
               <>
-                <button onClick={onEdit}>
-                  <FiEdit className="text-violet-300 text-lm mr-2 hover:text-violet-500 active:text-violet-500 transition-colors" />
-                </button>
-                <button onClick={onDelete}>
-                  <FiTrash2 className="text-violet-300 text-lm mr-2 hover:text-violet-500 active:text-violet-500 transition-colors" />
-                </button>
+                {isEditing ? (
+                  <>
+                    <button onClick={handleSubmit} className="text-blue-600 text-sm font-bold mr-2">
+                      저장
+                    </button>
+                    <button onClick={() => setIsEditing(false)} className="text-zinc-500 text-sm">
+                      취소
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={() => setIsEditing(true)}>
+                      <FiEdit className="text-violet-300 text-lm mr-2 hover:text-violet-500" />
+                    </button>
+                    <button onClick={() => setIsOpen(true)}>
+                      <FiTrash2 className="text-violet-300 text-lm mr-2 hover:text-violet-500" />
+                    </button>
+                  </>
+                )}
               </>
             )}
             <AiFillStar className="text-yellow-400 text-sm" />
-            <span className="font-normal text-sm">{rating}</span>
+            {isEditing ? (
+              <input
+                type="number"
+                step="0.5"
+                min="0"
+                max="5"
+                value={editedRating}
+                onChange={(e) => setEditedRating(parseFloat(e.target.value))}
+                className="w-[50px] border-b border-gray-300 text-center text-sm"
+              />
+            ) : (
+              <span className="font-normal text-sm">{rating}</span>
+            )}
           </div>
         </div>
       </div>
+      {isOpen && (
+        <ConfirmModal
+          onClose={() => dispatch(closeModal())}
+          title="정말 삭제하시겠습니까?"
+          subtitle="삭제한 리뷰는 되돌릴 수 없어요."
+          onConfirm={handledeleteReview}
+          cancelText="취소"
+          confirmText="삭제"
+        />
+      )}
     </div>
   );
 };

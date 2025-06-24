@@ -26,7 +26,6 @@ const ReviewListContent = ({ children }: ReviewListContentProps) => {
     fetchReview();
   }, [user?.id]);
 
-  console.log(reviews);
   return (
     <>
       <div className="flex flex-col flex-1 min-h-0">
@@ -44,6 +43,7 @@ const ReviewListContent = ({ children }: ReviewListContentProps) => {
                 content={review.REVIEW_CONTENT}
                 date={formatToShortKoreanDate(review.UPDATED_AT)}
                 rating={review.STAR_RATING}
+                onRefresh={() => fetchReview()}
               />
             ))}
           </div>

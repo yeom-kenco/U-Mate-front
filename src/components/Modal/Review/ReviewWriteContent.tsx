@@ -1,30 +1,36 @@
 import Button from '../../Button';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import ReviewTextarea from '../../ReviewTextarea';
-import { createReview } from '../../../apis/ReviewApi';
+import { createReview, updateReview } from '../../../apis/ReviewApi';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import { useToast } from '../../../hooks/useToast';
 
 type ReviewWriteContentProps = {
   planName?: string;
   planPrice?: number;
   onClose: () => void;
+  content: string;
+  setContent: (value: string) => void;
+  rating: number;
+  setRating: (value: number) => void;
 };
 
-const ReviewWriteContent = ({ planName, planPrice, onClose }: ReviewWriteContentProps) => {
+const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWriteContentProps) => {
   const user = useSelector((state) => state.user);
-
   const [content, setContent] = useState('');
   const [ratingValue, setRatingValue] = useState<number>(0);
-
-  const handlecreatReview = async () => {
+  const { showToast } = useToast();
+  const handleCreateOrUpdateReview = async () => {
     try {
-      await createReview({
+      const res = await createReview({
         userId: user?.id,
         planId: user?.plan,
-        rating: ratingValue,
+        rating,
         review: content,
       });
+      showToast(res.message, 'success');
+      onClose();
     } catch (err) {
       console.log(err);
     }
@@ -95,7 +101,7 @@ const ReviewWriteContent = ({ planName, planPrice, onClose }: ReviewWriteContent
             variant="fill"
             color="pink"
             size="lg"
-            onClick={handlecreatReview}
+            onClick={handleCreateOrUpdateReview}
             className="flex-1"
           >
             작성하기
