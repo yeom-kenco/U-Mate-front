@@ -4,36 +4,40 @@ import React from 'react';
 type ButtonProps = {
   variant?: 'fill' | 'outline' | 'ghost' | 'special';
   color?: 'pink' | 'gray' | 'violet' | 'black' | 'white';
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
   size?: 's' | 'sm' | 'm' | 'lg' | 'xl';
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
   fullWidth?: boolean;
+  type?: 'button' | 'submit';
 };
 
 const Button = ({
   variant = 'fill',
   color = 'pink',
   size = 'm',
+  rounded,
   onClick,
   children,
   className = '',
   disabled = false,
   fullWidth = false,
+  type = 'submit',
 }: ButtonProps) => {
   // 스타일 정의
   const variantMap = {
     fill: {
       pink: 'bg-pink-500 text-white hover:bg-pink-400 active:bg-pink-600',
-      gray: 'bg-zinc-100 text-zinc-400 hover:bg-zinc-300 active:bg-gray-400',
+      gray: 'bg-zinc-100 text-zinc-400 hover:bg-zinc-300 active:bg-zinc-400 active:text-white',
       violet: 'bg-violet-100 text-black hover:bg-violet-50',
       white: 'bg-white text-black hover:bg-pink-500 hover:text-white border border-zinc-200', //대표 페이지- 추천 요금제용 속성 추가
     },
     outline: {
-      pink: 'border border-pink-500 text-pink-500 hover:bg-pink-50 focus:bg-pink-100',
-      gray: 'border border-zinc-200 text-black hover:bg-zinc-100 focus:bg-zinc-200',
-      violet: 'border border-violet-200 text-violet-400 hover:bg-violet-50',
+      pink: 'border border-pink-500 text-pink-500 bg-white hover:bg-pink-50 focus:bg-pink-100',
+      gray: 'border border-zinc-200 text-black bg-white hover:bg-zinc-100',
+      violet: 'border border-violet-200 text-violet-400  bg-white hover:bg-violet-50',
       white: 'border border-white text-white font-normal',
     },
     ghost: {
@@ -57,7 +61,11 @@ const Button = ({
 
   // 둥근 모서리 설정
   const borderRadius =
-    size === 's' || size === 'sm' || variant === 'special' ? 'rounded-3xl' : 'rounded-lg';
+    rounded !== undefined
+      ? `rounded-${rounded}`
+      : size === 's' || size === 'sm' || variant === 'special'
+        ? 'rounded-3xl'
+        : 'rounded-lg';
 
   // 비활성화 상태 스타일
   const disabledStyle = 'bg-zinc-200 text-white cursor-not-allowed pointer-events-none';
@@ -78,7 +86,7 @@ const Button = ({
     .join(' ');
 
   return (
-    <button onClick={onClick} className={composedClassName} disabled={disabled}>
+    <button onClick={onClick} type={type} className={composedClassName} disabled={disabled}>
       {variant === 'special' && <MdCall className="mr-2 w-5 h-5" />}
       <span className="mt-[2px]">{children}</span>
     </button>

@@ -47,14 +47,15 @@ body {
   min-height: 100%;
   margin: auto;
   font-size: inherit; /* 16px */
+  overflow-x: hidden;
 }
 
 /*스크롤바 안보이게 */
-.scrollbar-hidden {
+.scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-.scrollbar-hidden::-webkit-scrollbar {
+.scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 

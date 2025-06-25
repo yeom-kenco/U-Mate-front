@@ -7,7 +7,7 @@ type ConfirmModalProps = {
   onClose: () => void;
   onConfirm: () => void;
   cancelText?: string;
-  confirmText?: string;
+  confirmText: string;
   children?: React.ReactNode;
 };
 

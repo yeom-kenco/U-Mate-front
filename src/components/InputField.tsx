@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 import Button from './Button';
 interface InputFieldProps {
@@ -13,6 +13,8 @@ interface InputFieldProps {
   error?: string;
   suffixButton?: React.ReactNode; // ex: 중복 확인 버튼
   variant?: 'line' | 'box'; // input박스 유형
+  timer?: React.ReactNode;
+  placeholderStyle?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -26,12 +28,14 @@ const InputField: React.FC<InputFieldProps> = ({
   error,
   suffixButton,
   variant = 'line',
+  timer,
+  placeholderStyle = '',
 }) => {
   const wrapperClass = variant === 'line' ? 'flex flex-col   w-full' : 'flex flex-col gap-2 w-full';
   const inputWrapperClass =
     variant === 'line'
       ? `border-b mb-2 px-2  pb-1 bg-transparent ${suffixButton ? 'pt-2' : 'pt-4'}`
-      : 'border  rounded-lg px-2 py-2 bg-white';
+      : 'border  rounded-lg px-2 py-1 bg-white';
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -64,7 +68,9 @@ const InputField: React.FC<InputFieldProps> = ({
           className={clsx(
             'flex-1 text-sm mt-1 outline-none placeholder:font-normal placeholder-[#A9B3C2]',
             variant === 'line' ? 'bg-transparent' : 'bg-white',
-            suffixButton ? 'relative top-1' : ''
+            suffixButton ? 'relative top-1' : '',
+            variant === 'box' && suffixButton ? 'mb-2' : '',
+            placeholderStyle
           )}
         />
         {type === 'password' && (
@@ -80,10 +86,12 @@ const InputField: React.FC<InputFieldProps> = ({
             )}
           </button>
         )}
+        {timer && <span className=" text-xs mt-3 text-pink-500 whitespace-nowrap">{timer}</span>}
         {suffixButton && (
           <Button
             variant="outline"
             size="m"
+            type="button"
             color="gray"
             className="border-zinc-400 ml-2 bg-zinc-50"
           >
@@ -92,7 +100,7 @@ const InputField: React.FC<InputFieldProps> = ({
         )}
       </div>
       {/*error영역*/}
-      {error && <p className="text-xs md:text-s text-pink-500 mb-2">{error}</p>}
+      {error && <p className="text-xs md:text-sm text-pink-500">{error}</p>}
     </div>
   );
 };
