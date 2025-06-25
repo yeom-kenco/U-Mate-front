@@ -227,7 +227,7 @@ const MainPage = () => {
                           score: parseFloat(plan.avgRating?.toString() || '0'),
                           count: plan.reviewCount || 0,
                         }}
-                        onClick={() => () => navigate(`/plans/${plan.planId}`)}
+                        onClick={() => navigate(`/plans/${plan.planId}`)}
                       />
                     ))}
                   </div>

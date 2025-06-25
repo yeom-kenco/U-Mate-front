@@ -31,14 +31,5 @@ const userSlice = createSlice({
     },
   },
 });
-
-// setUser: (state, action) => {
-//   Object.assign(state, action.payload);
-//   state.isLogin = true;
-// },
-// clearUser: (state) => {
-//   Object.assign(state, initialState);
-//   state.isLogin = false;
-
 export const { setUser, clearUser, updateUserPlan } = userSlice.actions;
 export default userSlice.reducer;
