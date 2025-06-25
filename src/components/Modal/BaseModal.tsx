@@ -55,7 +55,7 @@ const BaseModal = ({
       aria-modal="true"
       aria-labelledby={labelledBy}
       tabIndex={-1}
-      className={`fixed inset-0 z-50 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
+      className={`fixed inset-0 z-[60] bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
       onClick={closeOnOutsideClick ? onClose : undefined}
