@@ -3,10 +3,10 @@ import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { deleteReview, updateReview } from '../apis/ReviewApi';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/store';
-import { closeModal, openModal } from '../store/modalSlice';
+
 import ConfirmModal from './Modal/ConfirmModal';
 import { useToast } from '../hooks/useToast';
+import StarRating from './StartRating';
 
 interface ReviewCardProps {
   reviewId: number;
@@ -41,7 +41,7 @@ const ReviewCard = ({
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const { showToast } = useToast();
-  console.log(reviewId, editedContent, editedContent);
+  console.log(reviewId, editedContent, editedRating);
   const handleUpdateReview = async () => {
     try {
       const res = await updateReview({
@@ -130,19 +130,14 @@ const ReviewCard = ({
                 )}
               </>
             )}
-            <AiFillStar className="text-yellow-400 text-sm" />
+
             {isEditing ? (
-              <input
-                type="number"
-                step="0.5"
-                min="0"
-                max="5"
-                value={editedRating}
-                onChange={(e) => setEditedRating(parseFloat(e.target.value))}
-                className="w-[50px] border-b border-gray-300 text-center text-sm"
-              />
+              <StarRating value={editedRating} onChange={setEditedRating} className="w-4 h-4" />
             ) : (
-              <span className="font-normal text-sm">{rating}</span>
+              <>
+                <AiFillStar className="text-yellow-400 text-sm" />
+                <span className="font-normal text-sm">{rating}</span>
+              </>
             )}
           </div>
         </div>

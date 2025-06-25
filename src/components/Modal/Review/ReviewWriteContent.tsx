@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useToast } from '../../../hooks/useToast';
 import ConfirmModal from '../ConfirmModal';
 import { closeModal } from '../../../store/modalSlice';
+import StarRating from '../../StartRating';
 
 type ReviewWriteContentProps = {
   planName?: string;
@@ -40,11 +41,6 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
     }
   };
 
-  const handleClick = (index: number, isHalf: boolean) => {
-    const newRating = isHalf ? index + 0.5 : index + 1;
-    setRatingValue(newRating);
-  };
-
   return (
     <div className="p-6 flex flex-col min-h-0">
       <h2 className="text-m font-bold text-center mb-4 shrink-0 md:text-lm">리뷰 작성</h2>
@@ -63,35 +59,7 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
             이 요금제에 대해 얼마나 만족하시나요?
           </h3>
           <div className="border border-zinc-200 mb-2 rounded-xl p-3 text-s flex justify-center text-black items-center">
-            <div className="flex space-x-1">
-              {/*별(레이팅) */}
-              {[0, 1, 2, 3, 4].map((index) => (
-                <div key={index} className="relative w-6 h-6 cursor-pointer">
-                  {/* 클릭 영역 */}
-                  <div
-                    className="absolute left-0 w-1/2 h-full z-10"
-                    onClick={() => handleClick(index, true)}
-                  />
-                  <div
-                    className="absolute right-0 w-1/2 h-full z-10"
-                    onClick={() => handleClick(index, false)}
-                  />
-
-                  {/* 배경 별 */}
-                  <AiOutlineStar className="w-full h-full text-yellow-300" />
-
-                  {/* 반 별 또는 전체 별 */}
-                  {ratingValue >= index + 1 ? (
-                    <AiFillStar className="absolute top-0 left-0 w-full h-full text-yellow-400" />
-                  ) : ratingValue >= index + 0.5 ? (
-                    <AiFillStar
-                      className="absolute top-0 left-0 w-full h-full text-yellow-400"
-                      style={{ clipPath: 'inset(0 50% 0 0)' }}
-                    />
-                  ) : null}
-                </div>
-              ))}
-            </div>
+            <StarRating value={ratingValue} onChange={setRatingValue} />
           </div>
         </div>
 
