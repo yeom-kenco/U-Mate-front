@@ -1,15 +1,16 @@
 import InputField from '../InputField';
 import Button from '../Button';
 import { useState } from 'react';
-import { changePassword } from '../../apis/auth';
+import { changePassword, resetPassword } from '../../apis/auth';
 import { useToast } from '../../hooks/useToast';
 
 type Props = {
   onCancel: () => void;
   email: string;
+  isLogin?: boolean;
 };
 
-const ResetPasswordForm = ({ onCancel, email }: Props) => {
+const ResetPasswordForm = ({ onCancel, email, isLogin }: Props) => {
   const [password, setPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>('');
@@ -20,18 +21,33 @@ const ResetPasswordForm = ({ onCancel, email }: Props) => {
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    if (!isValidPassword.test(password)) {
-      newErrors.password =
-        '현재 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 포함하여 12자 이상입니다.';
-    }
+    // 비밀번호 재설정에서
+    if (!isLogin) {
+      if (!isValidPassword.test(newPassword)) {
+        newErrors.newPassword =
+          '새 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 포함하여 12자 이상 입력해주세요.';
+      }
+      if (newPassword !== newPasswordConfirm) {
+        newErrors.newPasswordConfirm = '새 비밀번호가 일치하지 않습니다.';
+      }
+    } else {
+      if (!isValidPassword.test(password)) {
+        newErrors.password =
+          '현재 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 포함하여 12자 이상입니다.';
+      }
 
-    if (!isValidPassword.test(newPassword)) {
-      newErrors.newPassword =
-        '새 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 포함하여 12자 이상 입력해주세요.';
-    }
+      if (password === newPassword) {
+        newErrors.newPassword = '현재 비밀번호를 새 비밀번호로 할 수 없습니다.';
+      }
 
-    if (newPassword !== newPasswordConfirm) {
-      newErrors.newPasswordConfirm = '새 비밀번호가 일치하지 않습니다.';
+      if (!isValidPassword.test(newPassword)) {
+        newErrors.newPassword =
+          '새 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 포함하여 12자 이상 입력해주세요.';
+      }
+
+      if (newPassword !== newPasswordConfirm) {
+        newErrors.newPasswordConfirm = '새 비밀번호가 일치하지 않습니다.';
+      }
     }
 
     setErrors(newErrors);
@@ -41,8 +57,14 @@ const ResetPasswordForm = ({ onCancel, email }: Props) => {
   const handlePasswordReset = async () => {
     if (!validate()) return;
     try {
-      const res = await changePassword({ email, password, newPassword });
-      showToast(res.data.message, 'success');
+      // 비밀번호 재설정에서
+      if (!isLogin) {
+        const res = await resetPassword({ email, password: newPassword });
+        showToast(res.data.message, 'success');
+      } else {
+        const res = await changePassword({ email, password, newPassword });
+        showToast(res.data.message, 'success');
+      }
       onCancel();
     } catch (err: any) {
       console.log(err);
@@ -54,15 +76,20 @@ const ResetPasswordForm = ({ onCancel, email }: Props) => {
 
   return (
     <>
-      <div className="min-h-32 flex flex-col justify-between flex-1">
-        <InputField
-          variant="box"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="현재 비밀번호 입력"
-          type="password"
-          error={errors.password}
-        />
+      <div className="max-h-32 flex flex-col justify-between flex-1">
+        {!isLogin ? (
+          ''
+        ) : (
+          <InputField
+            variant="box"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="현재 비밀번호 입력"
+            type="password"
+            error={errors.password}
+          />
+        )}
+
         <InputField
           variant="box"
           value={newPassword}

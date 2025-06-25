@@ -29,13 +29,13 @@ export interface LoginProps {
   password: string;
 }
 
-export interface ResetProps {
+export interface ChangeProps {
   email: string;
   password: string;
   newPassword: string;
 }
 
-export interface passwordCheckProps {
+export interface EmailpasswordCheckProps {
   email: string;
   password: string;
 }

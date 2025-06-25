@@ -69,8 +69,8 @@ const LoginPage = () => {
       showToast(`환영합니다`, 'black');
       navigate('/');
     } catch (err: any) {
-      console.log(err.response);
-      showToast('로그인 실패', 'error');
+      console.log();
+      showToast(err.response.data.error, 'error');
     }
   };
 
