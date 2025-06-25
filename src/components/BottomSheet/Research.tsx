@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useState } from 'react';
+import { postSurvey } from '../../apis/ServeyApi';
 
 interface ResearchProps {
   onSubmit?: (rating: number, feedback: string) => void;
@@ -21,16 +22,22 @@ const Research: React.FC<ResearchProps> = ({ onSubmit, onClose }) => {
     setFeedback(e.target.value);
   };
 
-  const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit(rating, feedback);
-    }
-    setIsSubmitted(true);
-    setTimeout(() => {
-      if (onClose) {
-        onClose();
+  const handleSubmit = async () => {
+    try {
+      if (onSubmit) {
+        onSubmit(rating, feedback);
       }
-    }, 1500);
+
+      await postSurvey({ rating, content: feedback });
+
+      setIsSubmitted(true);
+
+      setTimeout(() => {
+        if (onClose) onClose();
+      }, 1500);
+    } catch (error) {
+      console.error('설문 제출 실패:', error);
+    }
   };
 
   const canSubmit = feedback.trim().length > 0;
