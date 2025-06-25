@@ -9,9 +9,10 @@ interface PlanBottomBarProps {
   planId: number;
   planName: string;
   price: number;
+  discountedPrice: number;
 }
 
-const PlanBottomBar = ({ planId, planName, price }: PlanBottomBarProps) => {
+const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomBarProps) => {
   const navigate = useNavigate();
   const { showToast } = useContext(ToastContext)!;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,7 +26,7 @@ const PlanBottomBar = ({ planId, planName, price }: PlanBottomBarProps) => {
     const isLoggedIn = res.ok;
 
     if (!isLoggedIn) {
-      showToast('로그인 후 이용 가능합니다.', 'black');
+      showToast('로그인 후 이용 가능합니다.', 'black', 'bottom-center', { bottom: '230px' });
       return;
     }
 
@@ -58,24 +59,46 @@ const PlanBottomBar = ({ planId, planName, price }: PlanBottomBarProps) => {
 
   return (
     <>
-      <div className="flex justify-between items-center w-full">
-        <div>
-          <p className="text-xs text-gray-400">월 {price.toLocaleString()}원</p>
-          <p className="font-bold">{planName}</p>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            color="gray"
-            size="sm"
-            rounded="2xl"
-            onClick={() => navigate('/compare')}
-          >
-            비교하기
-          </Button>
-          <Button variant="fill" color="pink" size="sm" rounded="2xl" onClick={handleRequest}>
-            신청하기
-          </Button>
+      <div className="w-full px-4">
+        {/* lg 이상일 때는 가로 배치, 이하일 때는 세로 배치 */}
+        <div className="flex flex-col lg:flex-row justify-between gap-4 items-start lg:items-end lg:px-44 lg:justify-end lg:gap-12">
+          {/* 좌측: 가격 정보 */}
+          <div className="flex flex-col gap-1 w-full lg:w-96">
+            <div className="flex justify-between items-center w-full">
+              <p className="text-black font-semibold text-lm">월정액</p>
+              <p className="text-pink-500 font-bold text-lg">월 {price.toLocaleString()}원</p>
+            </div>
+            <div className="flex justify-between items-center w-full">
+              <p className="text-black font-semibold text-lm">약정 할인 시</p>
+              <p className="text-black font-extrabold text-lg">
+                월 {discountedPrice.toLocaleString()}원
+              </p>
+            </div>
+          </div>
+
+          {/* 우측: 버튼 영역 */}
+          <div className="flex w-full lg:w-fit gap-2">
+            <Button
+              variant="outline"
+              color="gray"
+              size="xl"
+              rounded="2xl"
+              onClick={() => navigate('/compare')}
+              className="rounded-lg w-[100px]"
+            >
+              비교
+            </Button>
+            <Button
+              variant="fill"
+              color="pink"
+              size="xl"
+              rounded="2xl"
+              onClick={handleRequest}
+              className="rounded-lg w-full lg:w-[250px]"
+            >
+              신청하기
+            </Button>
+          </div>
         </div>
       </div>
 

@@ -7,7 +7,7 @@ interface PlanBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen?: () => void;
-  height?: string;
+  heightClass?: string; // height → heightClass로 변경: tailwind 클래스 받을 수 있도록 하기 위함
 }
 
 const PlanBottomSheet: React.FC<PlanBottomSheetProps> = ({
@@ -15,7 +15,7 @@ const PlanBottomSheet: React.FC<PlanBottomSheetProps> = ({
   isOpen,
   onClose,
   onOpen,
-  height = '50%',
+  heightClass = '50%',
 }) => {
   return (
     <div className="fixed inset-0 z-[999] flex justify-center items-end pointer-events-none">
@@ -32,9 +32,9 @@ const PlanBottomSheet: React.FC<PlanBottomSheetProps> = ({
       <div
         className={clsx(
           'relative w-full max-w-screen bg-white dark:bg-neutral-900 rounded-t-[20px] shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500 pointer-events-auto',
-          isOpen ? 'translate-y-0' : `translate-y-[calc(100%-40px)]`
+          isOpen ? 'translate-y-0' : 'translate-y-[calc(100%-40px)]',
+          heightClass
         )}
-        style={{ height }}
       >
         {/* Handle 영역 */}
         <div
@@ -51,8 +51,7 @@ const PlanBottomSheet: React.FC<PlanBottomSheetProps> = ({
         {/* 내용 */}
         <div
           className={clsx(
-            'flex-1 overflow-y-hidden px-[18px] pb-[34px] flex flex-col gap-7 scrollbar-hidden',
-            height === '700px' && 'overflow-y-scroll'
+            'flex-1 overflow-y-hidden px-[18px] pb-[34px] flex flex-col gap-7 scrollbar-hidden'
           )}
         >
           {children}
