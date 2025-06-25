@@ -114,8 +114,8 @@ const MyPage = () => {
   const contentClass = 'text-sm font-medium text-gray-800 mr-4';
 
   return (
-    <div className="h-full pt-12 bg-background pb-44">
-      <div className="md:flex h-full w-full border border-blue-500 md:px-4 md:gap-5">
+    <div className="h-full pt-12 bg-white pb-44">
+      <div className="md:flex h-full w-full border border-blue-500 md:px-10 md:gap-5">
         <div className="flex flex-col justify-center items-center w-[90%] md:w-[60%] mx-auto gap-3 border border-black md:bg-zinc-100 md:rounded-2xl md:p-4">
           <div className="overflow-hidden md:bg-white md:rounded-full">
             <img
@@ -134,7 +134,7 @@ const MyPage = () => {
               <p className="text-lg font-semibold flex-1 pt-2">
                 {myplan?.MONTHLY_FEE.toLocaleString()}원
               </p>
-              <div className="flex items-center justify-end text-xs pt-3">
+              <div className="flex items-center justify-end text-xs pt-3 md:text-s">
                 <p>요금제 자세히보기</p>
                 <SlArrowRight className="w-2 h-2 mb-1" />
               </div>
@@ -161,11 +161,11 @@ const MyPage = () => {
             </Button>
           </div>
         </div>
-        <div className="bg-violet-50 mt-12 flex flex-col rounded-xl gap-2 min-h-48 text-center w-[90%] mx-auto border border-pink-800">
+        <div className="bg-violet-50 px-4 mt-12 flex flex-col justify-center items-center rounded-xl gap-2 min-h-48 text-center w-[90%] mx-auto border border-pink-800 md:mt-0">
           {isCheckPassword ? (
             <>
               <p className="mt-6 text-m font-semibold">회원 정보</p>
-              <div className="bg-white rounded-xl mt-4 p-4 shadow-sm border border-gray-200">
+              <div className="bg-white rounded-xl m-4 p-4 shadow-sm border border-zinc-200">
                 <div className={divClass}>
                   <span className={titleClass}>이름</span>
                   <span className={contentClass}>{user?.name}</span>
@@ -203,7 +203,7 @@ const MyPage = () => {
               <Button
                 variant="fill"
                 size="m"
-                className="w-24 flex self-end"
+                className="w-24 flex justify-center"
                 onClick={() => setIsDelete(true)}
               >
                 회원탈퇴
