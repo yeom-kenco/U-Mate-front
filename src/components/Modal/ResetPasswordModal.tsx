@@ -21,6 +21,7 @@ const ResetPasswordForm = ({ onCancel, email, isLogin }: Props) => {
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
+    // 비밀번호 재설정에서
     if (!isLogin) {
       if (!isValidPassword.test(newPassword)) {
         newErrors.newPassword =
@@ -56,6 +57,7 @@ const ResetPasswordForm = ({ onCancel, email, isLogin }: Props) => {
   const handlePasswordReset = async () => {
     if (!validate()) return;
     try {
+      // 비밀번호 재설정에서
       if (!isLogin) {
         const res = await resetPassword({ email, password: newPassword });
         showToast(res.data.message, 'success');
