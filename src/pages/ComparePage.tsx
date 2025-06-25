@@ -13,6 +13,7 @@ import { RootState } from '../store/store';
 import { updateUserPlan } from '../store/userSlice';
 import axiosInst from '../apis/axiosInst';
 import { ToastContext } from '../context/ToastContext';
+import CompareBottomBar from '../components/BottomSheet/CompareBottomBar';
 
 interface Plan {
   PLAN_ID: number;
@@ -46,10 +47,10 @@ const Compare = () => {
   const rawPlan2 = Number(searchParams.get('plan2'));
 
   const plan1Default = rawPlan1 || 1;
-  const plan2 = rawPlan2;
+  const plan2Default = rawPlan2 || 2;
 
   const [plan1Id, setPlan1Id] = useState<number>(plan1Default);
-  const [plan2Id, setPlan2Id] = useState<number>(plan2);
+  const [plan2Id, setPlan2Id] = useState<number>(plan2Default);
 
   const [plans, setPlans] = useState<Plan[]>([]);
   const [plan1Detail, setPlan1Detail] = useState<PlanDetail>();
@@ -163,51 +164,32 @@ const Compare = () => {
     }
   };
 
-  if (!plan2Id) {
-    return (
-      <div className="text-center mt-20 text-lg text-red-500">
-        비교할 대상 요금제가 없습니다. 다시 시도해주세요.
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-4xl mx-auto p-4 bg-white min-h-screen pb-32">
+    <div className="max-w-4xl mx-[5%] md:mx-auto bg-white min-h-screen mt-6 pb-32">
       {plans.length > 0 && (
-        <div className="flex justify-center gap-4">
-          <PlanCompare
-            count={1}
-            plans={plans}
-            planDetail={plan1Detail}
-            comparePlan={plan2Detail}
-            setPlanId={setPlan1Id}
-          />
-          <PlanCompare
-            count={2}
-            plans={plans}
-            planDetail={plan2Detail}
-            comparePlan={plan1Detail}
-            setPlanId={setPlan2Id}
-          />
+        <div className="flex w-full gap-4 items-start">
+          <div className="w-1/2 flex-col items-stretch">
+            <PlanCompare
+              count={1}
+              plans={plans}
+              planDetail={plan1Detail}
+              comparePlan={plan2Detail}
+              setPlanId={setPlan1Id}
+            />
+          </div>
+          <div className="w-1/2 flex-col items-stretch">
+            <PlanCompare
+              count={2}
+              plans={plans}
+              planDetail={plan2Detail}
+              comparePlan={plan1Detail}
+              setPlanId={setPlan2Id}
+            />
+          </div>
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white px-4 py-4 shadow-2xl rounded-t-2xl">
-        <div className="max-w-4xl mx-auto flex gap-3">
-          <button
-            className="flex-1 bg-pink-500 text-white py-4 rounded-2xl font-bold text-lg"
-            onClick={() => handleRequest(plan1Id)}
-          >
-            요금제1 신청
-          </button>
-          <button
-            className="flex-1 bg-pink-500 text-white py-4 rounded-2xl font-bold text-lg"
-            onClick={() => handleRequest(plan2Id)}
-          >
-            요금제2 신청
-          </button>
-        </div>
-      </div>
+      <CompareBottomBar plan1Id={plan1Id} plan2Id={plan2Id} />
 
       {isModalOpen && (
         <BaseModal onClose={() => setIsModalOpen(false)}>
