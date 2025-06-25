@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <div className="bg-zinc-100 px-6 py-5">
       <div className="text-[#737373] text-s leading-relaxed sm:flex sm:flex-col sm:items-center">
-        <p className="py-3 my-3 font-regular border-b border-[#A1A1A1] sm:px-24">
+        <p className="py-3 my-3 font-regular border-b border-[#A1A1A1] sm:px-24 md:px-72">
           (주)유레카 사업자정보
         </p>
         <p className="mb-1">

@@ -1,32 +1,61 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance.ts';
+import { Plan, PlanFilterRequest, UpdatePlanRequest, UpdatePlanResponse } from '../types/plan.ts';
 
-const getPlanList = async () => {
-  const response = await axios.get('https://seungwoo.i234.me:3333/planList');
+const getPlanList = async (): Promise<{ data: Plan[] }> => {
+  const response = await axiosInstance.get<{ data: Plan[] }>('/planList');
   return response.data;
 };
 
 const getPlanDetail = async (planId: number) => {
-  const response = await axios.get(`https://seungwoo.i234.me:3333/planDetail/${planId}`);
+  try {
+    const response = await axiosInstance.get(`/planDetail/${planId}`);
+    return response.data;
+  } catch (error) {
+    console.error('요금제 상세 정보 조회 실패:', error);
+    throw error;
+  }
+};
+
+// 요금제 필터링 요청
+const getFilteredPlans = async (filteredPlan: PlanFilterRequest) => {
+  const response = await axiosInstance.post('/filterPlans', filteredPlan);
+  console.log('필터링 요청 성공', filteredPlan);
   return response.data;
 };
 
-const changePlanApi = async (userId: number, newPlanId: number) => {
-  const csrf = await axios.get('https://seungwoo.i234.me:3333/csrf-token');
+// 요금제 변경 요청
+const updatePlan = async (planData: UpdatePlanRequest): Promise<UpdatePlanResponse> => {
+  // 1. CSRF 토큰 요청
+  const csrf = await axiosInstance.get('/csrf-token');
   const csrfToken = csrf.data.csrfToken;
 
-  const response = await axios.post(
-    `https://seungwoo.i234.me:3333/changeUserPlan`,
-    {
-      userId,
-      newPlanId,
+  // 2. CSRF 토큰을 포함하여 요금제 변경 요청
+  const response = await axiosInstance.post<UpdatePlanResponse>('/changeUserPlan', planData, {
+    headers: {
+      'X-CSRF-Token': csrfToken,
     },
+    withCredentials: true,
+  });
+
+  console.log('변경 요청 성공');
+  return response.data;
+};
+
+const getRecommendedPlans = async (birthday: string) => {
+  const csrf = await axiosInstance.get('/csrf-token');
+  const csrfToken = csrf.data.csrfToken;
+
+  const response = await axiosInstance.post<Plan[]>(
+    '/recommendPlansByAge',
+    { birthday },
     {
       headers: {
         'X-CSRF-Token': csrfToken,
       },
+      withCredentials: true,
     }
   );
   return response.data;
 };
 
-export { getPlanList, getPlanDetail, changePlanApi };
+export { getPlanList, getPlanDetail, getFilteredPlans, updatePlan, getRecommendedPlans };

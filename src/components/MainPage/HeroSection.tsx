@@ -8,6 +8,7 @@ interface HeroSectionProps {
   isLoggedIn: boolean;
   userName?: string;
   plan?: {
+    planId: number;
     name: string;
     dataInfo: string;
     dataInfoDetail: string;
@@ -26,7 +27,7 @@ const HeroSection = ({ isLoggedIn, plan }: HeroSectionProps) => {
               {plan.dataInfoDetail ? `${plan.dataInfo} ${plan.dataInfoDetail}` : plan.dataInfo}
             </p>
             <Link
-              to="/compare"
+              to={`/compare?plan1=${plan.planId}`}
               className="inline-flex items-center mt-10 px-16 py-3 border border-white rounded-full text-white text-base hover:bg-white hover:text-purple-700 transition"
             >
               다른 요금제랑 비교해보기

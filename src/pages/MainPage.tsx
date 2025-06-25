@@ -16,6 +16,7 @@ import HeroSection from '../components/MainPage/HeroSection';
 import '../index.css';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { getPlanList, getRecommendedPlans } from '../apis/planApi';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -68,13 +69,9 @@ const MainPage = () => {
   useEffect(() => {
     const fetchAllPlans = async () => {
       try {
-        const res = await fetch('https://seungwoo.i234.me:3333/planList', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        const data = await res.json();
-        if (data.success) {
-          setAllPlans(data.data);
+        const res = await getPlanList();
+        if (res.success) {
+          setAllPlans(res.data);
         }
       } catch (err) {
         console.error('요금제 목록 불러오기 실패:', err);
@@ -90,17 +87,10 @@ const MainPage = () => {
 
     const fetchRecommendedPlans = async () => {
       try {
-        const res = await fetch('https://seungwoo.i234.me:3333/recommendPlansByAge', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ birthday: user?.birthDay }),
-        });
-
-        const data = await res.json();
-        console.log(data);
-        if (data.success) {
-          setAgePlans(data.data);
+        const birthday = user?.birthDay?.replace(/-/g, '');
+        const res = await getRecommendedPlans(birthday);
+        if (res.success) {
+          setAgePlans(res.data);
         }
       } catch (err) {
         console.error('추천 요금제 불러오기 실패:', err);
@@ -163,6 +153,7 @@ const MainPage = () => {
               plan={
                 myPlan
                   ? {
+                      planId: myPlan.PLAN_ID,
                       name: myPlan.PLAN_NAME,
                       dataInfo: myPlan.DATA_INFO,
                       dataInfoDetail: myPlan.DATA_INFO_DETAIL,
@@ -181,7 +172,7 @@ const MainPage = () => {
                   dataInfoDetail={myPlan.DATA_INFO_DETAIL}
                 />
                 <Link
-                  to="/compare"
+                  to={`/compare?plan1=${user?.plan}`}
                   className="flex items-center justify-end mt-4 text-m text-black font-regular mb-[-20px]"
                 >
                   다른 요금제와 비교해보기

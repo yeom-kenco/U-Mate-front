@@ -30,3 +30,41 @@ export interface PlanDetailResponse {
     reviews: Review[];
   };
 }
+
+export interface Plan {
+  PLAN_ID: number;
+  PLAN_NAME: string;
+  MONTHLY_FEE: number;
+  CALL_INFO: string;
+  CALL_INFO_DETAIL: string;
+  DATA_INFO: string;
+  DATA_INFO_DETAIL: string;
+  SHARE_DATA: string;
+  SMS_INFO: string;
+  USER_COUNT: number;
+  RECEIVED_STAR_COUNT: string;
+  REVIEW_USER_COUNT: number;
+  AGE_GROUP: string;
+}
+
+export interface PlanDetail extends Plan {
+  benefits: Benefit[];
+}
+
+export interface PlanFilterRequest {
+  ageGroup?: string;
+  minFee?: number;
+  maxFee?: number;
+  dataType?: string;
+  benefitIds?: string; // "1,2,3" 형식
+}
+
+export interface UpdatePlanRequest {
+  userId: number;
+  newPlanId: number;
+}
+
+export interface UpdatePlanResponse {
+  success: boolean;
+  message: string;
+}

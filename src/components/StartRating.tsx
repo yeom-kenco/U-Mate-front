@@ -15,7 +15,7 @@ const StarRating = ({ value, onChange, className }: StarRatingProps) => {
   return (
     <div className="flex space-x-1">
       {[0, 1, 2, 3, 4].map((index) => (
-        <div key={index} className={clsx('relative cursor-pointer', className)}>
+        <div key={index} className={clsx('relative cursor-pointer w-6 h-6', className)}>
           {/* 왼쪽 반 클릭 */}
           <div
             className="absolute left-0 w-1/2 h-full z-10"

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import DropdownSelector from '../components/DropdownSelector';
-import { getPlanList, getPlanDetail } from '../apis/planApi';
+import { getPlanList, getPlanDetail, updatePlan } from '../apis/planApi';
 import PlanList from '../components/BottomSheet/PlanList';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import PlanCompare from '../components/PlanCompare';
@@ -14,32 +14,7 @@ import { updateUserPlan } from '../store/userSlice';
 import axiosInst from '../apis/axiosInst';
 import { ToastContext } from '../context/ToastContext';
 import CompareBottomBar from '../components/BottomSheet/CompareBottomBar';
-
-interface Plan {
-  PLAN_ID: number;
-  PLAN_NAME: string;
-  MONTHLY_FEE: number;
-  CALL_INFO: string;
-  CALL_INFO_DETAIL: string;
-  DATA_INFO: string;
-  DATA_INFO_DETAIL: string;
-  SHARE_DATA: string;
-  SMS_INFO: string;
-  USER_COUNT: number;
-  RECEIVED_STAR_COUNT: string;
-  REVIEW_USER_COUNT: number;
-  AGE_GROUP: string;
-}
-
-interface PlanDetail extends Plan {
-  benefits: Benefit[];
-}
-
-interface Benefit {
-  BENEFIT_ID: number;
-  NAME: string;
-  TYPE: string;
-}
+import { Plan, PlanDetail } from '../types/plan';
 
 const Compare = () => {
   const [searchParams] = useSearchParams();
@@ -126,26 +101,15 @@ const Compare = () => {
     if (!selectedPlanId) return;
     setIsLoading(true);
     try {
-      const csrfRes = await axiosInst.get('/csrf-token');
-      const csrfToken = csrfRes.data.csrfToken;
-
-      const res = await axiosInst.post(
-        '/changeUserPlan',
-        {
-          userId: user.id,
-          newPlanId: selectedPlanId,
-        },
-        {
-          headers: {
-            'X-CSRF-TOKEN': csrfToken,
-          },
-        }
-      );
+      const res = await updatePlan({
+        userId: user.id,
+        newPlanId: selectedPlanId,
+      });
 
       const data = res.data;
       if (data.success) {
         dispatch(updateUserPlan(selectedPlanId));
-        showToast('해당 요금제가 신청되었습니다.', 'violet', 'bottom-center', {
+        showToast('해당 요금제가 변경되었습니다.', 'violet', 'bottom-center', {
           bottom: '220px',
         });
       } else {
@@ -173,7 +137,7 @@ const Compare = () => {
               count={1}
               plans={plans}
               planDetail={plan1Detail}
-              comparePlan={plan2Detail}
+              comparePlan={undefined}
               setPlanId={setPlan1Id}
             />
           </div>

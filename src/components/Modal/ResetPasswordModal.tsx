@@ -3,6 +3,9 @@ import Button from '../Button';
 import { useState } from 'react';
 import { changePassword, resetPassword } from '../../apis/auth';
 import { useToast } from '../../hooks/useToast';
+import { useDispatch } from 'react-redux';
+import { clearUser } from '../../store/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   onCancel: () => void;
@@ -10,13 +13,17 @@ type Props = {
   isLogin?: boolean;
 };
 
-const ResetPasswordForm = ({ onCancel, email, isLogin }: Props) => {
+const ResetPasswordForm = ({ onCancel, email, isLogin = false }: Props) => {
   const [password, setPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>('');
   const { showToast } = useToast();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const isValidPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  console.log(isLogin, 'isLogin');
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -63,6 +70,8 @@ const ResetPasswordForm = ({ onCancel, email, isLogin }: Props) => {
         showToast(res.data.message, 'success');
       } else {
         const res = await changePassword({ email, password, newPassword });
+        dispatch(clearUser());
+        navigate('/login');
         showToast(res.data.message, 'success');
       }
       onCancel();

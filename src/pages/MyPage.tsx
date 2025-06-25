@@ -1,21 +1,25 @@
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SlArrowRight } from 'react-icons/sl';
 import Button from '../components/Button';
 import InputField from '../components/InputField';
-import { checkPassword, deleteAccount, getUserInfo } from '../apis/auth';
+import { checkPassword, deleteAccount, getUserInfo, validateToken } from '../apis/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '../hooks/useToast';
 import { RootState } from '../store/store';
 import { closeModal, openModal } from '../store/modalSlice';
 import FindAccountModal from '../components/Modal/FindAccountModal';
 import ReviewModal from '../components/Modal/Review/ReviewModal';
-import { getPlanList, Plan } from '../apis/PlansApi';
+import { getPlanList } from '../apis/planApi';
+import { Plan } from '../types/plan';
 import { calculateDiscountedPrice } from '../utils/getDiscountFree';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 
 import myBear from '../assets/myPageBear.svg';
+import { useAppSelector } from '../hooks/reduxHooks';
+import { clearUser, setUser } from '../store/userSlice';
+import { formatToKST } from '../utils/formatDate';
 
 interface userInfoProps {
   birthDay: string;
@@ -30,7 +34,7 @@ interface userInfoProps {
 
 const MyPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
-  const user = useSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user);
   const [password, setPassword] = useState<string>('');
   const [isCheckPassword, setIsCheckPassword] = useState<boolean>(false);
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
@@ -114,14 +118,24 @@ const MyPage = () => {
   const contentClass = 'text-sm font-medium text-gray-800 mr-4 w-[60%] flex lg:text-lm';
 
   useEffect(() => {
-    if (!user?.name) {
-      navigate('/login');
-    }
-  }, [user, navigate]);
+    const checkToken = async () => {
+      const res = await validateToken();
+      const { user } = res.data;
+      if (user && res) {
+        const { email, birthDay, id, membership, name, plan } = user;
+        const korBirthDay = formatToKST(birthDay);
+        dispatch(setUser({ id, name, birthDay: korBirthDay, email, plan, membership }));
+      } else {
+        dispatch(clearUser());
+        navigate('/login');
+      }
+      if (!user?.name) checkToken();
+    };
+  }, [user]);
   return (
     <div className="h-full pt-12 bg-white pb-20">
-      <div className="lg:flex h-full w-full lg:px-10 lg:gap-5">
-        <div className="flex flex-col justify-center items-center w-[90%] lg:w-[60%] mx-auto gap-3 bg-white lg:border-2 lg:border-zinc-200 lg:rounded-2xl lg:p-4">
+      <div className="h-full w-full lg:px-10 lg:gap-5">
+        <div className="flex flex-col justify-center items-center w-[90%] lg:w-[60%] mx-auto gap-3 bg-white lg:rounded-2xl lg:py-4">
           <div className="overflow-hidden">
             <img
               src={myBear}
@@ -140,7 +154,7 @@ const MyPage = () => {
                 {myplan?.MONTHLY_FEE.toLocaleString()}원
               </p>
               <div
-                className="flex items-center gap-1 justify-end text-xs pt-3 lg:text-s"
+                className="flex items-center gap-1 justify-end text-xs pt-3 lg:text-s cursor-pointer select-none"
                 onClick={() => navigate(`/plans/${myplan?.PLAN_ID}`)}
               >
                 <p>요금제 자세히보기</p>
@@ -169,7 +183,7 @@ const MyPage = () => {
             </Button>
           </div>
         </div>
-        <div className="bg-violet-50 px-4 mt-8 flex flex-col justify-center items-center rounded-xl gap-2 min-h-48 text-center w-[90%] mx-auto lg:mt-0">
+        <div className="bg-violet-50 px-4 mt-8 flex flex-col justify-center items-center rounded-xl gap-2 min-h-48 text-center w-[90%] lg:w-[60%] mx-auto">
           <p className="mt-6 text-m font-semibold lg:text-lg">회원 정보</p>
           {isCheckPassword ? (
             <>

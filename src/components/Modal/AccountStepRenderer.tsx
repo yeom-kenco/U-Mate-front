@@ -8,6 +8,7 @@ import { emit } from 'process';
 import { findEmailByPhone } from '../../apis/auth';
 import { CodeCheckButton, EmailSendButton } from '../suffixButtons';
 import { formatTime } from '../../utils/formatTimer';
+import { useAppSelector } from '../../hooks/reduxHooks';
 
 type Props = {
   step: 'findId' | 'getId' | 'verify' | 'reset';
@@ -32,7 +33,8 @@ const AccountStepContent = ({
 }: Props) => {
   const { showToast } = useToast();
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [findEmail, setFindEmail] = useState('');
+  const user = useAppSelector((state) => state.user);
+  const [findEmail, setFindEmail] = useState(user?.email || '');
   const isValidPhone = /^\d{10,11}$/;
   const [email, setEmail] = useState('');
   const [isEmailClicked, setIsEmailClicked] = useState<boolean>(false);
@@ -165,7 +167,7 @@ const AccountStepContent = ({
       );
 
     case 'reset':
-      return <ResetPasswordForm onCancel={onClose} email={findEmail} />;
+      return <ResetPasswordForm onCancel={onClose} email={findEmail} isLogin={true} />;
 
     default:
       return null;

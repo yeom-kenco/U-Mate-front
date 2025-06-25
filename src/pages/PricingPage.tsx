@@ -20,13 +20,8 @@ import LoginBanner from '../components/LoginBanner';
 import Button from '../components/Button';
 
 // 요금제 리스트 불러오기
-import {
-  getFilteredPlans,
-  getPlanList,
-  Plan,
-  PlanFilterRequest,
-  updatePlan,
-} from '../apis/PlansApi';
+import { getFilteredPlans, getPlanList, updatePlan } from '../apis/planApi';
+import { Plan, PlanFilterRequest } from '../types/plan';
 import { setUser } from '../store/userSlice';
 
 const PricingPage = () => {
@@ -56,8 +51,23 @@ const PricingPage = () => {
   // 모달 타입 정의
   const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null);
 
+  const [firstPlan, setFirstPlan] = useState<boolean>(false);
+
   // 초기 로드 시 필터링 함수 호출 방지하는 함수
   const shouldFetchData = (filters: PlanFilterRequest) => {
+    if (!firstPlan) setFirstPlan(true);
+    else if (
+      !(
+        filters.ageGroup !== '' ||
+        filters.minFee !== undefined ||
+        filters.maxFee !== undefined ||
+        filters.dataType !== '상관없어요' ||
+        (filters.benefitIds && filters.benefitIds.length > 0)
+      )
+    ) {
+      return true;
+    }
+
     return (
       filters.ageGroup !== '' ||
       filters.minFee !== undefined ||
@@ -81,7 +91,7 @@ const PricingPage = () => {
       try {
         setLoading(true);
         const { data } = await getPlanList();
-        console.log('planData', data);
+        console.log('가져온 요금제', data);
         setPlanList(data);
         setFilteredCount(data.length);
       } catch (error) {
@@ -105,6 +115,7 @@ const PricingPage = () => {
     try {
       setLoading(true);
       const { data, count } = await getFilteredPlans(payload);
+      console.log('가져온 필터 요금제', data);
       setPlanList(data);
       setFilteredCount(count); // 필터링된 개수 설정
       setVisibleCount((prev) => (prev > count ? count : prev)); // visibleCount 업데이트
@@ -184,7 +195,7 @@ const PricingPage = () => {
   const handleComparePlans = () => {
     setModalType('compare');
     dispatch(closeModal());
-    navigate(`/compare/${user?.plan}/${selectedPlan?.PLAN_ID}`);
+    navigate(`/compare?plan1=${user?.plan}&plan2=${selectedPlan?.PLAN_ID}`);
   };
 
   // 변경하기 모달 열기
@@ -305,19 +316,21 @@ const PricingPage = () => {
             />
           ))}
         </div>
-        <div className="flex justify-center mt-16 pb-44">
-          <Button
-            variant="outline"
-            color="gray"
-            size="xl"
-            rounded="full"
-            onClick={handleLoadMore}
-            className="md:w-96"
-          >
-            요금제 더보기 ({visibleCount > filteredCount ? filteredCount : visibleCount}/
-            {filteredCount})
-          </Button>
-        </div>
+        {!isOpen && (
+          <div className="flex justify-center mt-16 pb-44">
+            <Button
+              variant="outline"
+              color="gray"
+              size="xl"
+              rounded="full"
+              onClick={handleLoadMore}
+              className="md:w-96"
+            >
+              요금제 더보기 ({visibleCount > filteredCount ? filteredCount : visibleCount}/
+              {filteredCount})
+            </Button>
+          </div>
+        )}
 
         {/* 정렬 필터 바텀시트 */}
         <BottomSheet isOpen={sortOpen} onClose={() => setSortOpen(false)}>

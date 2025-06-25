@@ -9,6 +9,8 @@ import FindAccountModal from '../components/Modal/FindAccountModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, openModal } from '../store/modalSlice';
 import { RootState } from '../store/store';
+import { useAppSelector } from '../hooks/reduxHooks';
+import { setUser } from '../store/userSlice';
 
 const LoginPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -22,7 +24,7 @@ const LoginPage = () => {
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user);
   useEffect(() => {
     setHeaderConfig({
       title: '로그인',
@@ -65,12 +67,14 @@ const LoginPage = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      await login({ id: email, password });
-      showToast(`환영합니다`, 'black');
+      const res = await login({ id: email, password });
+      showToast(res.data.message, 'black');
+      const token = await validateToken();
+      dispatch(setUser(token.data.user));
       navigate('/');
     } catch (err: any) {
-      console.log();
-      showToast(err.response.data.error, 'error');
+      console.log(err);
+      //showToast(err.response.data.error, 'error');
     }
   };
 

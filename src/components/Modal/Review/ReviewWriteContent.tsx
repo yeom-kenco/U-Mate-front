@@ -8,6 +8,7 @@ import { useToast } from '../../../hooks/useToast';
 import ConfirmModal from '../ConfirmModal';
 import { closeModal } from '../../../store/modalSlice';
 import StarRating from '../../StartRating';
+import { useAppSelector } from '../../../hooks/reduxHooks';
 
 type ReviewWriteContentProps = {
   planName?: string;
@@ -21,7 +22,7 @@ type ReviewWriteContentProps = {
 };
 
 const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWriteContentProps) => {
-  const user = useSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user);
   const [content, setContent] = useState('');
   const [ratingValue, setRatingValue] = useState<number>(0);
   const [isCancle, setIsCancle] = useState(false);
@@ -32,7 +33,7 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
       const res = await createReview({
         userId: user?.id,
         planId: user?.plan,
-        rating,
+        rating: ratingValue,
         review: content,
       });
       showToast(res.message, 'success');
@@ -56,8 +57,8 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
         </div>
 
         <div>
-          <h3 className="text-sm mt-6 mb-1 max-[370px]:text-s">
-            {question ? question : '이 요금제에 대해 얼마나 만족하시나요?'}
+          <h3 className="text-m mt-6 mb-1 max-[370px]:text-s pl-2">
+            이 요금제에 대해 얼마나 만족하시나요?
           </h3>
           <div className="border border-zinc-200 mb-2 rounded-xl p-3 text-s flex justify-center text-black items-center">
             <StarRating value={ratingValue} onChange={setRatingValue} />

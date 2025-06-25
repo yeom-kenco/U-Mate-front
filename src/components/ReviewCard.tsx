@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ConfirmModal from './Modal/ConfirmModal';
 import { useToast } from '../hooks/useToast';
 import StarRating from './StartRating';
+import ReviewTextarea from './ReviewTextarea';
 
 interface ReviewCardProps {
   reviewId: number;
@@ -41,7 +42,6 @@ const ReviewCard = ({
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const { showToast } = useToast();
-  console.log(reviewId, editedContent, editedRating);
   const handleUpdateReview = async () => {
     try {
       const res = await updateReview({
@@ -53,23 +53,24 @@ const ReviewCard = ({
       setIsEditing(false);
       onRefresh?.();
     } catch (error) {
-      console.error('리뷰 수정 실패:', error);
+      if (editedContent.length < 10) showToast('10자 이상 적어주세요.', 'error');
+      else showToast(error.response.data.error, 'error');
     }
   };
 
-  const handledeleteReview = async () => {
+  const handleDeleteReview = async () => {
     try {
       const res = await deleteReview({ reviewId });
       showToast(res.message, 'success');
       onRefresh?.();
     } catch (error) {
-      console.error('리뷰 삭제 실패:', error);
+      showToast(error.response.data.error, 'error');
     }
   };
   return (
     // ReviewCard.tsx
 
-    <div className="pointer-events-none select-none rounded-[20px] bg-white shadow-card overflow-hidden w-[332px] h-[197px] flex max-[390px]:w-[300px] flex-col flex-shrink-0">
+    <div className="select-none rounded-[20px] bg-white shadow-card overflow-hidden w-[332px] h-[197px] flex max-[390px]:w-[300px] flex-col flex-shrink-0">
       {/* 상단 */}
       <div className="bg-primary text-white px-5 py-3 flex justify-between items-center text-m font-bold">
         {isMyPage ? (
@@ -92,6 +93,8 @@ const ReviewCard = ({
             <textarea
               className="w-full border rounded p-2"
               value={editedContent}
+              minLength={10}
+              maxLength={100}
               onChange={(e) => setEditedContent(e.target.value)}
             />
           ) : (
@@ -116,7 +119,14 @@ const ReviewCard = ({
                     >
                       수정
                     </button>
-                    <button onClick={() => setIsEditing(false)} className="text-zinc-500 text-sm">
+                    <button
+                      onClick={() => {
+                        setEditedRating(rating);
+                        setEditedContent(content);
+                        setIsEditing(false);
+                      }}
+                      className="text-zinc-500 text-sm"
+                    >
                       취소
                     </button>
                   </>
@@ -149,7 +159,7 @@ const ReviewCard = ({
           onClose={() => setIsOpen(false)}
           title="정말 삭제하시겠습니까?"
           subtitle="삭제한 리뷰는 되돌릴 수 없어요."
-          onConfirm={handledeleteReview}
+          onConfirm={handleDeleteReview}
           cancelText="취소"
           confirmText="삭제"
         />

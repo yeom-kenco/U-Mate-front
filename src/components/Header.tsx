@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../apis/auth';
 import { useToast } from '../hooks/useToast';
 import { clearUser } from '../store/userSlice';
+import { useAppSelector } from '../hooks/reduxHooks';
 
 export interface HeaderProps {
   showBackButton: boolean;
@@ -17,37 +18,6 @@ export interface HeaderProps {
   isLoggedIn?: boolean;
   hasShadow?: boolean;
 }
-
-const NavigationLinks = ({ isLoggedIn }: { isLoggedIn?: boolean }) => (
-  <>
-    <Link to="/shortcut" className="hover:text-pink-500">
-      바로가기페이지
-    </Link>
-    <Link to="/plans" className="hover:text-pink-500">
-      요금제 찾기
-    </Link>
-    <Link to="/compare" className="hover:text-pink-500">
-      요금제 비교하기
-    </Link>
-    {isLoggedIn ? (
-      <>
-        <Link to="/mypage" className="hover:text-pink-500">
-          마이페이지
-        </Link>
-        <button className="hover:text-pink-500">로그아웃</button>
-      </>
-    ) : (
-      <>
-        <Link to="/login" className="hover:text-pink-500">
-          로그인
-        </Link>
-        <Link to="/signup" className="hover:text-pink-500">
-          회원가입
-        </Link>
-      </>
-    )}
-  </>
-);
 
 const Header = ({
   showBackButton = false,
@@ -59,7 +29,7 @@ const Header = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user);
   const { showToast } = useToast();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -83,7 +53,7 @@ const Header = ({
   };
   const handleLogout = async () => {
     try {
-      const res = await logout({ email: user?.email });
+      const res = await logout(user?.email);
       showToast(res.data.message, 'success');
       dispatch(clearUser());
       setIsMenuOpen(false);
@@ -92,6 +62,39 @@ const Header = ({
       console.log(error);
     }
   };
+
+  const NavigationLinks = ({ isLoggedIn }: { isLoggedIn?: boolean }) => (
+    <>
+      <Link to="/shortcut" className="hover:text-pink-500">
+        바로가기페이지
+      </Link>
+      <Link to="/plans" className="hover:text-pink-500">
+        요금제 찾기
+      </Link>
+      <Link to={`/compare?plan1=${user?.plan}`} className="hover:text-pink-500">
+        요금제 비교하기
+      </Link>
+      {isLoggedIn ? (
+        <>
+          <Link to="/mypage" className="hover:text-pink-500">
+            마이페이지
+          </Link>
+          <button className="hover:text-pink-500" onClick={handleLogout}>
+            로그아웃
+          </button>
+        </>
+      ) : (
+        <>
+          <Link to="/login" className="hover:text-pink-500">
+            로그인
+          </Link>
+          <Link to="/signup" className="hover:text-pink-500">
+            회원가입
+          </Link>
+        </>
+      )}
+    </>
+  );
 
   return (
     <header
@@ -124,7 +127,7 @@ const Header = ({
           {showSearch ? (
             <>
               <div className="hidden md:flex items-center gap-6 text-sm text-black">
-                <NavigationLinks isLoggedIn={user} />
+                <NavigationLinks isLoggedIn={user?.name ? true : false} />
                 <IoIosSearch className="w-6 h-6 ml-2" />
               </div>
               <div className="md:hidden">
@@ -134,7 +137,7 @@ const Header = ({
           ) : (
             <>
               <div className="hidden md:flex items-center gap-6 text-sm text-black">
-                <NavigationLinks isLoggedIn={user} />
+                <NavigationLinks isLoggedIn={user?.name ? true : false} />
               </div>
               <div className="flex md:hidden items-center gap-5">
                 <Link to="/mypage" className="flex items-center text-black hover:text-pink-500">
