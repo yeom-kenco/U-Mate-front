@@ -1,6 +1,11 @@
 // features/register/AuthButtons.tsx
 import React, { useContext } from 'react';
-import { checkPhoneDuplicate, sendEmailCode, verifyEmailCode } from '../apis/auth';
+import {
+  checkEmailDuplicate,
+  checkPhoneDuplicate,
+  sendEmailCode,
+  verifyEmailCode,
+} from '../apis/auth';
 import { ToastContext } from '../context/ToastContext';
 
 interface Props {
@@ -11,6 +16,8 @@ interface Props {
   setSuccessFlag?: (flag: boolean) => void;
   Timer?: React.Dispatch<React.SetStateAction<number>>; //카운트 (180초)
   Counting?: React.Dispatch<React.SetStateAction<boolean>>; //카운트 실행 여부
+  isEmailDuplicate?: boolean;
+  setIsEMailDuplicate?: React.Dispatch<React.SetStateAction<boolean>>; // 이메일 중복 확인 여부
 }
 
 export const PhoneCheckButton = ({ phoneNumber, setError, setSuccessFlag }: Props) => {
@@ -27,10 +34,7 @@ export const PhoneCheckButton = ({ phoneNumber, setError, setSuccessFlag }: Prop
           toastContext?.showToast(res.data.message, 'success');
           setSuccessFlag?.(true);
         } catch (err: any) {
-          toastContext?.showToast(
-            err.response?.data?.message || '이미 가입된 휴대폰번호가 존재합니다.',
-            'error'
-          );
+          toastContext?.showToast('이미 가입된 휴대폰 번호입니다.', 'error');
           setSuccessFlag?.(false);
         }
       }}
@@ -39,7 +43,15 @@ export const PhoneCheckButton = ({ phoneNumber, setError, setSuccessFlag }: Prop
     </span>
   );
 };
-export const EmailSendButton = ({ email, setError, setSuccessFlag, Timer, Counting }: Props) => {
+export const EmailSendButton = ({
+  email,
+  setError,
+  setSuccessFlag,
+  Timer,
+  Counting,
+  isEmailDuplicate,
+  setIsEMailDuplicate,
+}: Props) => {
   const toastContext = useContext(ToastContext);
   return (
     <span
@@ -48,14 +60,29 @@ export const EmailSendButton = ({ email, setError, setSuccessFlag, Timer, Counti
           setError?.('email', '이메일 형식이 올바르지 않습니다.');
           return;
         }
+
         try {
+          // 1. 이메일 중복 확인
+          const dupRes = await checkEmailDuplicate({ email });
+
+          console.log(dupRes);
+          if (dupRes.status === 404) {
+            setIsEMailDuplicate?.(true);
+            return;
+          } else {
+            setIsEMailDuplicate?.(false);
+            toastContext?.showToast(dupRes.data.message, 'success');
+          }
+
+          // 2. 중복이 아닌 경우에만 인증 메일 발송
           const res = await sendEmailCode({ email });
-          Timer?.(180); // 3분으로 초기화
-          Counting?.(true); // 타이머 시작
+          Timer?.(180);
+          Counting?.(true);
           toastContext?.showToast(res.data.message, 'success');
           setSuccessFlag?.(true);
         } catch (err: any) {
-          console.log('이메일 인증코드 발송 에러', err);
+          console.error('이메일 인증코드 발송 에러:', err);
+          toastContext?.showToast('이미 가입된 이메일이 존재합니다.', 'error');
           setSuccessFlag?.(false);
         }
       }}

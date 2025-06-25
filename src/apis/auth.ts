@@ -31,3 +31,4 @@ export const findEmailByPhone = (data: string) => axiosInst.post('/phoneNumberCh
 export const getUserInfo = (data) => axiosInst.post('/userInfo', data); // 서버는 '/getUserInfo'인데 명세대로면 '/userInfo'임
 export const deleteAccount = (data) => axiosInst.post('/withDrawal', data);
 export const validateToken = () => axiosInst.get('/tokenCheck');
+export const checkEmailDuplicate = (data: string) => axiosInst.post('/emailDuplicate', data);
