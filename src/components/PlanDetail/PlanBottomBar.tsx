@@ -47,12 +47,18 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
 
       const data = await res.json();
       if (data.success) {
-        showToast('해당 요금제가 신청되었습니다.', 'violet');
+        showToast('해당 요금제가 신청되었습니다.', 'violet', 'bottom-center', {
+          bottom: '220px',
+        });
       } else {
-        showToast(data.message || '신청 실패', 'error');
+        showToast(data.message || '신청 실패', 'error', 'bottom-center', {
+          bottom: '220px',
+        });
       }
     } catch {
-      showToast('요금제 신청 중 오류가 발생했습니다.', 'error');
+      showToast('요금제 신청 중 오류가 발생했습니다.', 'error', 'bottom-center', {
+        bottom: '220px',
+      });
     } finally {
       setIsLoading(false);
       setIsModalOpen(false);
