@@ -19,12 +19,11 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRequest = async () => {
-    // const res = await fetch(`https://seungwoo.i234.me:3333/tokenCheck`, {
-    //   method: 'GET',
-    //   credentials: 'include',
-    // });
-    // const isLoggedIn = res.ok;
-    const isLoggedIn = true; // ← 테스트 중일 때만 true로 하드코딩
+    const res = await fetch(`https://seungwoo.i234.me:3333/tokenCheck`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+    const isLoggedIn = res.ok;
 
     if (!isLoggedIn) {
       showToast('로그인 후 이용 가능한 서비스입니다.', 'error', 'bottom-center', {

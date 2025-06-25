@@ -66,22 +66,33 @@ const PlanTopBanner = ({
         <div className="relative w-screen left-1/2 -translate-x-1/2">
           <div className="overflow-x-auto scrollbar-hide pl-9 py-6 md:pl-52">
             <div className="inline-flex gap-2 pr-4 md:gap-4">
-              <div className="bg-[rgba(255,255,255,0.35)] rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-32 md:max-h-32 md:min-w-[185px] md:max-w-[185px]">
-                <p className="text-gray-500">데이터</p>
-                <p className="font-bold">{dataInfo}</p>
-              </div>
-              <div className="bg-[rgba(255,255,255,0.35)]  rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-32 md:max-h-32 md:min-w-[185px] md:max-w-[185px]">
-                <p className="text-gray-500">공유 데이터</p>
-                <p className="font-bold">{shareData}</p>
-              </div>
-              <div className="bg-[rgba(255,255,255,0.35)]  rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-32 md:max-h-32 md:min-w-[185px] md:max-w-[185px]">
-                <p className="text-gray-500">음성 통화</p>
-                <p className="font-bold">{callInfo}</p>
-              </div>
-              <div className="bg-[rgba(255,255,255,0.35)]  rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-32 md:max-h-32 md:min-w-[185px] md:max-w-[185px]">
-                <p className="text-gray-500">문자메세지</p>
-                <p className="font-bold">{smsInfo}</p>
-              </div>
+              {dataInfo && (
+                <div className="bg-[rgba(255,255,255,0.35)] rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-32 md:max-h-32 md:min-w-[185px] md:max-w-[185px]">
+                  <p className="text-gray-500">데이터</p>
+                  <p className="font-bold">{dataInfo}</p>
+                </div>
+              )}
+
+              {shareData && (
+                <div className="bg-[rgba(255,255,255,0.35)] rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-32 md:max-h-32 md:min-w-[185px] md:max-w-[185px]">
+                  <p className="text-gray-500">공유 데이터</p>
+                  <p className="font-bold">{shareData}</p>
+                </div>
+              )}
+
+              {callInfo && (
+                <div className="bg-[rgba(255,255,255,0.35)] rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-32 md:max-h-32 md:min-w-[185px] md:max-w-[185px]">
+                  <p className="text-gray-500">음성 통화</p>
+                  <p className="font-bold">{callInfo}</p>
+                </div>
+              )}
+
+              {smsInfo && (
+                <div className="bg-[rgba(255,255,255,0.35)] rounded-[8px] py-3 px-4 shadow-lilac min-w-[145px] max-w-[145px] min-h-24 max-h-24 text-s md:text-m md:min-h-32 md:max-h-32 md:min-w-[185px] md:max-w-[185px]">
+                  <p className="text-gray-500">문자메세지</p>
+                  <p className="font-bold">{smsInfo}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
