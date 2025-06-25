@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { closeModal, openModal } from '../store/modalSlice';
 import { useToast } from '../hooks/useToast';
 import { calculateDiscountedPrice } from '../utils/getDiscountFee';
+import { sortPlans } from '../utils/sortPlans';
 
 import { HeaderProps } from '../components/Header';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
@@ -26,7 +27,6 @@ import {
   PlanFilterRequest,
   updatePlan,
 } from '../apis/PlansApi';
-import { getUserInfo } from '../apis/auth';
 import { setUser } from '../store/userSlice';
 
 const PricingPage = () => {
@@ -239,33 +239,7 @@ const PricingPage = () => {
   };
 
   // 정렬 로직
-  const getSortedPlans = () => {
-    switch (isSorted) {
-      case '높은 가격순':
-        return planList.sort((a, b) => b.MONTHLY_FEE - a.MONTHLY_FEE);
-      case '낮은 가격순':
-        return planList.sort((a, b) => a.MONTHLY_FEE - b.MONTHLY_FEE);
-      case '리뷰 많은 순':
-        return planList.sort((a, b) => b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT);
-      default:
-        // 인기순: 평점 높은 순
-        return planList.sort((a, b) => {
-          const scoreA =
-            a.REVIEW_USER_COUNT === 0 ? 0 : a.RECEIVED_STAR_COUNT / a.REVIEW_USER_COUNT;
-          const scoreB =
-            b.REVIEW_USER_COUNT === 0 ? 0 : b.RECEIVED_STAR_COUNT / b.REVIEW_USER_COUNT;
-
-          if (scoreB !== scoreA) {
-            return scoreB - scoreA;
-          } else {
-            // 평점이 같을 경우 리뷰 많은 순
-            return b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT;
-          }
-        });
-    }
-  };
-
-  const sortedPlans = getSortedPlans();
+  const sortedPlans = sortPlans(planList, isSorted);
 
   // 페이지네이션 로직
   const handleLoadMore = () => {
@@ -364,8 +338,8 @@ const PricingPage = () => {
         {/* 비교하기 모달 */}
         {modalType === 'compare' && isOpen && (
           <ConfirmModal
-            title="선택한 요금제가 비교함에 추가되었어요!"
-            subtitle="지금 비교함으로 가보시겠어요?"
+            title="비교할 요금제가 선택되었습니다"
+            subtitle="지금 비교하러 가보시겠어요?"
             confirmText="이동"
             onConfirm={handleComparePlans}
             onClose={() => dispatch(closeModal())}
