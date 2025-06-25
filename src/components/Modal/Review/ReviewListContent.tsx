@@ -13,20 +13,21 @@ type ReviewListContentProps = {
 const ReviewListContent = ({ children }: ReviewListContentProps) => {
   const user = useSelector((state: RootState) => state.user);
   const [reviews, setReviews] = useState<Review[]>([]);
+
+  const fetchReview = async () => {
+    if (!user?.id) return;
+    try {
+      const res = await getMyReviews(user?.id);
+      setReviews(res.reviews);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchReview = async () => {
-      if (!user?.id) return;
-      try {
-        const res = await getMyReviews(user?.id);
-        setReviews(res.reviews);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchReview();
   }, [user?.id]);
 
-  console.log(reviews);
   return (
     <>
       <div className="flex flex-col flex-1 min-h-0">
@@ -44,6 +45,7 @@ const ReviewListContent = ({ children }: ReviewListContentProps) => {
                 content={review.REVIEW_CONTENT}
                 date={formatToShortKoreanDate(review.UPDATED_AT)}
                 rating={review.STAR_RATING}
+                onRefresh={() => fetchReview()}
               />
             ))}
           </div>

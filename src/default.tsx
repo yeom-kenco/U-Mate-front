@@ -20,7 +20,7 @@ const Default = () => {
   const [userLoading, setUserLoading] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-
+  const isLogin = useSelector((state) => state.user.isLogin);
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -52,7 +52,7 @@ const Default = () => {
       }
     };
     fetchUser();
-  }, [dispatch]);
+  }, [dispatch, isLogin]);
 
   if (userLoading) {
     return (
@@ -61,7 +61,7 @@ const Default = () => {
       </div>
     );
   }
-  console.log(user);
+
   return (
     <div className="flex flex-col min-h-[calc(100vh+1px)]">
       {/* 헤더 */}
