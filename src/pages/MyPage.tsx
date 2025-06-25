@@ -134,7 +134,10 @@ const MyPage = () => {
               <p className="text-lg font-semibold flex-1 pt-2">
                 {myplan?.MONTHLY_FEE.toLocaleString()}원
               </p>
-              <div className="flex items-center gap-1 justify-end text-xs pt-3 lg:text-s">
+              <div
+                className="flex items-center gap-1 justify-end text-xs pt-3 lg:text-s"
+                onClick={() => navigate(`/plans/${myplan?.PLAN_ID}`)}
+              >
                 <p>요금제 자세히보기</p>
                 <SlArrowRight className="w-2 h-2 mb-[0.75px]" />
               </div>
