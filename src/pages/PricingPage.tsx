@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SlArrowDown, SlArrowUp } from 'react-icons/sl';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { HeaderProps } from '../components/Header';
-import { useDebounce } from '../hooks/useDebounce';
 
+import { useDebounce } from '../hooks/useDebounce';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { closeModal, openModal } from '../store/modalSlice';
 import { useToast } from '../hooks/useToast';
 import { calculateDiscountedPrice } from '../utils/getDiscountFee';
 
+import { HeaderProps } from '../components/Header';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
 import PlanCard from '../components/PlanCard';
@@ -26,13 +26,15 @@ import {
   PlanFilterRequest,
   updatePlan,
 } from '../apis/PlansApi';
+import { getUserInfo } from '../apis/auth';
+import { setUser } from '../store/userSlice';
 
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [sortOpen, setSortOpen] = useState(false); // 정렬 시트 토글
   const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
   const [filteredCount, setFilteredCount] = useState(0); // 사용자 맞춤 필터링된 요금제 개수
-  const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 요금제 (비교 또는 변경)
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
   const [planList, setPlanList] = useState<Plan[]>([]);
   const [filters, setFilters] = useState<PlanFilterRequest[]>({
@@ -52,7 +54,9 @@ const PricingPage = () => {
   const isOpen = useAppSelector((state) => state.modal.isOpen);
   const user = useAppSelector((state) => state.user);
 
-  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
+  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | 'review' | null>(
+    null
+  ); // 모달 타입 정의
 
   // 초기 로드 시 필터링 함수 호출 방지하는 함수
   const shouldFetchData = (filters: PlanFilterRequest) => {
@@ -178,11 +182,6 @@ const PricingPage = () => {
     navigate('/compare', { state: { plan: selectedPlan } });
   };
 
-  // 비교하기 모달 닫기
-  const closeCompareModal = () => {
-    dispatch(closeModal());
-  };
-
   // 변경하기 모달 열기
   const openChangeModal = (e: React.MouseEvent, plan) => {
     e.stopPropagation();
@@ -196,13 +195,15 @@ const PricingPage = () => {
   const handleChangePlans = async () => {
     if (!user || user?.id === 0 || user?.id === null) {
       toast?.showToast('로그인 후 이용해 주세요', 'black');
+      // 로그인이 아닐 경우 로그인 페이지로 이동
       dispatch(closeModal());
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
       return;
     }
 
-    if (!selectedPlan) {
-      return;
-    }
+    if (!selectedPlan) return;
 
     if (selectedPlan.PLAN_ID === user.plan) {
       toast?.showToast('현재 사용하시는 요금제입니다', 'error');
@@ -216,6 +217,12 @@ const PricingPage = () => {
         newPlanId: selectedPlan?.PLAN_ID,
       });
       setModalType('change');
+      dispatch(
+        setUser({
+          ...user,
+          plan: selectedPlan?.PLAN_ID,
+        })
+      );
       toast?.showToast('해당 요금제로 변경되었습니다', 'black');
     } catch (error) {
       console.log(error);
@@ -223,11 +230,6 @@ const PricingPage = () => {
     } finally {
       dispatch(closeModal());
     }
-  };
-
-  // 변경하기 모달 닫기
-  const closeChangeModal = () => {
-    dispatch(closeModal());
   };
 
   // 정렬 기준 선택 시
@@ -331,7 +333,7 @@ const PricingPage = () => {
             />
           ))}
         </div>
-        <div className="flex justify-center mt-8 pb-20">
+        <div className="flex justify-center mt-16 pb-44">
           <Button
             variant="outline"
             color="gray"
@@ -356,7 +358,7 @@ const PricingPage = () => {
             title="해당 요금제로 변경하시겠습니까?"
             confirmText="변경"
             onConfirm={handleChangePlans}
-            onClose={closeChangeModal}
+            onClose={() => dispatch(closeModal())}
           />
         )}
         {/* 비교하기 모달 */}
@@ -366,7 +368,7 @@ const PricingPage = () => {
             subtitle="지금 비교함으로 가보시겠어요?"
             confirmText="이동"
             onConfirm={handleComparePlans}
-            onClose={closeCompareModal}
+            onClose={() => dispatch(closeModal())}
           />
         )}
         {modalType === 'filter' && isOpen && (
