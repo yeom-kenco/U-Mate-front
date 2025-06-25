@@ -316,11 +316,10 @@ const PlanCompare = ({
       </div>
 
       {/* 요금제 상세보기 링크 */}
-      <div className="mt-4 mb-6">
-        <button className="text-pink-500 text-sm underline">요금제 상세보기</button>
-        {/* <Link className="text-pink-500 text-sm underline" to={`/planDetail/${planDetail?.PLAN_ID}`}>
+      <div className="mx-[5%] mt-4 mb-6">
+        <Link className="text-pink-500 text-sm underline" to={`/plans/${planDetail?.PLAN_ID}`}>
           요금제 상세보기
-        </Link> */}
+        </Link>
       </div>
     </div>
   );
