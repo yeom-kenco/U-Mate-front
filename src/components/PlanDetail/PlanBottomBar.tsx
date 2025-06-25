@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { ToastContext } from '../../context/ToastContext';
 import Button from '../Button';
 import BaseModal from '../Modal/BaseModal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface PlanBottomBarProps {
   planId: number;
@@ -18,6 +20,17 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const user = useSelector((state: RootState) => state.user);
+
+  // ✅ 비교 버튼 클릭 시
+  const handleCompareClick = () => {
+    const params = new URLSearchParams();
+    if (user?.plan) params.append('plan1', String(user.plan));
+    params.append('plan2', String(planId));
+    navigate(`/compare?${params.toString()}`);
+  };
+
+  // ✅ 신청 버튼 클릭 시
   const handleRequest = async () => {
     const res = await fetch(`https://seungwoo.i234.me:3333/tokenCheck`, {
       method: 'GET',
@@ -42,7 +55,10 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ newPlanId: planId }),
+        body: JSON.stringify({
+          userId: user.id, // ✅ 추가
+          newPlanId: planId,
+        }),
       });
 
       const data = await res.json();
@@ -91,7 +107,7 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
               color="gray"
               size="xl"
               rounded="2xl"
-              onClick={() => navigate('/compare')}
+              onClick={handleCompareClick}
               className="rounded-lg w-[100px]"
             >
               비교
