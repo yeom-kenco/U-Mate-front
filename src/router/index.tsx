@@ -108,7 +108,7 @@ const router = createBrowserRouter([
         path: '/terms', // 푸터 이용약관 페이지
         element: <TermsOfUsePage />,
       },
-      { path: 'pricing', element: <PricingPage /> }, // 요금제 페이지
+      { path: 'price', element: <PricingPage /> }, // 요금제 페이지
       { path: '/plans/:id', element: <PlanDetailPage /> }, //요금제 상세 페이지
       { path: '/compare', element: <ComparePage /> },
       { path: '/login', element: <LoginPage /> },
