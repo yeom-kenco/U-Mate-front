@@ -22,7 +22,7 @@ const ShortcutGrid = () => (
         }
         title="대표 페이지"
         description={'다양한 이벤트부터 요금제, 혜택, 비교까지\n 필요한 정보를 한 번에 확인하세요.'}
-        onClick={() => console.log('대표 페이지로 이동')}
+        route="/"
         width="w-full"
         height="h-full"
         iconSize="w-72 h-72"
@@ -33,12 +33,11 @@ const ShortcutGrid = () => (
 
       {/* 오른쪽 카드들 */}
       <div className="flex flex-col gap-4 h-full">
-        <div className="flex-1">
+        <div className="flex-1 ">
           <ShortcutCard
             icon={<img src="/images/shortcut/shortcut-phone.png" alt="고객센터 전화" />}
             title="고객센터 전화"
             description="상담원과 바로 연결해보세요."
-            onClick={() => console.log('고객센터 전화')}
             width="w-full"
             height="h-full"
             iconSize="w-36 h-36"
@@ -51,7 +50,7 @@ const ShortcutGrid = () => (
             icon={<img src="/images/shortcut/shortcut-webchatbot.png" alt="상담봇" />}
             title="상담봇과 대화하기"
             description={'요금제부터 혜택까지\n궁금한 내용을 친절히 안내해 드려요.'}
-            onClick={() => console.log('챗봇 열기')}
+            route="/chatbot"
             width="w-full"
             height="h-full"
             iconSize="w-36 h-36"
@@ -63,7 +62,7 @@ const ShortcutGrid = () => (
             icon={<img src="/images/shortcut/shortcut-looking.png" alt="요금제 살펴보기" />}
             title="요금제 살펴보기"
             description={'내게 꼭 맞는 요금제,\n 지금 바로 살펴보세요.'}
-            onClick={() => console.log('요금제 페이지로 이동')}
+            route="/plans"
             width="w-full"
             height="h-full"
             iconSize="w-36 h-36"
