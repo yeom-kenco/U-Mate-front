@@ -35,7 +35,6 @@ const ReviewModal = ({
   onClose,
   onConfirm,
   children,
-  rating,
   planName,
   planPrice,
   reviews,
@@ -52,13 +51,7 @@ const ReviewModal = ({
         {type === 'reviewList' && <ReviewListContent>{children}</ReviewListContent>}
         {type === 'allReviewList' && <AllReviewListContent reviews={reviews ?? []} />}
         {type === 'reviewWrite' && (
-          <ReviewWriteContent
-            rating={rating}
-            planName={planName}
-            planPrice={planPrice}
-            onClose={onClose}
-            onConfirm={onConfirm}
-          />
+          <ReviewWriteContent planName={planName} planPrice={planPrice} onClose={onClose} />
         )}
       </div>
     </BaseModal>

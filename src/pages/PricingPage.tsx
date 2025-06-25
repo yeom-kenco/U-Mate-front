@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SlArrowDown, SlArrowUp } from 'react-icons/sl';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
@@ -19,7 +19,13 @@ import LoginBanner from '../components/LoginBanner';
 import Button from '../components/Button';
 
 // 요금제 리스트 불러오기
-import { getFilteredPlans, getPlanList, Plan, updatePlan } from '../apis/PlansApi';
+import {
+  getFilteredPlans,
+  getPlanList,
+  Plan,
+  PlanFilterRequest,
+  updatePlan,
+} from '../apis/PlansApi';
 
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
@@ -29,21 +35,35 @@ const PricingPage = () => {
   const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
   const [planList, setPlanList] = useState<Plan[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const [filters, setFilters] = useState<{
-    ageGroup?: string;
-    minFee?: number;
-    maxFee?: number;
-    dataType?: string;
-    benefitIds?: number[];
-  }>({
+  const [filters, setFilters] = useState<PlanFilterRequest[]>({
     ageGroup: '',
     minFee: undefined,
     maxFee: undefined,
-    dataType: '',
+    dataType: '상관없어요',
     benefitIds: [],
   });
+  const [loading, setLoading] = useState(true);
+
+  // 모달 상태 관리
+  const toast = useToast();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const isOpen = useAppSelector((state) => state.modal.isOpen);
+  const user = useAppSelector((state) => state.user);
+
+  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
+
+  // 초기 로드 시 필터링 함수 호출 방지하는 함수
+  const shouldFetchData = (filters: PlanFilterRequest) => {
+    return (
+      filters.ageGroup !== '' ||
+      filters.minFee !== undefined ||
+      filters.maxFee !== undefined ||
+      filters.dataType !== '상관없어요' ||
+      (filters.benefitIds && filters.benefitIds.length > 0)
+    );
+  };
 
   // 요금제 리스트 불러오기
   useEffect(() => {
@@ -64,51 +84,60 @@ const PricingPage = () => {
   }, []);
 
   // 필터링된 요금제 리스트 불러오기
-  const handleSelect = async () => {
+  const handleSelect = useCallback(async () => {
+    if (!shouldFetchData(filters)) return;
+
     const payload = {
       ...filters,
-      benefitIds: filters.benefitIds?.join(','),
+      benefitIds: filters.benefitIds.length ? filters.benefitIds.join(',') : '',
     };
+
     try {
-      const { data } = await getFilteredPlans(payload);
+      setLoading(true);
+      const { data, count } = await getFilteredPlans(payload);
       setPlanList(data);
-      setFilteredCount(data.length);
-      setVisibleCount(6);
+      setFilteredCount(count); // 필터링된 개수 설정
+      setVisibleCount((prev) => (prev > count ? count : prev)); // visibleCount 업데이트
       dispatch(closeModal());
     } catch (error) {
       toast?.showToast('요금제 불러오기 실패', 'error');
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [filters, dispatch, toast]);
 
-  // 필터링된 개수 불러오기 (버튼 반영)
+  // 필터링된 요금제 개수 불러오기 (버튼 실시간 반영)
   const debouncedFilters = useDebounce(filters, 300);
 
   useEffect(() => {
     const fetchCount = async () => {
+      // 초기 로드 시 요청 방지
+      if (!shouldFetchData(filters)) return;
+
       const payload = {
         ...debouncedFilters,
-        benefitIds: debouncedFilters.benefitIds?.join(','),
+        benefitIds: filters.benefitIds.length ? filters.benefitIds.join(',') : '',
       };
       try {
+        setLoading(true);
         const { data } = await getFilteredPlans(payload);
-        setFilteredCount(data.length);
+        setFilteredCount(data.length); // 필터링된 개수만 업데이트
+        console.log('가져온 요금제', data);
+        console.log('필터링된 개수', data.length);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCount();
   }, [debouncedFilters]);
 
-  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
-
-  const toast = useToast();
-  const navigate = useNavigate();
-
-  // 모달 상태 관리
-  const dispatch = useAppDispatch();
-
-  const isOpen = useAppSelector((state) => state.modal.isOpen);
-  // const userId = useAppSelector((state) => state.user.userId); 유저 아이디 리덕스에서 꺼내오기
+  // 모달 닫을 때 필터링된 개수 업데이트
+  useEffect(() => {
+    // 모달이 닫혔을 때 filteredCount를 업데이트하여 초기화 방지
+    setFilteredCount(planList.length);
+  }, [planList]);
 
   // 필터 선택 모달 열기
   const openFilterModal = () => {
@@ -119,6 +148,7 @@ const PricingPage = () => {
   // 필터 선택 모달 닫기
   const closeFilterModal = () => {
     dispatch(closeModal());
+    setFilteredCount(planList.length);
   };
 
   // 필터 초기화하기
@@ -164,22 +194,26 @@ const PricingPage = () => {
 
   // 변경하기 확인 버튼 로직 (사용자 요금제 변경 필요)
   const handleChangePlans = async () => {
-    const userId = 1; // 테스트용 임시 ID
-    if (!selectedPlan) {
-      toast?.showToast('요금제를 선택해주세요', 'black');
+    if (!user || user?.id === 0 || user?.id === null) {
+      toast?.showToast('로그인 후 이용해 주세요', 'black');
+      dispatch(closeModal());
       return;
     }
 
-    if (userId === null) {
-      toast?.showToast('로그인 후 이용해 주세요', 'black');
+    if (!selectedPlan) {
+      return;
+    }
+
+    if (selectedPlan.PLAN_ID === user.plan) {
+      toast?.showToast('현재 사용하시는 요금제입니다', 'error');
+      dispatch(closeModal());
       return;
     }
 
     try {
-      // userId는 리덕스에서 가져오기?
       await updatePlan({
-        userId,
-        newPlanId: selectedPlan.PLAN_ID,
+        userId: user?.id,
+        newPlanId: selectedPlan?.PLAN_ID,
       });
       setModalType('change');
       toast?.showToast('해당 요금제로 변경되었습니다', 'black');
@@ -242,8 +276,8 @@ const PricingPage = () => {
   };
 
   // 요금제명 클릭 시 상세 페이지로 이동
-  const goToDetailPage = () => {
-    navigate('/');
+  const goToDetailPage = (planId) => {
+    navigate(`/plans/${planId}`);
   };
 
   useEffect(() => {
@@ -254,10 +288,12 @@ const PricingPage = () => {
     });
   }, []);
 
+  const PlanCardMemo = React.memo(PlanCard);
+
   return (
-    <>
+    <div className={`h-full ${loading ? 'min-h-screen' : ''} bg-background`}>
       {/* 만약 사용자가 로그인 상태가 아니라면 배너 띄우기 */}
-      <LoginBanner type="default" />
+      {(!user?.id || user?.id === null || user?.id === undefined) && <LoginBanner type="default" />}
       <div className="h-full px-4 md:px-10">
         {/* 필터 영역 */}
         <div className="flex items-center gap-4 py-4">
@@ -274,7 +310,7 @@ const PricingPage = () => {
         {/* 요금제 카드 영역 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
           {sortedPlans.slice(0, visibleCount).map((plan) => (
-            <PlanCard
+            <PlanCardMemo
               key={plan.PLAN_ID}
               name={plan.PLAN_NAME}
               dataInfo={plan.DATA_INFO}
@@ -282,17 +318,20 @@ const PricingPage = () => {
               price={`${plan.MONTHLY_FEE.toLocaleString()}`}
               discountedPrice={`${calculateDiscountedPrice(plan.MONTHLY_FEE, plan.PLAN_NAME)}`}
               rating={{
-                score: plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT,
+                score:
+                  plan.REVIEW_USER_COUNT === 0
+                    ? 0
+                    : plan.RECEIVED_STAR_COUNT / plan.REVIEW_USER_COUNT,
                 count: plan.REVIEW_USER_COUNT,
               }}
               size="large"
               onCompareClick={(e) => openCompareModal(e, plan)}
               onChangeClick={(e) => openChangeModal(e, plan)}
-              onClick={goToDetailPage}
+              onClick={() => goToDetailPage(plan.PLAN_ID)}
             />
           ))}
         </div>
-        <div className="flex justify-center mt-8 mb-20">
+        <div className="flex justify-center mt-8 pb-20">
           <Button
             variant="outline"
             color="gray"
@@ -338,10 +377,11 @@ const PricingPage = () => {
             onClose={closeFilterModal}
             onApply={handleSelect}
             planCount={filteredCount}
+            loading={loading}
           />
         )}
       </div>
-    </>
+    </div>
   );
 };
 

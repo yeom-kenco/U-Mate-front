@@ -1,13 +1,16 @@
 import BaseModal from './BaseModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import AccountStepRenderer from './AccountStepRenderer';
+import { findEmailByPhone } from '../../apis/auth';
+import { useToast } from '../../hooks/useToast';
 
 type FlowType = 'id' | 'password';
 type ModalStep = 'findId' | 'getId' | 'verify' | 'reset';
 
 type Props = {
   onClose: () => void;
+  initialStep?: ModalStep;
 };
 
 const titleMap: Record<ModalStep, { title: string; subtitle?: string }> = {
@@ -29,17 +32,16 @@ const titleMap: Record<ModalStep, { title: string; subtitle?: string }> = {
   },
 };
 
-const FindAccountModal = ({ onClose }: Props) => {
+const FindAccountModal = ({ onClose, initialStep = 'findId' }: Props) => {
   const [flow, setFlow] = useState<FlowType>('id');
-  const [step, setStep] = useState<ModalStep>('findId');
+  const [step, setStep] = useState<ModalStep>(initialStep);
   const [isCodeSent, setIsCodeSent] = useState(false);
+  const [verificationCodeComplete, setVerificationCodeComplete] = useState(false); //인증코드 확인 여부
 
   const handleRequestAuth = () => {
-    // API 로직 추가하기
     console.log('인증 요청됨');
     setIsCodeSent(true);
   };
-
   const handleNext = () => {
     switch (step) {
       case 'findId':
@@ -69,6 +71,11 @@ const FindAccountModal = ({ onClose }: Props) => {
 
   const { title, subtitle } = titleMap[step];
 
+  useEffect(() => {
+    if (step === 'verify' && verificationCodeComplete) {
+      setStep('reset');
+    }
+  }, [verificationCodeComplete, step]);
   return (
     <BaseModal onClose={onClose}>
       <div className="p-6">
@@ -88,6 +95,7 @@ const FindAccountModal = ({ onClose }: Props) => {
           onRequestAuth={handleRequestAuth}
           onNext={handleNext}
           onClose={onClose}
+          setVerificationCodeComplete={setVerificationCodeComplete}
         />
       </div>
     </BaseModal>
