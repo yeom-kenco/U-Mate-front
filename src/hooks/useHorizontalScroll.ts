@@ -12,7 +12,6 @@ export const useHorizontalScroll = () => {
     let scrollLeft: number;
 
     const onMouseDown = (e: MouseEvent) => {
-      console.log('👊 mousedown'); // ✅ 꼭 보이게
       isDown = true;
       el.classList.add('cursor-grabbing');
       startX = e.pageX - el.offsetLeft;
