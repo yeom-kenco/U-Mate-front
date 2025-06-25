@@ -20,6 +20,7 @@ import ReviewTextarea from '../components/ReviewTextarea';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SolutionList from '../components/BottomSheet/solutionList';
 import ShortcutPage from '../pages/ShortcutPage';
+import NotFound from '../components/NotFound';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -133,11 +134,12 @@ const router = createBrowserRouter([
         path: '/terms',
         element: <TermsOfUsePage />,
       },
-      { path: 'pricing', element: <PricingPage /> }, // 요금제 페이지
+      { path: '/plans', element: <PricingPage /> }, // 요금제 페이지
       { path: '/login', element: <LoginPage /> },
       { path: '/mypage', element: <MyPage /> },
       { path: '/signup', element: <RegisterPage /> },
     ],
+    errorElement: <NotFound />,
   },
   {
     path: '/onboarding',

@@ -10,6 +10,7 @@ type ModalStep = 'findId' | 'getId' | 'verify' | 'reset';
 
 type Props = {
   onClose: () => void;
+  initialStep?: ModalStep;
 };
 
 const titleMap: Record<ModalStep, { title: string; subtitle?: string }> = {
@@ -31,9 +32,9 @@ const titleMap: Record<ModalStep, { title: string; subtitle?: string }> = {
   },
 };
 
-const FindAccountModal = ({ onClose }: Props) => {
+const FindAccountModal = ({ onClose, initialStep = 'findId' }: Props) => {
   const [flow, setFlow] = useState<FlowType>('id');
-  const [step, setStep] = useState<ModalStep>('findId');
+  const [step, setStep] = useState<ModalStep>(initialStep);
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [verificationCodeComplete, setVerificationCodeComplete] = useState(false); //인증코드 확인 여부
 
