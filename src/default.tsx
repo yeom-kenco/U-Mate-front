@@ -8,6 +8,7 @@ import { validateToken } from './apis/auth';
 import { clearUser, setUser } from './store/userSlice';
 import { useToast } from './hooks/useToast';
 import { formatToKST } from './utils/formatDate';
+import { Loading } from './components/Loading';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
@@ -54,7 +55,11 @@ const Default = () => {
   }, [dispatch]);
 
   if (userLoading) {
-    return <div className="text-center mt-10">loading...</div>;
+    return (
+      <div className="text-center mt-10">
+        <Loading />
+      </div>
+    );
   }
   console.log(user);
   return (
