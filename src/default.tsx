@@ -25,8 +25,9 @@ const Default = () => {
       try {
         setUserLoading(true);
         const res = await validateToken();
+        console.log(res.data.authenticated);
         const { user } = res.data;
-        console.log(user);
+        //  console.log(user);
         if (res && user) {
           const { email, birthDay, id, membership, name, plan } = user;
           //한국 날짜로

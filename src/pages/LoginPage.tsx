@@ -66,12 +66,12 @@ const LoginPage = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      await login({ id: email, password });
+      const res = await login({ id: email, password });
       showToast(`${user?.name}님 환영합니다`, 'black');
-      navigate('/');
+      //navigate('/');
     } catch (err: any) {
-      console.log(err.response);
-      showToast('로그인 실패', 'error');
+      console.log();
+      showToast(err.response.data.error, 'error');
     }
   };
 

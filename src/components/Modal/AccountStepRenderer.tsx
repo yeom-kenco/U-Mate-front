@@ -43,6 +43,7 @@ const AccountStepContent = ({
   const handlefindEmailByPhone = async () => {
     if (!isValidPhone.test(phoneNumber)) {
       showToast('휴대폰 번호 형식이 유효하지 않습니다', 'error');
+      return;
     }
     try {
       const res = await findEmailByPhone({ phoneNumber });
@@ -57,6 +58,7 @@ const AccountStepContent = ({
       console.log(err);
       showToast('등록된 이메일이 없습니다', 'black');
     }
+    setPhoneNumber('');
   };
 
   useEffect(() => {
