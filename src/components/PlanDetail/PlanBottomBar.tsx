@@ -6,6 +6,9 @@ import Button from '../Button';
 import BaseModal from '../Modal/BaseModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import axiosInst from '../../apis/axiosInst';
+import { useDispatch } from 'react-redux';
+import { updateUserPlan } from '../../store/userSlice';
 
 interface PlanBottomBarProps {
   planId: number;
@@ -19,6 +22,7 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
   const { showToast } = useContext(ToastContext)!;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -48,21 +52,31 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
     setIsModalOpen(true);
   };
 
+  // ✅ 요금제 변경 확정 클릭
   const handleConfirmRequest = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`https://seungwoo.i234.me:3333/changeUserPlan`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          userId: user.id, // ✅ 추가
-          newPlanId: planId,
-        }),
-      });
+      // 1. CSRF 토큰 먼저 요청
+      const csrfRes = await axiosInst.get('/csrf-token');
+      const csrfToken = csrfRes.data.csrfToken;
 
-      const data = await res.json();
+      // 2. 요금제 변경 POST 요청 (axios로 변경)
+      const res = await axiosInst.post(
+        '/changeUserPlan',
+        {
+          userId: user.id, // 기존 값 유지
+          newPlanId: planId,
+        },
+        {
+          headers: {
+            'X-CSRF-TOKEN': csrfToken, // CSRF 토큰 포함
+          },
+        }
+      );
+
+      const data = res.data;
       if (data.success) {
+        dispatch(updateUserPlan(planId));
         showToast('해당 요금제가 신청되었습니다.', 'violet', 'bottom-center', {
           bottom: '220px',
         });
@@ -71,10 +85,11 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
           bottom: '220px',
         });
       }
-    } catch {
+    } catch (err) {
       showToast('요금제 신청 중 오류가 발생했습니다.', 'error', 'bottom-center', {
         bottom: '220px',
       });
+      console.error(err);
     } finally {
       setIsLoading(false);
       setIsModalOpen(false);
