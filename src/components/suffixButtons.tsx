@@ -17,10 +17,17 @@ interface Props {
   Timer?: React.Dispatch<React.SetStateAction<number>>; //카운트 (180초)
   Counting?: React.Dispatch<React.SetStateAction<boolean>>; //카운트 실행 여부
   isEmailDuplicate?: boolean;
+  isPhoneChecked: boolean;
   setIsEMailDuplicate?: React.Dispatch<React.SetStateAction<boolean>>; // 이메일 중복 확인 여부
+  isLogin?: boolean;
 }
 
-export const PhoneCheckButton = ({ phoneNumber, setError, setSuccessFlag }: Props) => {
+export const PhoneCheckButton = ({
+  phoneNumber,
+  setError,
+  setSuccessFlag,
+  isPhoneChecked,
+}: Props) => {
   const toastContext = useContext(ToastContext);
   return (
     <span

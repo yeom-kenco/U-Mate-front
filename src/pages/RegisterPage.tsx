@@ -266,8 +266,10 @@ const RegisterPage = () => {
             phoneNumber={formData.phone}
             setError={(field, msg) => setErrors((prev) => ({ ...prev, [field]: msg }))}
             setSuccessFlag={setIsPhoneChecked} // 휴대폰 중복확인 체크여부
+            isPhoneChecked={isPhoneChecked} // 휴대폰 중복확인 여부
           />
         }
+        disabled={isPhoneChecked}
         required
         error={errors.phone}
       />
@@ -289,6 +291,7 @@ const RegisterPage = () => {
             setIsEMailDuplicate={setIsEMailDuplicate}
           />
         }
+        disabled={isEmailClickd}
         required
         error={errors.email}
       />
@@ -307,6 +310,7 @@ const RegisterPage = () => {
               Counting={setIsCounting}
             />
           }
+          disabled={isEmailVerified}
           timer={isCounting ? `${formatTime(timer)}` : undefined}
           required
           error={errors.verificationCode}

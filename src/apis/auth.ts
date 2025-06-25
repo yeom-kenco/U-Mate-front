@@ -30,5 +30,19 @@ export const checkPhoneDuplicate = (data: string) => axiosInst.post('/duplicateC
 export const findEmailByPhone = (data: string) => axiosInst.post('/phoneNumberCheck', data);
 export const getUserInfo = (data) => axiosInst.post('/userInfo', data); // 서버는 '/getUserInfo'인데 명세대로면 '/userInfo'임
 export const deleteAccount = (data) => axiosInst.post('/withDrawal', data);
-export const validateToken = () => axiosInst.get('/tokenCheck');
+export const validateToken = async () => {
+  // 1. CSRF 토큰을 먼저 가져옴
+  const csrf = await axiosInst.get('/csrf-token');
+  const csrfToken = csrf.data.csrfToken;
+
+  // 2. CSRF 토큰을 포함하여 토큰 유효성 검사 요청
+  const response = await axiosInst.get('/tokenCheck', {
+    headers: {
+      'X-CSRF-TOKEN': csrfToken,
+    },
+    withCredentials: true,
+  });
+
+  return response;
+};
 export const checkEmailDuplicate = (data: string) => axiosInst.post('/emailDuplicate', data);
