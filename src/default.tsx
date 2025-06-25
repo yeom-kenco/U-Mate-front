@@ -64,7 +64,7 @@ const Default = () => {
       </div>
     );
   }
-  console.log(user);
+
   return (
     <div className="flex flex-col min-h-[calc(100vh+1px)]">
       {/* 헤더 */}

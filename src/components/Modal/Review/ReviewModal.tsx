@@ -3,6 +3,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 import ReviewListContent from './ReviewListContent';
 import ReviewWriteContent from './ReviewWriteContent';
 import AllReviewListContent from './AllReviewListContent';
+import { useEffect, useState } from 'react';
 
 // 리뷰 작성 모달 사용 예시
 // {isOpen && (
@@ -20,27 +21,34 @@ import AllReviewListContent from './AllReviewListContent';
 // )}
 
 type ReviewModalProps = {
-  type: 'reviewList' | 'reviewWrite' | 'allReviewList';
+  type: 'reviewList' | 'reviewWrite' | 'allReviewList' | 'reviewEdit';
   onClose: () => void;
-  onConfirm?: () => void;
-  children?: React.ReactNode;
+  children: React.ReactNode;
   rating?: number;
   planName?: string;
   reviews?: any[];
   planPrice?: number;
-  question?: string;
+  initialContent?: string;
+  initialRating?: number;
+  reviewId?: number;
 };
 
 const ReviewModal = ({
   type,
   onClose,
-  onConfirm,
   children,
   planName,
   planPrice,
   reviews,
   question,
+  initialContent,
+  initialRating,
+  reviewId,
 }: ReviewModalProps) => {
+  const [content, setContent] = useState(initialContent ?? '');
+  const [rating, setRating] = useState(initialRating ?? 0);
+
+  console.log(reviewId);
   return (
     <BaseModal onClose={onClose}>
       <div className="flex flex-col h-[70vh] max-h-[520px]">
@@ -52,13 +60,20 @@ const ReviewModal = ({
 
         {type === 'reviewList' && <ReviewListContent>{children}</ReviewListContent>}
         {type === 'allReviewList' && <AllReviewListContent reviews={reviews ?? []} />}
-        {type === 'reviewWrite' && (
+        {(type === 'reviewWrite' || type === 'reviewEdit') && (
           <ReviewWriteContent
             planName={planName}
             planPrice={planPrice}
             onClose={onClose}
-            question={question}
-          />
+            content={content}
+            setContent={setContent}
+            rating={rating}
+            setRating={setRating}
+            reviewId={reviewId}
+            isEdit={type === 'reviewEdit'}
+          >
+            {children}
+          </ReviewWriteContent>
         )}
       </div>
     </BaseModal>
