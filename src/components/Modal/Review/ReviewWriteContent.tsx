@@ -47,7 +47,7 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="border border-zinc-200 mb-2 rounded-xl p-4 text-s flex justify-between text-black items-center">
           <p className="mt-1 font-bold text-sm max-[370px]:text-s">
-            {planName ?? '유쓰 5G 데이터 플러스'}
+            {planName ?? '요금제 정보 없음'}
           </p>
           <p className="mt-1 text-sm max-[370px]:text-s">
             {planPrice?.toLocaleString() ?? '가격 정보 없음'}

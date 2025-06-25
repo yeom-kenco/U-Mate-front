@@ -115,9 +115,9 @@ const MyPage = () => {
 
   return (
     <div className="h-full pt-12 bg-white pb-44">
-      <div className="md:flex h-full w-full border border-blue-500 md:px-10 md:gap-5">
-        <div className="flex flex-col justify-center items-center w-[90%] md:w-[60%] mx-auto gap-3 border border-black md:bg-zinc-100 md:rounded-2xl md:p-4">
-          <div className="overflow-hidden md:bg-white md:rounded-full">
+      <div className="md:flex h-full w-full md:px-10 md:gap-5">
+        <div className="flex flex-col justify-center items-center w-[90%] md:w-[60%] mx-auto gap-3 bg-white md:border-2 md:border-zinc-200 md:rounded-2xl md:p-4">
+          <div className="overflow-hidden">
             <img
               src={myBear}
               alt=""
@@ -127,7 +127,7 @@ const MyPage = () => {
           <p className="text-lm font-semibold sm:text-lg">
             <span className="text-pink-500">{user?.name}</span>님 안녕하세요
           </p>
-          <div className="flex flex-col bg-diagonal w-full h-32 rounded-xl py-4 px-4 border border-red-500 ">
+          <div className="flex flex-col bg-diagonal w-full h-32 rounded-xl py-4 px-4">
             <p className="text-sm text-zinc-800">사용하고 있는 요금제 (관심 요금제)</p>
             <p className="text-lg font-semibold text-violet-500">{myplan?.PLAN_NAME}</p>
             <div className="flex items-end items-center">
@@ -140,12 +140,12 @@ const MyPage = () => {
               </div>
             </div>
           </div>
-          <div className="flex gap-2 w-full border border-green-500">
+          <div className="flex gap-2 w-full">
             <Button
               variant="outline"
               color="gray"
               size="lg"
-              className="flex-1 text-sm"
+              className="flex-1 text-s xl:text-sm"
               onClick={() => dispatch(openModal('reviewList'))}
             >
               내가 작성한 리뷰 보기
@@ -155,16 +155,16 @@ const MyPage = () => {
               variant="fill"
               color="violet"
               size="lg"
-              className="flex-1 text-sm bg-violet-100"
+              className="flex-1 text-s xl:text-sm bg-violet-100"
             >
               요금제 리뷰 작성하기
             </Button>
           </div>
         </div>
-        <div className="bg-violet-50 px-4 mt-12 flex flex-col justify-center items-center rounded-xl gap-2 min-h-48 text-center w-[90%] mx-auto border border-pink-800 md:mt-0">
+        <div className="bg-violet-50 px-4 mt-8 flex flex-col justify-center items-center rounded-xl gap-2 min-h-48 text-center w-[90%] mx-auto md:mt-0">
+          <p className="mt-6 text-m font-semibold md:text-lg">회원 정보</p>
           {isCheckPassword ? (
             <>
-              <p className="mt-6 text-m font-semibold">회원 정보</p>
               <div className="bg-white rounded-xl m-4 p-4 shadow-sm border border-zinc-200">
                 <div className={divClass}>
                   <span className={titleClass}>이름</span>
@@ -211,17 +211,17 @@ const MyPage = () => {
             </>
           ) : (
             <>
-              <p className="mt-6 text-m font-semibold">회원 정보</p>
-              <p className="text-s text-zinc-800">
+              <p className="text-s text-zinc-800 md:text-m md:mb-5">
                 고객 정보 보호를 위해 비밀번호 확인이 필요합니다.
               </p>
-              <div className="w-4/5 mx-auto">
+              <div className="w-4/5 mx-auto py-2">
                 <InputField
                   variant="box"
                   value={password}
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="비밀번호 입력"
+                  placeholderStyle="md:p-2"
                 />
               </div>
               <Button
@@ -229,7 +229,7 @@ const MyPage = () => {
                 onClick={handlePasswordCheck}
                 variant="fill"
                 size="m"
-                className="w-20 self-center"
+                className="w-20 self-center md:mt-4"
               >
                 확인
               </Button>
