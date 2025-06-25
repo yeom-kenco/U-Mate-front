@@ -68,19 +68,16 @@ const ShortCutPage: React.FC = () => {
           </div>
         </div>
         <div className="mt-6 mb-6 flex justify-center">
-          <Button
-            variant="special"
-            size="xl"
-            className="w-80"
-            onClick={() => console.log('고객센터 전화하기')}
-          >
-            고객센터 전화하기
-          </Button>
+          <a href="tel:1544-0010">
+            <Button variant="special" size="xl" className="w-80">
+              고객센터 전화하기
+            </Button>
+          </a>
         </div>
       </div>
 
       {/* 데스크탑 전용: 웹 그리드 */}
-      <div className="hidden md:block">
+      <div className="hidden md:flex h-screen flex-col overflow-hidden">
         <ShortcutGrid />
       </div>
     </div>

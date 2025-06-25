@@ -1,24 +1,27 @@
-// components/ShortcutCard.tsx
 import React from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 interface ShortcutCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
   onClick?: () => void;
+  route?: string;
   showButton?: boolean;
   width?: string;
   height?: string;
   iconSize?: string;
   titleClassName?: string;
   descriptionClassName?: string;
+  className?: string;
 }
 
 const ShortcutCard: React.FC<ShortcutCardProps> = ({
   icon,
   title,
   description,
+  route,
   onClick,
   showButton = true,
   width = 'w-[310px]',
@@ -26,9 +29,16 @@ const ShortcutCard: React.FC<ShortcutCardProps> = ({
   iconSize = 'w-30 h-30',
   titleClassName = '',
   descriptionClassName = 'text-sm',
+  className = '',
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (onClick) return onClick();
+    if (route) navigate(route);
+  };
   const containerClasses = [
-    'bg-purple-100',
+    className || 'bg-purple-100',
     'relative rounded-3xl shadow-lg p-6',
     'flex flex-col items-center text-center',
     'transition transform duration-150 active:scale-95 hover:shadow-lg cursor-pointer',
@@ -39,7 +49,7 @@ const ShortcutCard: React.FC<ShortcutCardProps> = ({
     .join(' ');
 
   return (
-    <div className={containerClasses} onClick={onClick}>
+    <div className={containerClasses} onClick={handleClick}>
       <div className={`mb-4 ${iconSize}`}>{icon}</div>
       <h3 className={`text-lg font-bold mb-1 ${titleClassName}`}>{title}</h3>
       <p className={`${descriptionClassName} mb-4 max-w-[19rem] break-words whitespace-pre-line`}>
