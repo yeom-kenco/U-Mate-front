@@ -1,5 +1,5 @@
 import Header from './components/Header';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Footer from './components/Footer';
 import { useEffect, useRef, useState } from 'react';
 import ChatbotButton from './components/ChatbotButton';
@@ -23,6 +23,8 @@ const Default = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
   const isLogin = useAppSelector((state) => state.user.isLogin);
+
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -84,10 +86,10 @@ const Default = () => {
       </main>
 
       {/* 챗봇 버튼 (고정된 위치에 표시됨) */}
-      <ChatbotButton />
+      {pathname !== '/chatbot' && <ChatbotButton />}
 
       {/* 푸터 */}
-      <Footer />
+      {pathname !== '/chatbot' && <Footer />}
     </div>
   );
 };
