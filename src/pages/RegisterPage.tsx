@@ -289,6 +289,7 @@ const RegisterPage = () => {
             Counting={setIsCounting}
             isEmailDuplicate={isEmailDuplicate}
             setIsEMailDuplicate={setIsEMailDuplicate}
+            isLogin={false}
           />
         }
         disabled={isEmailClickd}

@@ -58,8 +58,10 @@ export const EmailSendButton = ({
   Counting,
   isEmailDuplicate,
   setIsEMailDuplicate,
+  isLogin,
 }: Props) => {
   const toastContext = useContext(ToastContext);
+
   return (
     <span
       onClick={async () => {
@@ -69,19 +71,20 @@ export const EmailSendButton = ({
         }
 
         try {
-          // 1. 이메일 중복 확인
-          const dupRes = await checkEmailDuplicate({ email });
+          // 회원가입 페이지 에서만 중복 확인 재설정에선 X 
+          if (!isLogin) {
+            const dupRes = await checkEmailDuplicate({ email });
 
-          console.log(dupRes);
-          if (dupRes.status === 404) {
-            setIsEMailDuplicate?.(true);
-            return;
-          } else {
-            setIsEMailDuplicate?.(false);
-            toastContext?.showToast(dupRes.data.message, 'success');
+            if (dupRes.status === 404) {
+              setIsEMailDuplicate?.(true);
+              return; // 중복 확인 실패 → 가입 불가
+            } else {
+              setIsEMailDuplicate?.(false);
+              toastContext?.showToast(dupRes.data.message, 'success');
+            }
           }
 
-          // 2. 중복이 아닌 경우에만 인증 메일 발송
+          // 중복이 아니거나 로그인 상태라면 인증 메일 발송
           const res = await sendEmailCode({ email });
           Timer?.(180);
           Counting?.(true);
