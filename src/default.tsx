@@ -19,7 +19,7 @@ const Default = () => {
   const [userLoading, setUserLoading] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-
+  const isLogin = useSelector((state) => state.user.isLogin);
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -51,7 +51,7 @@ const Default = () => {
       }
     };
     fetchUser();
-  }, [dispatch]);
+  }, [dispatch, isLogin]);
 
   if (userLoading) {
     return <div className="text-center mt-10">loading...</div>;
