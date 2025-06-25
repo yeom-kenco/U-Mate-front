@@ -5,6 +5,10 @@ import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import { IoIosSearch } from 'react-icons/io';
 import { IoMdClose } from 'react-icons/io';
 import Button from './Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../apis/auth';
+import { useToast } from '../hooks/useToast';
+import { clearUser } from '../store/userSlice';
 
 export interface HeaderProps {
   showBackButton: boolean;
@@ -55,7 +59,9 @@ const Header = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
+  const user = useSelector((state) => state.user);
+  const { showToast } = useToast();
+  const dispatch = useDispatch();
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
@@ -67,7 +73,25 @@ const Header = ({
     };
   }, [isMenuOpen]);
 
-  const BackPage = () => navigate(-1);
+  const handleBack = () => {
+    try {
+      navigate(-1);
+    } catch (error) {
+      console.error('뒤로 가는 중 에러 발생:', error);
+      navigate('/');
+    }
+  };
+  const handleLogout = async () => {
+    try {
+      const res = await logout({ email: user?.email });
+      showToast(res.data.message, 'success');
+      dispatch(clearUser());
+      setIsMenuOpen(false);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <header
@@ -77,7 +101,7 @@ const Header = ({
       <div className="relative w-full h-full flex items-center justify-between">
         {/* 뒤로가기: md 미만에서만 */}
         {showBackButton && (
-          <div className="flex items-center md:hidden cursor-pointer" onClick={BackPage}>
+          <div className="flex items-center md:hidden cursor-pointer" onClick={handleBack}>
             <SlArrowLeft className="w-5 h-5 mr-2" />
             <span className="text-lm w-32 h-6">{title}</span>
           </div>
@@ -100,7 +124,7 @@ const Header = ({
           {showSearch ? (
             <>
               <div className="hidden md:flex items-center gap-6 text-sm text-black">
-                <NavigationLinks isLoggedIn={isLoggedIn} />
+                <NavigationLinks isLoggedIn={user} />
                 <IoIosSearch className="w-6 h-6 ml-2" />
               </div>
               <div className="md:hidden">
@@ -110,7 +134,7 @@ const Header = ({
           ) : (
             <>
               <div className="hidden md:flex items-center gap-6 text-sm text-black">
-                <NavigationLinks isLoggedIn={isLoggedIn} />
+                <NavigationLinks isLoggedIn={user} />
               </div>
               <div className="flex md:hidden items-center gap-5">
                 <Link to="/mypage" className="flex items-center text-black hover:text-pink-500">
@@ -153,10 +177,13 @@ const Header = ({
           <div className="flex flex-col gap-1 max-[400px]:translate-x-0 -translate-x-4">
             <img src="/images/bear/gom.png" alt="" className="w-20 h-20 mx-auto mb-2" />
             <span className="text-lm font-semibold">
-              <span className="text-pink-500">000님</span> 안녕하세요
+              <span className="text-pink-500">{user?.name ? `${user?.name}님` : ''}</span>{' '}
+              안녕하세요
             </span>
             <div className="flex items-center mb-[-20px] ml-4">
-              <p className="text-sm">마이페이지 및 설정</p>
+              <Link to="/mypage">
+                <p className="text-sm">마이페이지 및 설정</p>
+              </Link>
               <SlArrowRight className="w-[10px] h-[10px] ml-[2px]" />
             </div>
           </div>
@@ -164,13 +191,14 @@ const Header = ({
 
         {/* 메뉴 본문 */}
         <nav className="w-full mx-auto px-2 py-4 mt-2 flex flex-col">
-          {isLoggedIn ? (
+          {user.name ? (
             <>
               {/* 🔓 로그아웃 버튼 */}
               <Button
                 size="lg"
                 color="violet"
                 className="ml-3 mr-14 font-normal border-zinc-200 border"
+                onClick={handleLogout}
               >
                 로그아웃
               </Button>
@@ -199,6 +227,7 @@ const Header = ({
                   size="lg"
                   color="violet"
                   className="w-[118px] font-normal border-zinc-200 border"
+                  onClick={() => navigate('/login')}
                 >
                   로그인
                 </Button>
@@ -207,6 +236,7 @@ const Header = ({
                   variant="outline"
                   color="gray"
                   className="w-[118px] border-zinc-200 border font-normal text-black"
+                  onClick={() => navigate('/signup')}
                 >
                   회원가입
                 </Button>
@@ -214,7 +244,7 @@ const Header = ({
 
               {/* ✅ 버튼 아래 메뉴들 간격 */}
               <div className="mt-6 flex flex-col space-y-3">
-                <Link to="/pricing" className="flex px-3 items-center max-w-48 cursor-pointer">
+                <Link to="/plans" className="flex px-3 items-center max-w-48 cursor-pointer">
                   <span>요금제 찾아보기</span>
                   <SlArrowRight className="w-3 h-3 relative ml-[2px]" />
                 </Link>

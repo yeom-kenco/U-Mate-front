@@ -7,6 +7,7 @@ interface UserState {
   email: string;
   plan: number;
   membership: string | null; // "vvip", "vip", "우수", or null
+  isLogin?: boolean;
 }
 
 const initialState: UserState = {
@@ -16,6 +17,7 @@ const initialState: UserState = {
   email: '',
   plan: 0,
   membership: null,
+  isLogin: false,
 };
 
 const userSlice = createSlice({
@@ -26,6 +28,13 @@ const userSlice = createSlice({
     clearUser: () => initialState,
     updateUserPlan(state, action: PayloadAction<number>) {
       state.plan = action.payload;
+//     setUser: (state, action) => {
+//       Object.assign(state, action.payload);
+//       state.isLogin = true;
+//     },
+//     clearUser: (state) => {
+//       Object.assign(state, initialState);
+//       state.isLogin = false;
     },
   },
 });

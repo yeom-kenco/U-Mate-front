@@ -1,4 +1,4 @@
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
 import { useEffect, useState } from 'react';
 import { SlArrowRight } from 'react-icons/sl';
@@ -32,6 +32,7 @@ const MyPage = () => {
   const [isCheckPassword, setIsCheckPassword] = useState<boolean>(false);
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
   const modalType = useSelector((state: RootState) => state.modal.type);
+  const navigate = useNavigate();
   const [isloading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState<userInfoProps>({
@@ -94,6 +95,11 @@ const MyPage = () => {
   const titleClass = 'text-sm text-gray-500';
   const contentClass = 'text-sm font-medium text-gray-800 mr-4';
 
+  useEffect(() => {
+    if (!user?.name) {
+      navigate('/login');
+    }
+  }, [user, navigate]);
   return (
     <div className="h-screen pt-10  bg-background">
       <div className="flex flex-col justify-center items-center w-[90%] mx-auto gap-3 ">

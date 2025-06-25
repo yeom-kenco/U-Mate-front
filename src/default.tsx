@@ -9,6 +9,7 @@ import { clearUser, setUser } from './store/userSlice';
 import { useToast } from './hooks/useToast';
 import { formatToKST } from './utils/formatDate';
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks';
+import { Loading } from './components/Loading';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
@@ -18,8 +19,10 @@ const Default = () => {
     hasShadow: false,
   });
   const [userLoading, setUserLoading] = useState(false);
+
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
+  const isLogin = useSelector((state) => state.user.isLogin);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -52,10 +55,14 @@ const Default = () => {
       }
     };
     fetchUser();
-  }, [dispatch]);
+  }, [dispatch, isLogin]);
 
   if (userLoading) {
-    return <div className="text-center mt-10">loading...</div>;
+    return (
+      <div className="text-center mt-10">
+        <Loading />
+      </div>
+    );
   }
   console.log(user);
   return (

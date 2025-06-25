@@ -14,6 +14,7 @@ import PlanCardSmall from '../components/PlanCardSmall';
 import PlanInfoBanner from '../components/MainPage/PlanInfoBanner';
 import HeroSection from '../components/MainPage/HeroSection';
 import '../index.css';
+import { useSelector } from 'react-redux';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -40,19 +41,10 @@ type RecommendedPlan = {
   reviewCount: number;
 };
 
-// 로그인한 사용자 정보
-type UserInfo = {
-  email: string;
-  id: number;
-  name: string;
-  plan: number;
-  membership: string;
-  birthDay: string; // '1990-01-01'
-};
-
 const MainPage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserInfo | null>(null);
+
   const scrollRef = useHorizontalScroll();
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [allPlans, setAllPlans] = useState<PlanListItem[]>([]);
@@ -68,36 +60,6 @@ const MainPage = () => {
       hasShadow: false,
     });
   }, [setHeaderConfig]);
-
-  // 토큰 기반 유저 정보 요청
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const res = await fetch('https://seungwoo.i234.me:3333/tokenCheck', {
-  //         method: 'GET',
-  //         credentials: 'include',
-  //       });
-
-  //       if (res.status === 401) {
-  //         const msg = await res.text();
-  //         console.warn('로그아웃 처리:', msg);
-  //         setUser(null);
-  //         return;
-  //       }
-
-  //       const data = await res.json();
-
-  //       if (data.success && data.authenticated && data.user) {
-  //         const birth = data.user.birthDay.split('T')[0]; // '1990-01-01'
-  //         setUser({ ...data.user, birthDay: birth });
-  //       }
-  //     } catch (err) {
-  //       console.error('유저 정보 요청 중 오류:', err);
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
 
   // 전체 요금제 데이터 가져오기
   useEffect(() => {
@@ -129,10 +91,11 @@ const MainPage = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ birthday: user.birthDay }),
+          body: JSON.stringify({ birthday: user?.birthDay }),
         });
 
         const data = await res.json();
+        console.log(data);
         if (data.success) {
           setAgePlans(data.data);
         }
@@ -184,7 +147,6 @@ const MainPage = () => {
   const filteredPlans = filterPlansByCategory(selectedCategory, allPlans);
   const isLoggedIn = Boolean(user?.name && user?.plan && allPlans.length > 0 && myPlan);
 
-  console.log(user);
   return (
     <div className="bg-background md:bg-horizontal">
       {/* 하얀색 배너 영역 */}
@@ -242,31 +204,45 @@ const MainPage = () => {
             <h2 className="text-lg font-semibold mb-1 max-[400px]:text-[20px] md:text-center md:text-xxl md:mb-5">
               {user.name}님을 위한 맞춤 요금제
             </h2>
-            <p className="text-m mb-1 text-zinc-700 md:text-center md:text-lg md:mb-6">
-              {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
-            </p>
-            {/* 요금제 카드 좌측 shadow 가려지는 효과를 막기위한 마진과 패딩 추가(피그마 시안과 동일한 여백은 유지하도록) */}
-            <div className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth ml-[-2%] pl-[2%] md:h-[260px] md:w-full md:ml-0 md:pl-0">
-              <div className="flex gap-4 flex-nowrap pr-4 md:w-fit md:mx-auto">
-                {ageplans.map((plan) => (
-                  <PlanCardSmall
-                    key={plan.planId}
-                    name={plan.name}
-                    description={plan.dataInfo}
-                    price={`${plan.monthlyFee.toLocaleString()}원`}
-                    discountedPrice={`${calculateDiscountedPrice(plan.monthlyFee, plan.name).toLocaleString()}원`}
-                    rating={{
-                      score: parseFloat(plan.avgRating?.toString() || '0'),
-                      count: plan.reviewCount || 0,
-                    }}
-                    onClick={() => navigate(`/plans/${plan.planId}`)}
-                  />
-                ))}
+
+            {ageplans.length > 0 ? (
+              <>
+                <p className="text-m mb-1 text-zinc-700 md:text-center md:text-lg md:mb-6">
+                  {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
+                </p>
+                {/* 요금제 카드 좌측 shadow 가려지는 효과를 막기위한 마진과 패딩 추가(피그마 시안과 동일한 여백은 유지하도록) */}
+                <div className="overflow-x-auto h-[210px] scrollbar-hide scroll-smooth ml-[-2%] pl-[2%] md:h-[260px] md:w-full md:ml-0 md:pl-0">
+                  <div className="flex gap-4 flex-nowrap pr-4 md:w-fit md:mx-auto">
+                    {ageplans.map((plan) => (
+                      <PlanCardSmall
+                        key={plan.planId}
+                        name={plan.name}
+                        description={plan.dataInfo}
+                        price={`${plan.monthlyFee.toLocaleString()}원`}
+                        discountedPrice={`${calculateDiscountedPrice(plan.monthlyFee, plan.name).toLocaleString()}원`}
+                        rating={{
+                          score: parseFloat(plan.avgRating?.toString() || '0'),
+                          count: plan.reviewCount || 0,
+                        }}
+                        onClick={() => navigate(`/plans/${plan.planId}`)}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <p className="hidden text-end text-m text-zinc-600 md:block animate-pulse">
+                  좌우로 밀어보세요 →
+                </p>
+              </>
+            ) : (
+              <div className="w-full text-center py-10 text-zinc-500 md:py-20">
+                <p className="text-m  md:text-lg font-medium">현재 맞춤 추천 요금제가 없어요.</p>
+                <p className="text-sm md:text-m mt-2">
+                  생년월일 정보에 맞는 요금제를 준비 중이에요.😊
+                  <br />
+                  잠시 후 다시 확인해주세요!
+                </p>
               </div>
-            </div>
-            <p className="hidden text-end text-m text-zinc-600 md:block animate-pulse">
-              좌우로 밀어보세요 →
-            </p>
+            )}
           </div>
         </section>
       )}
