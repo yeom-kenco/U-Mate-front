@@ -69,6 +69,14 @@ const PricingPage = () => {
     );
   };
 
+  useEffect(() => {
+    setHeaderConfig({
+      title: '요금제',
+      showBackButton: true,
+      showSearch: false,
+    });
+  }, []);
+
   // 요금제 리스트 불러오기
   useEffect(() => {
     const fetchPlanList = async () => {
@@ -127,7 +135,6 @@ const PricingPage = () => {
         const { data } = await getFilteredPlans(payload);
         setFilteredCount(data.length); // 필터링된 개수만 업데이트
         console.log('가져온 요금제', data);
-        console.log('필터링된 개수', data.length);
       } catch (error) {
         console.log(error);
       } finally {
@@ -217,6 +224,7 @@ const PricingPage = () => {
         newPlanId: selectedPlan?.PLAN_ID,
       });
       setModalType('change');
+      // 변경된 요금제 업데이트
       dispatch(
         setUser({
           ...user,
@@ -255,14 +263,6 @@ const PricingPage = () => {
   const goToDetailPage = (planId) => {
     navigate(`/plans/${planId}`);
   };
-
-  useEffect(() => {
-    setHeaderConfig({
-      title: '요금제',
-      showBackButton: true,
-      showSearch: false,
-    });
-  }, []);
 
   const PlanCardMemo = React.memo(PlanCard);
 
