@@ -113,6 +113,11 @@ const MyPage = () => {
   const titleClass = 'text-sm text-black font-semibold lg:text-lm lg:pl-4';
   const contentClass = 'text-sm font-medium text-gray-800 mr-4 w-[60%] flex lg:text-lm';
 
+  useEffect(() => {
+    if (!user?.name) {
+      navigate('/login');
+    }
+  }, [user, navigate]);
   return (
     <div className="h-full pt-12 bg-white pb-20">
       <div className="lg:flex h-full w-full lg:px-10 lg:gap-5">

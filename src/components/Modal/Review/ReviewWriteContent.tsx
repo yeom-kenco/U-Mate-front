@@ -12,6 +12,7 @@ import StarRating from '../../StartRating';
 type ReviewWriteContentProps = {
   planName?: string;
   planPrice?: number;
+  question?: string;
   onClose: () => void;
   content: string;
   setContent: (value: string) => void;
@@ -50,13 +51,13 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
             {planName ?? '요금제 정보 없음'}
           </p>
           <p className="mt-1 text-sm max-[370px]:text-s">
-            {planPrice?.toLocaleString() ?? '가격 정보 없음'}
+            {planPrice != null ? `월 ${planPrice.toLocaleString()}원` : '가격 정보 없음'}
           </p>
         </div>
 
         <div>
           <h3 className="text-sm mt-6 mb-1 max-[370px]:text-s">
-            이 요금제에 대해 얼마나 만족하시나요?
+            {question ? question : '이 요금제에 대해 얼마나 만족하시나요?'}
           </h3>
           <div className="border border-zinc-200 mb-2 rounded-xl p-3 text-s flex justify-center text-black items-center">
             <StarRating value={ratingValue} onChange={setRatingValue} />
