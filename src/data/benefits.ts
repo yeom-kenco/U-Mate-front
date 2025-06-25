@@ -54,6 +54,16 @@ export const benefitList: BenefitItem[] = [
     icon: '/images/benefit/mobile-tv.png',
   },
   {
+    title: '실버지킴이',
+    description: ['1시간~3시간마다 문자메시지로 내 위치를 보호자에게 알려주는 서비스'],
+    icon: '/images/benefit/silver.png',
+  },
+  {
+    title: '바이브 300회 음악감상',
+    description: ['기존에 없던 새로운 오디오 경험과 취향에 맞는 음악을 제공하는 뮤직 앱'],
+    icon: '/images/benefit/vibe.png',
+  },
+  {
     title: 'U+ 멤버십 VVIP 등급 혜택',
     description: [
       '가입 한 달 후 바로 VIP콕 혜택 이용 가능',
@@ -68,15 +78,5 @@ export const benefitList: BenefitItem[] = [
       '멤버십 기본 혜택 외 무료 영화, 무료 커피 등 원하는 혜택 추가 선택 가능',
     ],
     icon: '/images/benefit/membership.png',
-  },
-  {
-    title: '바이브 300회 음악감상',
-    description: ['기존에 없던 새로운 오디오 경험과 취향에 맞는 음악을 제공하는 뮤직 앱'],
-    icon: '/images/benefit/vibe.png',
-  },
-  {
-    title: '실버지킴이',
-    description: ['1시간~3시간마다 문자메시지로 내 위치를 보호자에게 알려주는 서비스'],
-    icon: '/images/benefit/silver.png',
   },
 ];

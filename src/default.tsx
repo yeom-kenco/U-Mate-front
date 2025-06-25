@@ -1,5 +1,5 @@
 import Header from './components/Header';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Footer from './components/Footer';
 import { useEffect, useRef, useState } from 'react';
 import ChatbotButton from './components/ChatbotButton';
@@ -8,6 +8,8 @@ import { validateToken } from './apis/auth';
 import { clearUser, setUser } from './store/userSlice';
 import { useToast } from './hooks/useToast';
 import { formatToKST } from './utils/formatDate';
+import { useAppDispatch, useAppSelector } from './hooks/reduxHooks';
+import { Loading } from './components/Loading';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
@@ -17,8 +19,12 @@ const Default = () => {
     hasShadow: false,
   });
   const [userLoading, setUserLoading] = useState(false);
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
+  const isLogin = useAppSelector((state) => state.user.isLogin);
+
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -51,12 +57,16 @@ const Default = () => {
       }
     };
     fetchUser();
-  }, [dispatch]);
+  }, [dispatch, isLogin]);
 
   if (userLoading) {
-    return <div className="text-center mt-10">loading...</div>;
+    return (
+      <div className="text-center mt-10">
+        <Loading />
+      </div>
+    );
   }
-  console.log(user);
+
   return (
     <div className="flex flex-col min-h-[calc(100vh+1px)]">
       {/* 헤더 */}
@@ -76,10 +86,10 @@ const Default = () => {
       </main>
 
       {/* 챗봇 버튼 (고정된 위치에 표시됨) */}
-      <ChatbotButton />
+      {pathname !== '/chatbot' && <ChatbotButton />}
 
       {/* 푸터 */}
-      <Footer />
+      {pathname !== '/chatbot' && <Footer />}
     </div>
   );
 };

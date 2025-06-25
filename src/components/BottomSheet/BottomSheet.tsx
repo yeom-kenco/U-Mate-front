@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import clsx from 'clsx'; // Tailwind 조건부 클래스용 유틸 (선택)
+import clsx from 'clsx';
 import { SlArrowDown } from 'react-icons/sl';
+import { useLocation } from 'react-router-dom';
+
 interface BottomSheetProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
   height?: string;
+  alignRight?: boolean;
 }
 
-const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, height }) => {
+const BottomSheet: React.FC<BottomSheetProps> = ({
+  children,
+  isOpen,
+  onClose,
+  height,
+  alignRight,
+}) => {
   const [visible, setVisible] = useState(false);
+  const location = useLocation();
+  const isChatbotPage = location.pathname.includes('/chatbot');
 
   // 트랜지션 처리를 위한 mount 제어
   useEffect(() => {
@@ -29,7 +40,12 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
   if (!visible && !isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-center items-end ">
+    <div
+      className={clsx(
+        'fixed inset-0 z-[100] flex items-end justify-center',
+        alignRight && 'justify-end'
+      )}
+    >
       {/* Backdrop */}
       <div
         className={clsx(
@@ -42,10 +58,11 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children, isOpen, onClose, he
       {/* Bottom Sheet */}
       <div
         className={clsx(
-          ' relative w-full max-w-screen bg-white z-[9999] dark:bg-neutral-900 rounded-t-[20px] shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500',
+          'relative bg-white z-[9999] rounded-t-[20px] shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500',
+          isChatbotPage ? 'w-full md:w-[50%] md:ml-auto md:mr-0' : 'w-full',
           isOpen ? 'translate-y-0' : 'translate-y-full'
         )}
-        style={{ height }} // 받아온 height로 높이 bottomSheet 높이 지정
+        style={{ height }}
       >
         {/* Handle */}
         <div className="pt-3 pb-[15px] flex justify-center items-center" onClick={onClose}>

@@ -129,6 +129,7 @@ const AccountStepContent = ({
                 setSuccessFlag={setIsEmailClicked} // 이메일 인증 클릭 여부
                 Timer={setTimer}
                 Counting={setIsCounting}
+                isLogin={true}
               />
             }
           />

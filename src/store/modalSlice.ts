@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ModalState {
   isOpen: boolean;
-  type?: 'findAccount' | 'reviewList' | 'reviewWrite' | null;
+  type?: 'findAccount' | 'reviewList' | 'reviewWrite' | 'reviewEdit' | null;
 }
 
 const initialState: ModalState = {

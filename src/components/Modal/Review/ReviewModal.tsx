@@ -2,6 +2,8 @@ import BaseModal from '../BaseModal';
 import { IoCloseOutline } from 'react-icons/io5';
 import ReviewListContent from './ReviewListContent';
 import ReviewWriteContent from './ReviewWriteContent';
+import AllReviewListContent from './AllReviewListContent';
+import { useEffect, useState } from 'react';
 
 // 리뷰 작성 모달 사용 예시
 // {isOpen && (
@@ -19,23 +21,34 @@ import ReviewWriteContent from './ReviewWriteContent';
 // )}
 
 type ReviewModalProps = {
-  type: 'reviewList' | 'reviewWrite';
+  type: 'reviewList' | 'reviewWrite' | 'allReviewList' | 'reviewEdit';
   onClose: () => void;
-  onConfirm?: () => void;
   children: React.ReactNode;
   rating?: number;
   planName?: string;
+  reviews?: any[];
   planPrice?: number;
+  initialContent?: string;
+  initialRating?: number;
+  reviewId?: number;
 };
 
 const ReviewModal = ({
   type,
   onClose,
-  onConfirm,
   children,
   planName,
   planPrice,
+  reviews,
+  question,
+  initialContent,
+  initialRating,
+  reviewId,
 }: ReviewModalProps) => {
+  const [content, setContent] = useState(initialContent ?? '');
+  const [rating, setRating] = useState(initialRating ?? 0);
+
+  console.log(reviewId);
   return (
     <BaseModal onClose={onClose}>
       <div className="flex flex-col h-[70vh] max-h-[520px]">
@@ -46,9 +59,21 @@ const ReviewModal = ({
         </div>
 
         {type === 'reviewList' && <ReviewListContent>{children}</ReviewListContent>}
-
-        {type === 'reviewWrite' && (
-          <ReviewWriteContent planName={planName} planPrice={planPrice} onClose={onClose} />
+        {type === 'allReviewList' && <AllReviewListContent reviews={reviews ?? []} />}
+        {(type === 'reviewWrite' || type === 'reviewEdit') && (
+          <ReviewWriteContent
+            planName={planName}
+            planPrice={planPrice}
+            onClose={onClose}
+            content={content}
+            setContent={setContent}
+            rating={rating}
+            setRating={setRating}
+            reviewId={reviewId}
+            isEdit={type === 'reviewEdit'}
+          >
+            {children}
+          </ReviewWriteContent>
         )}
       </div>
     </BaseModal>

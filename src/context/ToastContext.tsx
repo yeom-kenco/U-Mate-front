@@ -1,12 +1,16 @@
-// src/context/ToastContext.tsx
 import { createContext, ReactNode } from 'react';
-import { Slide, toast, ToastContainer } from 'react-toastify';
+import { Slide, toast, ToastContainer, ToastPosition, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 type ToastType = 'success' | 'error' | 'violet' | 'black';
 
 interface ToastContextType {
-  showToast: (msg: string, type?: ToastType) => void;
+  showToast: (
+    msg: string,
+    type?: ToastType,
+    position?: ToastPosition,
+    style?: React.CSSProperties
+  ) => void;
 }
 
 export const ToastContext = createContext<ToastContextType | null>(null);
@@ -22,9 +26,16 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     black: `bg-black/50 backdrop-blur-md ${baseStyle}`,
   };
 
-  const showToast = (msg: string, type: ToastType = 'error') => {
+  const showToast = (
+    msg: string,
+    type: ToastType = 'error',
+    position: ToastPosition = 'bottom-center',
+    style?: React.CSSProperties
+  ) => {
     toast(msg, {
       className: toastStyles[type],
+      position,
+      style, // 👈 사용자 지정 style 주입, 위치 미세 조정, 색상 조정 가능 (e.g. {bottom:"100px"} 이렇게 넘겨주면 됨)
       icon: false,
     });
   };
@@ -33,8 +44,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     <ToastContext.Provider value={{ showToast }}>
       {children}
       <ToastContainer
-        position="bottom-center"
-        autoClose={2000}
+        autoClose={1000}
         limit={1}
         hideProgressBar={true}
         closeOnClick
