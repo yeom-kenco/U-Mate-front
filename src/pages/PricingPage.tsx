@@ -184,7 +184,7 @@ const PricingPage = () => {
   const handleComparePlans = () => {
     setModalType('compare');
     dispatch(closeModal());
-    navigate('/compare', { state: { plan: selectedPlan } });
+    navigate(`/compare/${user?.plan}/${selectedPlan?.PLAN_ID}`);
   };
 
   // 변경하기 모달 열기
