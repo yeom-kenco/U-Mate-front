@@ -18,11 +18,6 @@ export const useHorizontalScroll = () => {
       scrollLeft = el.scrollLeft;
     };
 
-    const onMouseLeave = () => {
-      isDown = false;
-      el.classList.remove('cursor-grabbing');
-    };
-
     const onMouseUp = () => {
       isDown = false;
       el.classList.remove('cursor-grabbing');
@@ -32,20 +27,20 @@ export const useHorizontalScroll = () => {
       if (!isDown) return;
       e.preventDefault();
       const x = e.pageX - el.offsetLeft;
-      const walk = (x - startX) * 1.5; // 이동 속도 조절
+      const walk = (x - startX) * 1.5;
       el.scrollLeft = scrollLeft - walk;
     };
 
     el.addEventListener('mousedown', onMouseDown);
-    el.addEventListener('mouseleave', onMouseLeave);
     el.addEventListener('mouseup', onMouseUp);
     el.addEventListener('mousemove', onMouseMove);
+    el.addEventListener('mouseleave', onMouseUp);
 
     return () => {
       el.removeEventListener('mousedown', onMouseDown);
-      el.removeEventListener('mouseleave', onMouseLeave);
       el.removeEventListener('mouseup', onMouseUp);
       el.removeEventListener('mousemove', onMouseMove);
+      el.removeEventListener('mouseleave', onMouseUp);
     };
   }, []);
 

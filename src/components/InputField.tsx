@@ -64,7 +64,6 @@ const InputField: React.FC<InputFieldProps> = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          disabled={disabled}
           className={clsx(
             'flex-1 text-sm mt-1 outline-none placeholder:font-normal placeholder-[#A9B3C2]',
             variant === 'line' ? 'bg-transparent' : 'bg-white',
@@ -93,7 +92,7 @@ const InputField: React.FC<InputFieldProps> = ({
             size="m"
             type="button"
             color="gray"
-            className="border-zinc-400 ml-2 bg-zinc-50"
+            className={clsx('border-zinc-400 ml-2 bg-zinc-50', disabled ? 'hidden ' : '')}
           >
             {suffixButton}
           </Button>

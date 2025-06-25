@@ -17,7 +17,7 @@ const BenefitDropBar = ({ label, indexes, data }: BenefitDropProps) => {
   return (
     <div className="mb-6">
       <button
-        className="flex items-center justify-between w-full font-bold text-lg mb-2"
+        className="flex items-center justify-between w-full font-bold text-lg mb-6"
         onClick={toggle}
       >
         {label}
@@ -26,7 +26,7 @@ const BenefitDropBar = ({ label, indexes, data }: BenefitDropProps) => {
             isOpen ? '-rotate-90' : 'rotate-90'
           }`}
         >
-          <FiChevronRight size={20} />  
+          <FiChevronRight size={20} />
         </span>
       </button>
       <div

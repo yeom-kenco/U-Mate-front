@@ -9,11 +9,11 @@ interface DropdownSelectorProps {
 const DropdownSelector: React.FC<DropdownSelectorProps> = ({ label, onClick, plan }) => {
   return (
     <div className="relative w-full" onClick={onClick}>
-      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4">
+      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 min-h-[110px] max-h-[110px]">
         <div className="flex justify-between items-center">
           <div>
-            <p className="text-sm text-gray-600 mb-1">{label}</p>
-            <p className="text-lg font-semibold text-gray-900">{plan}</p>
+            <p className="text-s md:text-sm text-gray-600 mb-1">{label}</p>
+            <p className="text-m md:text-lm font-semibold text-gray-900">{plan}</p>
           </div>
           <div>
             <svg

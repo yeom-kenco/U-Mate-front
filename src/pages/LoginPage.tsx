@@ -65,9 +65,9 @@ const LoginPage = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      const res = await login({ id: email, password });
-      showToast(`${user?.name}님 환영합니다`, 'black');
-      //navigate('/');
+      await login({ id: email, password });
+      showToast(`환영합니다`, 'black');
+      navigate('/');
     } catch (err: any) {
       console.log();
       showToast(err.response.data.error, 'error');

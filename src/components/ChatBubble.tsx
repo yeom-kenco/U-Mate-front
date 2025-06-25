@@ -1,52 +1,129 @@
-import { HiVolumeUp } from 'react-icons/hi';
+import { HiVolumeUp, HiStop } from 'react-icons/hi';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type React from 'react';
 
 type ChatBubbleProps = {
   from: 'user' | 'bot';
-  message: string;
+  message?: string;
   time: string;
-  children?: React.ReactNode; // 카드나 버튼 등 확장 콘텐츠
+  variant?: 'default' | 'first';
+  children?: React.ReactNode;
 };
 
-const ChatBubble = ({ from, message, time, children }: ChatBubbleProps) => {
+export default function ChatBubble({
+  from,
+  message,
+  time,
+  variant = 'default',
+  children,
+}: ChatBubbleProps) {
   const isUser = from === 'user';
+  const isFirst = variant === 'first';
+
+  const containerClasses = [
+    'flex flex-col',
+    isUser ? 'items-end' : 'items-start',
+    isFirst ? 'mb-4' : 'my-8',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const bubbleWidthClass = isFirst ? 'w-full max-w-sm' : 'w-fit max-w-64';
+
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  const toggleSpeech = useCallback(() => {
+    if (!message) return;
+
+    if (isSpeaking) {
+      speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const utter = new SpeechSynthesisUtterance(message);
+    utter.lang = 'ko-KR';
+    utter.onend = () => setIsSpeaking(false);
+    utter.onerror = () => setIsSpeaking(false);
+
+    utterRef.current = utter;
+    speechSynthesis.speak(utter);
+    setIsSpeaking(true);
+  }, [message, isSpeaking]);
+
+  useEffect(() => {
+    return () => {
+      speechSynthesis.cancel();
+      setIsSpeaking(false);
+    };
+  }, []);
 
   return (
-    <div className={`h-fit flex flex-col ${isUser ? 'items-end' : 'items-start'} my-8`}>
-      {!isUser && <p className="text-sm text-black mb-1">유식이</p>}
-      <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
-        <div
-          className={`
-            w-fit max-w-64 rounded-3xl py-3 px-4
-            ${isUser ? 'bg-violet-100 rounded-br-none drop-shadow-[0_4px_15px_rgba(51,5,156,0.25)]' : 'bg-white rounded-tl-none drop-shadow-[0_0px_15px_rgba(51,5,156,0.15)]'}
-          `}
-        >
-          {message && <p className="text-sm text-black">{message}</p>}
-          {children}
+    <div className={containerClasses}>
+      {!isUser && (
+        <div className="flex items-center gap-2 mb-1">
+          <div className="w-[45px] h-[45px] rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
+            <img
+              src="/images/chatbot/chatbot-avatar.png"
+              alt="유식이 아바타"
+              className="w-[35px] h-[35px] object-contain"
+            />
+          </div>
+          <p className="text-sm text-black font-medium">유식이</p>
+        </div>
+      )}
+
+      <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} w-full`}>
+        <div className={!isUser ? 'ml-[53px]' : undefined}>
+          <div
+            className={
+              `${bubbleWidthClass} rounded-3xl ${isFirst ? '' : 'py-3 px-4'} ` +
+              (isUser
+                ? 'bg-violet-100 rounded-br-none drop-shadow-[0_4px_15px_rgba(51,5,156,0.25)]'
+                : isFirst
+                  ? ''
+                  : 'bg-white rounded-tl-none drop-shadow-[0_0px_15px_rgba(51,5,156,0.15)]')
+            }
+          >
+            {isFirst && children ? (
+              children
+            ) : message === '...' ? (
+              <div className="flex items-center gap-1 h-6 px-2">
+                <span className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0s]" />
+                <span className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.15s]" />
+                <span className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.3s]" />
+              </div>
+            ) : (
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  p: ({ node, ...props }) => <p className="text-sm text-black" {...props} />,
+                }}
+              >
+                {message || ''}
+              </ReactMarkdown>
+            )}
+          </div>
         </div>
       </div>
-      <div className={`flex items-center mt-1 gap-2`}>
-        {time && (
-          <p className="text-s text-zinc-400 ${isUser ? 'justify-end' : 'justify-start'}">{time}</p>
-        )}
-        {!isUser && <HiVolumeUp className="text-violet-400 w-3 h-3 mt-[-1px]" />}
-      </div>
+
+      {!isFirst && (
+        <div className={`flex items-center mt-1 gap-2 ${!isUser ? 'ml-[53px]' : ''}`}>
+          {time && <p className="text-sm text-zinc-400">{time}</p>}
+          {!isUser && (
+            <button onClick={toggleSpeech} aria-label="음성 재생 또는 정지">
+              {isSpeaking ? (
+                <HiStop className="text-red-500 w-4 h-4 hover:text-red-700" />
+              ) : (
+                <HiVolumeUp className="text-violet-400 w-4 h-4 hover:text-violet-600" />
+              )}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
-};
-
-export default ChatBubble;
-
-{
-  /* 사용 예시
-
-import { getCurrentTime } from '../utils/getCurrentTime';
-
-  const now = getCurrentTime(); // 현재 시간 계산 함수 호출
-    <ChatBubble message="안녕하세요" from="user" time={now} />
-    <ChatBubble message="넹 저는 유식이입니다" from="bot" />
-    <ChatBubble from="bot" time="16:00">
-      <img src="/public/vite.svg" alt="logo" className="my-4 w-32 h-auto" /> 유식이 기본 멘트에서는 이런 형태로 사용
-      <h4>아래와 같이 질문해보세요!</h4>
-    </ChatBubble> 
-*/
 }

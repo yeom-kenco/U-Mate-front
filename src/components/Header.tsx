@@ -205,7 +205,7 @@ const Header = ({
 
               {/* ✅ 로그아웃 버튼과 메뉴 사이 간격 */}
               <div className="mt-6 flex flex-col space-y-3">
-                <Link to="/pricing" className="flex px-3 items-center max-w-48 cursor-pointer">
+                <Link to="/plans" className="flex px-3 items-center max-w-48 cursor-pointer">
                   <span>요금제 찾아보기</span>
                   <SlArrowRight className="w-3 h-3 relative ml-[2px] mb-[1px]" />
                 </Link>

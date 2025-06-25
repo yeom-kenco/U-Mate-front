@@ -2,6 +2,7 @@ import { HeaderProps } from '../components/Header';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useHorizontalScroll } from '../hooks/useHorizontalScroll';
 import { calculateDiscountedPrice } from '../utils/getDiscountFree';
@@ -14,6 +15,7 @@ import PlanInfoBanner from '../components/MainPage/PlanInfoBanner';
 import HeroSection from '../components/MainPage/HeroSection';
 import '../index.css';
 import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -41,7 +43,11 @@ type RecommendedPlan = {
 };
 
 const MainPage = () => {
-  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
+  const isLogin = useAppSelector((state) => state.user.isLogin);
+
   const scrollRef = useHorizontalScroll();
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [allPlans, setAllPlans] = useState<PlanListItem[]>([]);
@@ -221,7 +227,7 @@ const MainPage = () => {
                           score: parseFloat(plan.avgRating?.toString() || '0'),
                           count: plan.reviewCount || 0,
                         }}
-                        onClick={() => console.log('페이지이동')}
+                        onClick={() => navigate(`/plans/${plan.planId}`)}
                       />
                     ))}
                   </div>
@@ -284,7 +290,7 @@ const MainPage = () => {
                       score: plan.RECEIVED_STAR_COUNT / Math.max(plan.REVIEW_USER_COUNT, 1),
                       count: plan.REVIEW_USER_COUNT,
                     }}
-                    onClick={() => console.log('페이지이동')}
+                    onClick={() => navigate(`/plans/${plan.PLAN_ID}`)}
                   />
                 );
               })}
