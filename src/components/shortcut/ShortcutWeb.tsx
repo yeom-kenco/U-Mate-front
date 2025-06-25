@@ -42,6 +42,7 @@ const ShortcutGrid = () => (
             height="h-full"
             iconSize="w-36 h-36"
             showButton={false}
+            className="bg-diagonal"
           />
         </div>
 
