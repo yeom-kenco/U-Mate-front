@@ -134,7 +134,7 @@ const router = createBrowserRouter([
         path: '/terms',
         element: <TermsOfUsePage />,
       },
-      { path: 'pricing', element: <PricingPage /> }, // 요금제 페이지
+      { path: '/plans', element: <PricingPage /> }, // 요금제 페이지
       { path: '/login', element: <LoginPage /> },
       { path: '/mypage', element: <MyPage /> },
       { path: '/signup', element: <RegisterPage /> },

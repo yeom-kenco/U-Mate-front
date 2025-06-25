@@ -35,9 +35,9 @@ const Button = ({
       white: 'bg-white text-black hover:bg-pink-500 hover:text-white border border-zinc-200', //대표 페이지- 추천 요금제용 속성 추가
     },
     outline: {
-      pink: 'border border-pink-500 text-pink-500 hover:bg-pink-50 focus:bg-pink-100',
+      pink: 'border border-pink-500 text-pink-500 bg-white hover:bg-pink-50 focus:bg-pink-100',
       gray: 'border border-zinc-200 text-black bg-white hover:bg-zinc-100',
-      violet: 'border border-violet-200 text-violet-400 hover:bg-violet-50',
+      violet: 'border border-violet-200 text-violet-400  bg-white hover:bg-violet-50',
       white: 'border border-white text-white font-normal',
     },
     ghost: {

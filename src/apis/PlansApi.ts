@@ -11,7 +11,7 @@ export interface Plan {
   REVIEW_USER_COUNT: number;
 }
 
-interface PlanFilterRequest {
+export interface PlanFilterRequest {
   ageGroup?: string;
   minFee?: number;
   maxFee?: number;

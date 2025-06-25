@@ -19,7 +19,7 @@ const NavigationLinks = ({ isLoggedIn }: { isLoggedIn?: boolean }) => (
     <Link to="/shortcut" className="hover:text-pink-500">
       바로가기페이지
     </Link>
-    <Link to="/pricing" className="hover:text-pink-500">
+    <Link to="/plans" className="hover:text-pink-500">
       요금제 찾기
     </Link>
     <Link to="/compare" className="hover:text-pink-500">
