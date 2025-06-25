@@ -68,14 +68,11 @@ const ShortCutPage: React.FC = () => {
           </div>
         </div>
         <div className="mt-6 mb-6 flex justify-center">
-          <Button
-            variant="special"
-            size="xl"
-            className="w-80"
-            onClick={() => console.log('고객센터 전화하기')}
-          >
-            고객센터 전화하기
-          </Button>
+          <a href="tel:1544-0010">
+            <Button variant="special" size="xl" className="w-80">
+              고객센터 전화하기
+            </Button>
+          </a>
         </div>
       </div>
 
