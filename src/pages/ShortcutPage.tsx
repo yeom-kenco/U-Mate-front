@@ -77,7 +77,7 @@ const ShortCutPage: React.FC = () => {
       </div>
 
       {/* 데스크탑 전용: 웹 그리드 */}
-      <div className="hidden md:block">
+      <div className="hidden md:flex h-screen flex-col overflow-hidden">
         <ShortcutGrid />
       </div>
     </div>
