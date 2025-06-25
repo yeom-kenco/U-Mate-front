@@ -36,7 +36,7 @@ const Button = ({
     },
     outline: {
       pink: 'border border-pink-500 text-pink-500 hover:bg-pink-50 focus:bg-pink-100',
-      gray: 'border border-zinc-200 text-black hover:bg-zinc-100',
+      gray: 'border border-zinc-200 text-black bg-white hover:bg-zinc-100',
       violet: 'border border-violet-200 text-violet-400 hover:bg-violet-50',
       white: 'border border-white text-white font-normal',
     },
