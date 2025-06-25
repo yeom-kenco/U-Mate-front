@@ -32,6 +32,9 @@ const RegisterPage = () => {
 
   // 휴대폰 중복 확인 여부
   const [isPhoneChecked, setIsPhoneChecked] = useState(false);
+
+  //이메일 중복 확인 여부
+  const [isEmailDuplicate, setIsEMailDuplicate] = useState(false);
   // 이메일 인증버튼 클릭 여부
   const [isEmailClickd, setIsEmailClickd] = useState(false);
 
@@ -161,7 +164,6 @@ const RegisterPage = () => {
       password: formData.password,
       phonePlan: 1,
     };
-    console.log(requestData);
     try {
       const res = await signUp(requestData);
       console.log(res.data);
@@ -180,6 +182,7 @@ const RegisterPage = () => {
   // 이메일 인증 후  email필드 변경 시 다시 인증해야함
   useEffect(() => {
     setIsEmailVerified(false);
+    setIsEMailDuplicate(false);
   }, [formData.email]);
 
   // 휴대폰 중복 확인 후 phone필드  변경 시 다시 중복확인
@@ -263,8 +266,10 @@ const RegisterPage = () => {
             phoneNumber={formData.phone}
             setError={(field, msg) => setErrors((prev) => ({ ...prev, [field]: msg }))}
             setSuccessFlag={setIsPhoneChecked} // 휴대폰 중복확인 체크여부
+            isPhoneChecked={isPhoneChecked} // 휴대폰 중복확인 여부
           />
         }
+        disabled={isPhoneChecked}
         required
         error={errors.phone}
       />
@@ -282,8 +287,12 @@ const RegisterPage = () => {
             setSuccessFlag={setIsEmailClickd} // 이메일 인증 클릭 여부
             Timer={setTimer}
             Counting={setIsCounting}
+            isEmailDuplicate={isEmailDuplicate}
+            setIsEMailDuplicate={setIsEMailDuplicate}
+            isLogin={false}
           />
         }
+        disabled={isEmailClickd}
         required
         error={errors.email}
       />
@@ -302,6 +311,7 @@ const RegisterPage = () => {
               Counting={setIsCounting}
             />
           }
+          disabled={isEmailVerified}
           timer={isCounting ? `${formatTime(timer)}` : undefined}
           required
           error={errors.verificationCode}

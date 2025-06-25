@@ -67,3 +67,6 @@ export const validateToken = async () => {
 
   return response;
 };
+
+export const checkEmailDuplicate = (data: string) => axiosInst.post('/emailDuplicate', data);
+
