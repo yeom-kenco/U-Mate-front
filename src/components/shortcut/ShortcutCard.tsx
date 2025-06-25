@@ -6,6 +6,7 @@ interface ShortcutCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
+  onClick?: () => void;
   route?: string;
   showButton?: boolean;
   width?: string;
@@ -21,6 +22,7 @@ const ShortcutCard: React.FC<ShortcutCardProps> = ({
   title,
   description,
   route,
+  onClick,
   showButton = true,
   width = 'w-[310px]',
   height = 'h-[380px]',
@@ -32,6 +34,7 @@ const ShortcutCard: React.FC<ShortcutCardProps> = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
+    if (onClick) return onClick();
     if (route) navigate(route);
   };
   const containerClasses = [
