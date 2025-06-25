@@ -22,10 +22,11 @@ type ReviewModalProps = {
   type: 'reviewList' | 'reviewWrite';
   onClose: () => void;
   onConfirm?: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   rating?: number;
   planName?: string;
   planPrice?: number;
+  question?: string;
 };
 
 const ReviewModal = ({
@@ -35,6 +36,7 @@ const ReviewModal = ({
   children,
   planName,
   planPrice,
+  question,
 }: ReviewModalProps) => {
   return (
     <BaseModal onClose={onClose}>
@@ -48,7 +50,12 @@ const ReviewModal = ({
         {type === 'reviewList' && <ReviewListContent>{children}</ReviewListContent>}
 
         {type === 'reviewWrite' && (
-          <ReviewWriteContent planName={planName} planPrice={planPrice} onClose={onClose} />
+          <ReviewWriteContent
+            planName={planName}
+            planPrice={planPrice}
+            onClose={onClose}
+            question={question}
+          />
         )}
       </div>
     </BaseModal>
