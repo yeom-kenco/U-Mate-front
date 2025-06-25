@@ -17,6 +17,7 @@ type FilterModalProps = {
   onReset: () => void;
   onClose: () => void;
   planCount: number;
+  loading: boolean;
 };
 
 type ageOptions = { label: string; value?: string };
@@ -30,6 +31,7 @@ const FilterModal = ({
   onApply,
   onReset,
   planCount,
+  loading,
 }: FilterModalProps) => {
   // 연령 범위 리스트
   const ageOptions: ageOptions[] = [
@@ -47,12 +49,13 @@ const FilterModal = ({
     { label: '상관없어요', min: undefined, max: undefined },
   ];
 
-  //데이터 범위 리스트
+  // 데이터 범위 리스트
   const dataRanges: DataRange[] = [
-    { label: '완전 무제한', value: '데이터 무제한' },
+    { label: '완전 무제한', value: '완전 무제한' },
     { label: '다쓰면 무제한', value: '다쓰면 무제한' },
-    { label: '상관없어요', value: '' },
+    { label: '상관없어요', value: '상관없어요' },
   ];
+
   return (
     <BaseModal
       onClose={onClose}
@@ -120,7 +123,7 @@ const FilterModal = ({
                 <button
                   key={label}
                   className={`tag ${
-                    filters.dataType === (value ?? '')
+                    filters.dataType === (value ?? '상관없어요')
                       ? 'border-pink-500 border-2'
                       : 'border-zinc-200'
                   } rounded-full px-6 py-2 text-m font-semibold border`}
@@ -199,9 +202,9 @@ const FilterModal = ({
                 onApply();
                 onClose();
               }}
-              disabled={planCount === 0}
+              disabled={planCount === 0 || loading}
             >
-              {planCount}개 요금제 보기
+              {loading ? '로딩중' : `${planCount}개 요금제 보기`}
             </Button>
           </div>
         </div>

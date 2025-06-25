@@ -5,18 +5,11 @@ import { FocusTrap } from 'focus-trap-react';
 type BaseModalProps = {
   children: React.ReactNode;
   onClose: () => void;
-  closeOnOutsideClick?: boolean;
   className?: string;
   labelledBy?: string;
 };
 
-const BaseModal = ({
-  children,
-  onClose,
-  closeOnOutsideClick = true,
-  className = '',
-  labelledBy,
-}: BaseModalProps) => {
+const BaseModal = ({ children, onClose, className = '', labelledBy }: BaseModalProps) => {
   const modalRoot = document.getElementById('modal-root');
   const [isVisible, setIsVisible] = useState(false);
 
@@ -58,7 +51,6 @@ const BaseModal = ({
       className={`fixed inset-0 z-[60] bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
-      onClick={closeOnOutsideClick ? onClose : undefined}
     >
       <FocusTrap>
         <div

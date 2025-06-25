@@ -18,6 +18,7 @@ import MainPage from '../pages/MainPage';
 import RegisterPage from '../pages/RegisterPage';
 import ShortcutPage from '../pages/ShortcutPage';
 import PlanDetailPage from '../pages/PlanDetailPage';
+import NotFound from '../components/NotFound';
 
 // 테스트용 임시 페이지
 const TempPage = () => {
@@ -47,6 +48,7 @@ const TempPage = () => {
   //   dispatch(closeModal());
   // };
 
+  const isOpen = useAppSelector((state) => state.modal.isOpen);
   const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
   const [isPlan, setisPlan] = useState(''); // 선택한 요금제
   // const isOpen = useAppSelector((state) => state.modal.isOpen);
@@ -129,6 +131,7 @@ const router = createBrowserRouter([
       { path: '/mypage', element: <MyPage /> },
       { path: '/signup', element: <RegisterPage /> },
     ],
+    errorElement: <NotFound />,
   },
   {
     path: '/onboarding',
