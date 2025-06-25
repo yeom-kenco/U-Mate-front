@@ -231,11 +231,11 @@ const MainPage = () => {
                 </p>
               </>
             ) : (
-              <div className="w-[90%] text-center py-10 text-zinc-500 md:py-20">
-                <p className="text-m md:text-lg font-medium">현재 맞춤 추천 요금제가 없어요.</p>
+              <div className="w-full text-center py-10 text-zinc-500 md:py-20">
+                <p className="text-m  md:text-lg font-medium">현재 맞춤 추천 요금제가 없어요.</p>
                 <p className="text-sm md:text-m mt-2">
                   생년월일 정보에 맞는 요금제를 준비 중이에요.😊
-                  <br className="hidden md:inline" />
+                  <br />
                   잠시 후 다시 확인해주세요!
                 </p>
               </div>
