@@ -44,7 +44,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     <ToastContext.Provider value={{ showToast }}>
       {children}
       <ToastContainer
-        autoClose={2000}
+        autoClose={1000}
         limit={1}
         hideProgressBar={true}
         closeOnClick
