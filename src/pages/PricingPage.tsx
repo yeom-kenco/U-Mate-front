@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SlArrowDown, SlArrowUp } from 'react-icons/sl';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { HeaderProps } from '../components/Header';
-import { useDebounce } from '../hooks/useDebounce';
 
+import { useDebounce } from '../hooks/useDebounce';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { closeModal, openModal } from '../store/modalSlice';
 import { useToast } from '../hooks/useToast';
 import { calculateDiscountedPrice } from '../utils/getDiscountFee';
+import { sortPlans } from '../utils/sortPlans';
 
+import { HeaderProps } from '../components/Header';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SortList from '../components/BottomSheet/SortList';
 import PlanCard from '../components/PlanCard';
@@ -26,13 +27,14 @@ import {
   PlanFilterRequest,
   updatePlan,
 } from '../apis/PlansApi';
+import { setUser } from '../store/userSlice';
 
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [sortOpen, setSortOpen] = useState(false); // 정렬 시트 토글
   const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
   const [filteredCount, setFilteredCount] = useState(0); // 사용자 맞춤 필터링된 요금제 개수
-  const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 요금제 (비교 또는 변경)
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
   const [planList, setPlanList] = useState<Plan[]>([]);
   const [filters, setFilters] = useState<PlanFilterRequest[]>({
@@ -44,7 +46,6 @@ const PricingPage = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  // 모달 상태 관리
   const toast = useToast();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -52,7 +53,8 @@ const PricingPage = () => {
   const isOpen = useAppSelector((state) => state.modal.isOpen);
   const user = useAppSelector((state) => state.user);
 
-  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null); // 모달 타입 정의
+  // 모달 타입 정의
+  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null);
 
   // 초기 로드 시 필터링 함수 호출 방지하는 함수
   const shouldFetchData = (filters: PlanFilterRequest) => {
@@ -64,6 +66,14 @@ const PricingPage = () => {
       (filters.benefitIds && filters.benefitIds.length > 0)
     );
   };
+
+  useEffect(() => {
+    setHeaderConfig({
+      title: '요금제',
+      showBackButton: true,
+      showSearch: false,
+    });
+  }, []);
 
   // 요금제 리스트 불러오기
   useEffect(() => {
@@ -123,7 +133,6 @@ const PricingPage = () => {
         const { data } = await getFilteredPlans(payload);
         setFilteredCount(data.length); // 필터링된 개수만 업데이트
         console.log('가져온 요금제', data);
-        console.log('필터링된 개수', data.length);
       } catch (error) {
         console.log(error);
       } finally {
@@ -175,12 +184,7 @@ const PricingPage = () => {
   const handleComparePlans = () => {
     setModalType('compare');
     dispatch(closeModal());
-    navigate('/compare', { state: { plan: selectedPlan } });
-  };
-
-  // 비교하기 모달 닫기
-  const closeCompareModal = () => {
-    dispatch(closeModal());
+    navigate(`/compare/${user?.plan}/${selectedPlan?.PLAN_ID}`);
   };
 
   // 변경하기 모달 열기
@@ -196,13 +200,15 @@ const PricingPage = () => {
   const handleChangePlans = async () => {
     if (!user || user?.id === 0 || user?.id === null) {
       toast?.showToast('로그인 후 이용해 주세요', 'black');
+      // 로그인이 아닐 경우 로그인 페이지로 이동
       dispatch(closeModal());
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
       return;
     }
 
-    if (!selectedPlan) {
-      return;
-    }
+    if (!selectedPlan) return;
 
     if (selectedPlan.PLAN_ID === user.plan) {
       toast?.showToast('현재 사용하시는 요금제입니다', 'error');
@@ -216,6 +222,13 @@ const PricingPage = () => {
         newPlanId: selectedPlan?.PLAN_ID,
       });
       setModalType('change');
+      // 변경된 요금제 업데이트
+      dispatch(
+        setUser({
+          ...user,
+          plan: selectedPlan?.PLAN_ID,
+        })
+      );
       toast?.showToast('해당 요금제로 변경되었습니다', 'black');
     } catch (error) {
       console.log(error);
@@ -225,11 +238,6 @@ const PricingPage = () => {
     }
   };
 
-  // 변경하기 모달 닫기
-  const closeChangeModal = () => {
-    dispatch(closeModal());
-  };
-
   // 정렬 기준 선택 시
   const handleSortSelect = (value: string) => {
     setIsSorted(value);
@@ -237,33 +245,7 @@ const PricingPage = () => {
   };
 
   // 정렬 로직
-  const getSortedPlans = () => {
-    switch (isSorted) {
-      case '높은 가격순':
-        return planList.sort((a, b) => b.MONTHLY_FEE - a.MONTHLY_FEE);
-      case '낮은 가격순':
-        return planList.sort((a, b) => a.MONTHLY_FEE - b.MONTHLY_FEE);
-      case '리뷰 많은 순':
-        return planList.sort((a, b) => b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT);
-      default:
-        // 인기순: 평점 높은 순
-        return planList.sort((a, b) => {
-          const scoreA =
-            a.REVIEW_USER_COUNT === 0 ? 0 : a.RECEIVED_STAR_COUNT / a.REVIEW_USER_COUNT;
-          const scoreB =
-            b.REVIEW_USER_COUNT === 0 ? 0 : b.RECEIVED_STAR_COUNT / b.REVIEW_USER_COUNT;
-
-          if (scoreB !== scoreA) {
-            return scoreB - scoreA;
-          } else {
-            // 평점이 같을 경우 리뷰 많은 순
-            return b.REVIEW_USER_COUNT - a.REVIEW_USER_COUNT;
-          }
-        });
-    }
-  };
-
-  const sortedPlans = getSortedPlans();
+  const sortedPlans = sortPlans(planList, isSorted);
 
   // 페이지네이션 로직
   const handleLoadMore = () => {
@@ -279,14 +261,6 @@ const PricingPage = () => {
   const goToDetailPage = (planId) => {
     navigate(`/plans/${planId}`);
   };
-
-  useEffect(() => {
-    setHeaderConfig({
-      title: '요금제',
-      showBackButton: true,
-      showSearch: false,
-    });
-  }, []);
 
   const PlanCardMemo = React.memo(PlanCard);
 
@@ -331,7 +305,7 @@ const PricingPage = () => {
             />
           ))}
         </div>
-        <div className="flex justify-center mt-8 pb-20">
+        <div className="flex justify-center mt-16 pb-44">
           <Button
             variant="outline"
             color="gray"
@@ -356,17 +330,17 @@ const PricingPage = () => {
             title="해당 요금제로 변경하시겠습니까?"
             confirmText="변경"
             onConfirm={handleChangePlans}
-            onClose={closeChangeModal}
+            onClose={() => dispatch(closeModal())}
           />
         )}
         {/* 비교하기 모달 */}
         {modalType === 'compare' && isOpen && (
           <ConfirmModal
-            title="선택한 요금제가 비교함에 추가되었어요!"
-            subtitle="지금 비교함으로 가보시겠어요?"
+            title="비교할 요금제가 선택되었습니다"
+            subtitle="지금 비교하러 가보시겠어요?"
             confirmText="이동"
             onConfirm={handleComparePlans}
-            onClose={closeCompareModal}
+            onClose={() => dispatch(closeModal())}
           />
         )}
         {modalType === 'filter' && isOpen && (
