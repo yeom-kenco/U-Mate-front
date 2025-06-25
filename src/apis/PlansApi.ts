@@ -37,7 +37,18 @@ export const getPlanList = async (): Promise<{ data: Plan[] }> => {
 
 // 요금제 변경 요청
 export const updatePlan = async (planData: UpdatePlanRequest): Promise<UpdatePlanResponse> => {
-  const response = await axiosInstance.post<UpdatePlanResponse>('/changeUserPlan', planData);
+  // 1. CSRF 토큰 요청
+  const csrf = await axiosInstance.get('/csrf-token');
+  const csrfToken = csrf.data.csrfToken;
+
+  // 2. CSRF 토큰을 포함하여 요금제 변경 요청
+  const response = await axiosInstance.post<UpdatePlanResponse>('/changeUserPlan', planData, {
+    headers: {
+      'X-CSRF-Token': csrfToken,
+    },
+    withCredentials: true,
+  });
+
   console.log('변경 요청 성공');
   return response.data;
 };
