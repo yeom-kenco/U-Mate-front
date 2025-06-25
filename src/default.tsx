@@ -8,6 +8,7 @@ import { validateToken } from './apis/auth';
 import { clearUser, setUser } from './store/userSlice';
 import { useToast } from './hooks/useToast';
 import { formatToKST } from './utils/formatDate';
+import { useAppDispatch, useAppSelector } from './hooks/reduxHooks';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
@@ -17,8 +18,8 @@ const Default = () => {
     hasShadow: false,
   });
   const [userLoading, setUserLoading] = useState(false);
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
     const fetchUser = async () => {
