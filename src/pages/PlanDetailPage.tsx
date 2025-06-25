@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PlanTopBanner from '../components/PlanDetail/PlanTopBanner';
 import { calculateDiscountedPrice } from '../utils/getDiscountFree';
@@ -12,6 +12,7 @@ import { benefitList } from '../data/benefits';
 import BenefitDropBar from '../components/BenefitDropBar';
 import PlanBottomSheet from '../components/BottomSheet/PlanBottomSheet';
 import PlanBottomBar from '../components/PlanDetail/PlanBottomBar';
+import { Loading } from '../components/Loading';
 
 // 상단 import 아래에 위치시키기
 const benefitIdToIndexMap: Record<number, number> = {
@@ -128,7 +129,12 @@ const PlanDetailPage = () => {
     fetchPlanDetail();
   }, [id]);
 
-  if (!plan) return <div>로딩 중...</div>; // 추후 컴포넌트 넣어주기
+  if (!plan)
+    return (
+      <div>
+        <Loading />
+      </div>
+    ); // 추후 컴포넌트 넣어주기
 
   // 혜택 인덱스 매핑 처리
   const discountBenefitIds = [15, 16, 17, 18, 19];
@@ -183,6 +189,7 @@ const PlanDetailPage = () => {
               {reviews.map((review) => (
                 <ReviewCard
                   key={review.REVIEW_ID}
+                  reviewId={review.REVIEW_ID}
                   writerName={review.USER_NAME}
                   writerAge={`${review.USER_BIRTHDAY}대`}
                   content={review.REVIEW_CONTENT}
