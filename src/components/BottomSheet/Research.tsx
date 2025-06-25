@@ -22,19 +22,17 @@ const Research: React.FC<ResearchProps> = ({ onSubmit, onClose }) => {
     setFeedback(e.target.value);
   };
 
+  // Research.tsx ─ handleSubmit 안
   const handleSubmit = async () => {
     try {
-      if (onSubmit) {
-        onSubmit(rating, feedback);
-      }
-
       await postSurvey({ rating, content: feedback });
 
-      setIsSubmitted(true);
+      localStorage.setItem('surveySubmitted', 'true');
 
-      setTimeout(() => {
-        if (onClose) onClose();
-      }, 1500);
+      onSubmit?.(rating, feedback);
+
+      setIsSubmitted(true);
+      setTimeout(() => onClose?.(), 1500);
     } catch (error) {
       console.error('설문 제출 실패:', error);
     }
@@ -165,7 +163,6 @@ const Research: React.FC<ResearchProps> = ({ onSubmit, onClose }) => {
           </button>
         )}
 
-        {/* 다음에 하기 - 텍스트 링크로 변경 */}
         <div className="text-center pb-2">
           <button
             onClick={onClose}

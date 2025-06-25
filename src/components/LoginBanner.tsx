@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 
 type LoginBannerProps = {
-  type: 'default' | 'chatbot' | 'research' | 'mainWhite' | 'mainGradient';
+  type: 'default' | 'chatbot' | 'mainWhite' | 'mainGradient';
 };
 
 const LoginBanner = ({ type }: LoginBannerProps) => {
@@ -13,7 +13,6 @@ const LoginBanner = ({ type }: LoginBannerProps) => {
   const messages: Record<LoginBannerProps['type'], React.ReactNode> = {
     default: <span>로그인하고 현재 가입조건을 이용하세요</span>,
     chatbot: <span>로그인하고 고객님만을 위한 대화를 시작해보세요</span>,
-    research: <span>챗봇 사용에 대한 만족도를 알려주세요</span>,
     mainWhite: (
       <>
         고객님, 가입하시고 유플러스만의

@@ -7,6 +7,7 @@ import FirstMessage from '../components/ChatbotFirstMessage';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import SolutionList from '../components/BottomSheet/SolutionList';
 import LoginBanner from '../components/LoginBanner';
+import ResearchBanner from '../components/ResearchBanner';
 import Research from '../components/BottomSheet/Research';
 
 type Message = {
@@ -132,6 +133,10 @@ export default function ChatbotMain() {
     send();
   };
 
+  const [surveyDone, setSurveyDone] = useState<boolean>(
+    () => localStorage.getItem('surveySubmitted') === 'true'
+  );
+
   return (
     /* 화면 전체 래퍼 */
     <div
@@ -157,15 +162,7 @@ export default function ChatbotMain() {
       <div className="flex flex-col h-full flex-1 bg-background overflow-hidden">
         {/* 로그인/리서치 배너 */}
         <LoginBanner type="chatbot" />
-        <LoginBanner type="research" />
-
-        {/* floating button */}
-        <button
-          onClick={() => setShowResearch(true)}
-          className="fixed bottom-28 right-4 px-4 py-2 rounded-lg bg-pink-500 text-white"
-        >
-          만족도 조사
-        </button>
+        {!surveyDone && <ResearchBanner onSurveyClick={() => setShowResearch(true)} />}
 
         {/* 이메일 입력 영역 (연결 전) */}
         {!connected && (
@@ -246,6 +243,7 @@ export default function ChatbotMain() {
               <Research
                 onSubmit={(rating, feedback) => {
                   console.log('제출됨:', rating, feedback);
+                  setSurveyDone(true);
                   setShowResearch(false);
                 }}
                 onClose={() => setShowResearch(false)}
