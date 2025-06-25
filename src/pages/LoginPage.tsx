@@ -61,7 +61,6 @@ const LoginPage = () => {
     return Object.values(newErrors).every((e) => e === '');
   };
 
-  console.log(user);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;

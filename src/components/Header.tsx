@@ -5,9 +5,10 @@ import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import { IoIosSearch } from 'react-icons/io';
 import { IoMdClose } from 'react-icons/io';
 import Button from './Button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../apis/auth';
 import { useToast } from '../hooks/useToast';
+import { clearUser } from '../store/userSlice';
 
 export interface HeaderProps {
   showBackButton: boolean;
@@ -60,6 +61,7 @@ const Header = ({
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const { showToast } = useToast();
+  const dispatch = useDispatch();
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
@@ -83,6 +85,7 @@ const Header = ({
     try {
       const res = await logout({ email: user?.email });
       showToast(res.data.message, 'success');
+      dispatch(clearUser());
       setIsMenuOpen(false);
       navigate('/');
     } catch (error) {
