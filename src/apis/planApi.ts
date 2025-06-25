@@ -13,7 +13,6 @@ const getPlanDetail = async (planId: number) => {
 const changePlanApi = async (userId: number, newPlanId: number) => {
   const csrf = await axios.get('https://seungwoo.i234.me:3333/csrf-token');
   const csrfToken = csrf.data.csrfToken;
-  console.log(csrfToken);
 
   const response = await axios.post(
     `https://seungwoo.i234.me:3333/changeUserPlan`,
@@ -23,7 +22,7 @@ const changePlanApi = async (userId: number, newPlanId: number) => {
     },
     {
       headers: {
-        'X-CSRF-TOKEN': csrfToken,
+        'X-CSRF-Token': csrfToken,
       },
     }
   );
