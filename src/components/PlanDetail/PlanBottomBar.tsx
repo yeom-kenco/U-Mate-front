@@ -19,14 +19,17 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRequest = async () => {
-    const res = await fetch(`https://seungwoo.i234.me:3333/tokenCheck`, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    const isLoggedIn = res.ok;
+    // const res = await fetch(`https://seungwoo.i234.me:3333/tokenCheck`, {
+    //   method: 'GET',
+    //   credentials: 'include',
+    // });
+    // const isLoggedIn = res.ok;
+    const isLoggedIn = true; // ← 테스트 중일 때만 true로 하드코딩
 
     if (!isLoggedIn) {
-      showToast('로그인 후 이용 가능합니다.', 'black', 'bottom-center', { bottom: '230px' });
+      showToast('로그인 후 이용 가능한 서비스입니다.', 'error', 'bottom-center', {
+        bottom: '220px',
+      });
       return;
     }
 
@@ -50,7 +53,7 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
         showToast(data.message || '신청 실패', 'error');
       }
     } catch {
-      showToast('요금제 신청 중 오류 발생', 'error');
+      showToast('요금제 신청 중 오류가 발생했습니다.', 'error');
     } finally {
       setIsLoading(false);
       setIsModalOpen(false);
@@ -104,24 +107,26 @@ const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomB
 
       {isModalOpen && (
         <BaseModal onClose={() => setIsModalOpen(false)}>
-          <div className="px-6 py-5 flex flex-col gap-4 text-center">
+          <div className="px-6 py-7 flex flex-col gap-4 text-center">
             <p className="text-base font-semibold">해당 요금제를 신청하시겠습니까?</p>
             <p className="text-sm text-gray-500">기존 요금제에서 변경됩니다.</p>
             <div className="flex gap-2 justify-center mt-2">
               <Button
                 variant="outline"
                 color="gray"
-                size="sm"
+                size="lg"
                 onClick={() => setIsModalOpen(false)}
+                className="w-full flex-1"
               >
                 취소
               </Button>
               <Button
                 variant="fill"
                 color="pink"
-                size="sm"
+                size="lg"
                 onClick={handleConfirmRequest}
                 disabled={isLoading}
+                className="w-full flex-1"
               >
                 {isLoading ? '신청 중...' : '신청'}
               </Button>

@@ -214,9 +214,14 @@ const PlanDetailPage = () => {
         isOpen={bottomOpen}
         onClose={() => setBottomOpen(false)}
         onOpen={() => setBottomOpen(true)}
-        height="140px"
+        heightClass="h-[205px] lg:h-[150px]"
       >
-        <PlanBottomBar planId={plan.PLAN_ID} planName={plan.PLAN_NAME} price={plan.MONTHLY_FEE} />
+        <PlanBottomBar
+          planId={plan.PLAN_ID}
+          planName={plan.PLAN_NAME}
+          price={plan.MONTHLY_FEE}
+          discountedPrice={discounted}
+        />
       </PlanBottomSheet>
     </div>
   );

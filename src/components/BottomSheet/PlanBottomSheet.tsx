@@ -18,7 +18,7 @@ const PlanBottomSheet: React.FC<PlanBottomSheetProps> = ({
   heightClass = '50%',
 }) => {
   return (
-    <div className="fixed inset-0 z-[999] flex justify-center items-end pointer-events-none">
+    <div className="fixed inset-0 z-[55] flex justify-center items-end pointer-events-none">
       {/* Backdrop */}
       <div
         className={clsx(
