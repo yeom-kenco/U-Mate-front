@@ -46,7 +46,6 @@ const PricingPage = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  // 모달 상태 관리
   const toast = useToast();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -54,9 +53,8 @@ const PricingPage = () => {
   const isOpen = useAppSelector((state) => state.modal.isOpen);
   const user = useAppSelector((state) => state.user);
 
-  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | 'review' | null>(
-    null
-  ); // 모달 타입 정의
+  // 모달 타입 정의
+  const [modalType, setModalType] = useState<'compare' | 'filter' | 'change' | null>(null);
 
   // 초기 로드 시 필터링 함수 호출 방지하는 함수
   const shouldFetchData = (filters: PlanFilterRequest) => {
