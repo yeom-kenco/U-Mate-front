@@ -14,7 +14,6 @@ import PlanBottomSheet from '../components/BottomSheet/PlanBottomSheet';
 import PlanBottomBar from '../components/PlanDetail/PlanBottomBar';
 import { Loading } from '../components/Loading';
 
-// 상단 import 아래에 위치시키기
 const benefitIdToIndexMap: Record<number, number> = {
   15: 0,
   16: 1,
