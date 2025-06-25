@@ -134,13 +134,15 @@ export default function ChatbotMain() {
 
   return (
     /* 화면 전체 래퍼 */
-    <div className="h-screen w-full md:flex md:flex-row overflow-hidden">
+    <div
+      className="w-full md:flex md:flex-row overflow-hidden"
+      /*  header(h-16=4rem) 만큼 높이 보정  */
+      style={{ height: 'calc(100vh - 4rem)' }}
+    >
       {/* 왼쪽 그라데이션 영역 */}
       <aside
         className="hidden md:flex md:w-1/2 h-full flex-none items-center justify-center"
-        style={{
-          background: 'linear-gradient(105deg,#BA0087 9.18%,#33059C 59.8%)',
-        }}
+        style={{ background: 'linear-gradient(105deg,#BA0087 9.18%,#33059C 59.8%)' }}
       >
         <h2 className="font-bold leading-tight text-white text-[32px] lg:text-[48px] lg:leading-[64px] px-10">
           요금제, 고민하지 말고 <br />
