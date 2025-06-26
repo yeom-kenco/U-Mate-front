@@ -129,7 +129,7 @@ const Compare = () => {
   };
 
   return (
-    <div className="md:px-40 mx-[5%] md:mx-auto bg-white min-h-screen mt-6 pb-32">
+    <div className="md:px-40 mx-[5%] md:mx-auto bg-white min-h-screen mt-11 pb-32">
       {plans.length > 0 && (
         <div className="flex w-full gap-4 items-start">
           <div className="w-1/2 flex-col items-stretch">

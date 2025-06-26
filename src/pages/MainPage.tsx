@@ -194,13 +194,13 @@ const MainPage = () => {
       {user?.birthDay && (
         <section className="pt-6 md:mt-28 md:ml-0">
           <div className="lg:px-40 md:mx-auto">
-            <h2 className="text-lg font-semibold mb-1 lg:text-4xl md:mb-5 px-4 lg:px-0">
+            <h2 className="text-lg font-semibold mb-1 lg:text-4xl lg:mb-5 px-4 lg:px-0">
               <span className="text-pink-500">{user.name}</span>님을 위한 맞춤 요금제
             </h2>
 
             {ageplans.length > 0 ? (
               <>
-                <p className="text-m mb-1 text-zinc-700 md:text-lg md:mb-6 px-4 lg:px-0">
+                <p className="text-m mb-1 text-zinc-700 md:text-lm md:mb-6 px-4 lg:px-0">
                   {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
                 </p>
                 {/* 요금제 카드 좌측 shadow 가려지는 효과를 막기위한 마진과 패딩 추가(피그마 시안과 동일한 여백은 유지하도록) */}
@@ -244,7 +244,7 @@ const MainPage = () => {
       )}
 
       {/* 추천 요금제 영역 */}
-      <section className="ml-[5%] pt-2 md:mt-28 md:ml-0 md:px-20 lg:px-40">
+      <section className="px-4 pt-2 md:mt-28 md:ml-0 md:px-20 lg:px-40">
         <div className="md:mx-auto">
           <h2 className="text-lg font-semibold mb-2 max-[400px]:text-[20px] md:mb-7 lg:text-4xl">
             추천 요금제

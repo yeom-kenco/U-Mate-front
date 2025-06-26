@@ -32,7 +32,7 @@ const EventBannerCarousel = () => {
         {images.map((src, i) => (
           <SwiperSlide
             key={i}
-            className="!w-[80%] sm:!w-[400px] md:!w-[520px] flex justify-center lg:w-full"
+            className="!w-[80%] sm:!w-[400px] md:!w-[520px] px-2 sm:px-4 md:px-6 lg:px-0 flex justify-center"
           >
             <EventBannerCard imageSrc={src} />
           </SwiperSlide>
