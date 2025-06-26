@@ -96,7 +96,7 @@ const Default = () => {
       />
 
       {/* 메인 콘텐츠 */}
-      <main className="flex-grow">
+      <main className="flex-grow pt-16">
         <div className="min-h-[calc(100vh-64px)]">
           {/* 64px는 Header 높이 */}
           <Outlet context={setHeaderConfig} />
