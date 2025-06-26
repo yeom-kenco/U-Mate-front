@@ -1,5 +1,5 @@
 import axiosInstance from './axiosInstance.ts';
-import { Plan, PlanFilterRequest, UpdatePlanRequest, UpdatePlanResponse } from '../types/plan.ts';
+import { FilteredPlanPayload, Plan, UpdatePlanRequest, UpdatePlanResponse } from '../types/plan.ts';
 
 const getPlanList = async (): Promise<{ data: Plan[] }> => {
   const response = await axiosInstance.get<{ data: Plan[] }>('/planList');
@@ -17,7 +17,7 @@ const getPlanDetail = async (planId: number) => {
 };
 
 // 요금제 필터링 요청
-const getFilteredPlans = async (filteredPlan: PlanFilterRequest) => {
+const getFilteredPlans = async (filteredPlan: FilteredPlanPayload) => {
   const response = await axiosInstance.post('/filterPlans', filteredPlan);
   console.log('필터링 요청 성공', filteredPlan);
   return response.data;

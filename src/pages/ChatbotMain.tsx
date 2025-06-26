@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
 import ChatBubble from '../components/ChatBubble';
