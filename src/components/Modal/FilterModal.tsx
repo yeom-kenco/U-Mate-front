@@ -68,7 +68,7 @@ const FilterModal = ({
             <IoCloseOutline className="text-2xl text-zinc-400 hover:text-black" />
           </button>
         </div>
-        <div className="overflow-y-auto scrollbar-hide flex-1">
+        <div className="overflow-y-auto flex-1">
           <h1 className="text-lg font-bold mb-8">어떤 요금제를 찾으시나요?</h1>
           <div className="flex gap-3 mb-4 flex-wrap">
             {/* 연령대 */}
@@ -180,33 +180,32 @@ const FilterModal = ({
               </div>
             </div>
           </div>
-
-          {/* 버튼 */}
-          <div className="mt-8 flex gap-2 w-full">
-            <Button
-              variant="outline"
-              size="xl"
-              color="gray"
-              onClick={() => {
-                onReset();
-              }}
-            >
-              초기화
-            </Button>
-            <Button
-              variant="fill"
-              color="pink"
-              size="xl"
-              className="flex-1"
-              onClick={() => {
-                onApply();
-                onClose();
-              }}
-              disabled={planCount === 0 || loading}
-            >
-              {loading ? '로딩중' : `${planCount}개 요금제 보기`}
-            </Button>
-          </div>
+        </div>
+        {/* 버튼 */}
+        <div className="mt-8 flex gap-2 w-full">
+          <Button
+            variant="outline"
+            size="xl"
+            color="gray"
+            onClick={() => {
+              onReset();
+            }}
+          >
+            초기화
+          </Button>
+          <Button
+            variant="fill"
+            color="pink"
+            size="xl"
+            className="flex-1"
+            onClick={() => {
+              onApply();
+              onClose();
+            }}
+            disabled={planCount === 0 || loading}
+          >
+            {loading ? '로딩중' : `${planCount}개 요금제 보기`}
+          </Button>
         </div>
       </div>
     </BaseModal>
