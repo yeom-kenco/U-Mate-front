@@ -1,5 +1,5 @@
 import Header from './components/Header';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Footer from './components/Footer';
 import { useEffect, useRef, useState } from 'react';
 import ChatbotButton from './components/ChatbotButton';
@@ -19,6 +19,8 @@ const Default = () => {
     hasShadow: false,
   });
   const [userLoading, setUserLoading] = useState(false);
+  const navigate = useNavigate();
+  const [checkOnboarding, setCheckOnboarding] = useState(false);
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
@@ -61,6 +63,24 @@ const Default = () => {
   }, [dispatch, isLogin]);
 
   if (userLoading) {
+    return (
+      <div className="text-center mt-10">
+        <Loading />
+      </div>
+    );
+  }
+  // 온보딩 확인
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem('onboarding');
+    if (!hasSeenOnboarding) {
+      navigate('/onboarding');
+    } else {
+      setCheckOnboarding(true);
+    }
+  }, []);
+
+  //온보딩 아직 체크 중이거나 사용자 로딩 중일 때
+  if (!checkOnboarding || userLoading) {
     return (
       <div className="text-center mt-10">
         <Loading />
