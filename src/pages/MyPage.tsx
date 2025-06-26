@@ -149,7 +149,7 @@ const MyPage = () => {
           <div className="flex flex-col bg-diagonal w-full h-32 rounded-xl p-4">
             <p className="text-sm text-zinc-800">사용하고 있는 요금제 (관심 요금제)</p>
             <p className="text-lg font-semibold text-violet-500">{myplan?.PLAN_NAME}</p>
-            <div className="flex items-end items-center">
+            <div className="flex items-end ">
               <p className="text-lg font-semibold flex-1 pt-2">
                 {myplan?.MONTHLY_FEE.toLocaleString()}원
               </p>
@@ -202,7 +202,7 @@ const MyPage = () => {
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>휴대폰 번호</span>
-                  <span className={contentClass}>0{userInfo?.phoneNumber}</span>
+                  <span className={contentClass}>{userInfo?.phoneNumber}</span>
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>이메일</span>
@@ -284,7 +284,11 @@ const MyPage = () => {
         ></ConfirmModal>
       )}
       {isOpen && modalType === 'findAccount' && (
-        <FindAccountModal onClose={() => dispatch(closeModal())} initialStep="reset" />
+        <FindAccountModal
+          onClose={() => dispatch(closeModal())}
+          initialStep="reset"
+          userEmail={userInfo.email}
+        />
       )}
       {isOpen && modalType === 'reviewList' && (
         <ReviewModal type="reviewList" onClose={() => dispatch(closeModal())} />

@@ -17,7 +17,7 @@ interface Props {
   Timer?: React.Dispatch<React.SetStateAction<number>>; //카운트 (180초)
   Counting?: React.Dispatch<React.SetStateAction<boolean>>; //카운트 실행 여부
   isEmailDuplicate?: boolean;
-  isPhoneChecked: boolean;
+  isPhoneChecked?: boolean;
   setIsEMailDuplicate?: React.Dispatch<React.SetStateAction<boolean>>; // 이메일 중복 확인 여부
   isLogin?: boolean;
 }
@@ -71,7 +71,7 @@ export const EmailSendButton = ({
         }
 
         try {
-          // 회원가입 페이지 에서만 중복 확인 재설정에선 X 
+          // 회원가입 페이지 에서만 중복 확인 재설정에선 X
           if (!isLogin) {
             const dupRes = await checkEmailDuplicate({ email });
 
