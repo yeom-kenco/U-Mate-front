@@ -26,18 +26,30 @@ const PlanList: React.FC<PlanListProps> = ({ onSelect, selected, plans }) => {
   return (
     <ul className="flex flex-col px-3 py-2  gap-1">
       <p className="font-bold text-lg">정렬 기준</p>
+      <li
+        key="recommended"
+        className={`py-2 cursor-pointer text-sm ${
+          selected === 0 ? 'text-gray-900 font-bold' : 'text-gray-700'
+        }`}
+        onClick={() => onSelect(0)}
+      >
+        사용중인 요금제를 잘 모르신다면, 유메이트가 추천하는 요금제를 추천!
+        {selected === 0 && <span className="float-right text-pink-500">✔</span>}
+      </li>
       {plans &&
         plans.map((plan: Plan) => (
-          <li
-            key={plan.PLAN_ID}
-            className={`py-2 cursor-pointer text-sm ${
-              selected === plan.PLAN_ID ? 'text-gray-900 font-bold' : 'text-gray-700'
-            }`}
-            onClick={() => onSelect(plan.PLAN_ID)}
-          >
-            {plan.PLAN_NAME}
-            {selected === plan.PLAN_ID && <span className="float-right text-pink-500 ">✔</span>}
-          </li>
+          <>
+            <li
+              key={plan.PLAN_ID}
+              className={`py-2 cursor-pointer text-sm ${
+                selected === plan.PLAN_ID ? 'text-gray-900 font-bold' : 'text-gray-700'
+              }`}
+              onClick={() => onSelect(plan.PLAN_ID)}
+            >
+              {plan.PLAN_NAME}
+              {selected === plan.PLAN_ID && <span className="float-right text-pink-500 ">✔</span>}
+            </li>
+          </>
         ))}
     </ul>
   );

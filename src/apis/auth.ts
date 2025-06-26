@@ -39,9 +39,10 @@ export const checkPassword = async (data: EmailpasswordCheckProps) => {
 };
 
 // 계정 관리
-export const checkPhoneDuplicate = (data: { email: string }) =>
+export const checkPhoneDuplicate = (data: { phoneNumber: string }) =>
   axiosInst.post('/duplicateCheck', data);
-export const findEmailByPhone = (data: string) => axiosInst.post('/phoneNumberCheck', data);
+export const findEmailByPhone = (data: { phoneNumber: string }) =>
+  axiosInst.post('/phoneNumberCheck', data);
 export const getUserInfo = (data: EmailpasswordCheckProps) => axiosInst.post('/userInfo', data); // 서버는 '/getUserInfo'인데 명세대로면 '/userInfo'임
 export const deleteAccount = (data: EmailpasswordCheckProps) => axiosInst.post('/withDrawal', data);
 export const validateToken = async () => {
@@ -60,4 +61,5 @@ export const validateToken = async () => {
   return response;
 };
 
-export const checkEmailDuplicate = (data: string) => axiosInst.post('/emailDuplicate', data);
+export const checkEmailDuplicate = (data: { email: string }) =>
+  axiosInst.post('/emailDuplicate', data);

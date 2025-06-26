@@ -2,8 +2,6 @@ import BaseModal from './BaseModal';
 import { useEffect, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import AccountStepRenderer from './AccountStepRenderer';
-import { findEmailByPhone } from '../../apis/auth';
-import { useToast } from '../../hooks/useToast';
 
 type FlowType = 'id' | 'password';
 type ModalStep = 'findId' | 'getId' | 'verify' | 'reset';
@@ -39,10 +37,6 @@ const FindAccountModal = ({ onClose, initialStep = 'findId', userEmail }: Props)
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [verificationCodeComplete, setVerificationCodeComplete] = useState(false); //인증코드 확인 여부
 
-  const handleRequestAuth = () => {
-    console.log('인증 요청됨');
-    setIsCodeSent(true);
-  };
   const handleNext = () => {
     switch (step) {
       case 'findId':
@@ -93,7 +87,6 @@ const FindAccountModal = ({ onClose, initialStep = 'findId', userEmail }: Props)
           flow={flow}
           isCodeSent={isCodeSent}
           onChangeFlow={handleTabChange}
-          onRequestAuth={handleRequestAuth}
           onNext={handleNext}
           onClose={onClose}
           setVerificationCodeComplete={setVerificationCodeComplete}
