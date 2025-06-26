@@ -42,7 +42,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   return (
     <div
       className={clsx(
-        'fixed inset-0 z-[100] flex items-end justify-center',
+        'fixed inset-0 z-[100] flex items-end justify-center ',
         alignRight && 'justify-end'
       )}
     >
@@ -58,7 +58,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       {/* Bottom Sheet */}
       <div
         className={clsx(
-          'relative bg-white z-[9999] rounded-t-[20px] shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500',
+          'relative bg-white z-[9999] rounded-t-[20px]  shadow-[0_-2px_10px_rgba(0,0,0,0.1)] flex flex-col transition-transform duration-500',
           isChatbotPage ? 'w-full md:w-[50%] md:ml-auto md:mr-0' : 'w-full',
           isOpen ? 'translate-y-0' : 'translate-y-full'
         )}
