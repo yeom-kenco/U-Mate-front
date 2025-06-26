@@ -12,8 +12,8 @@ const DropdownSelector: React.FC<DropdownSelectorProps> = ({ label, onClick, pla
       <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 min-h-[110px] max-h-[110px]">
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-2">
-            <p className="text-xs min-[600px]:text-sm lg:text-lm text-gray-600 mb-1">{label}</p>
-            <p className="text-xs min-[600px]:text-sm md:text-lm lg:text-[22px] font-semibold text-gray-900">
+            <p className="text-s min-[600px]:text-sm lg:text-lm text-gray-600 mb-1">{label}</p>
+            <p className="text-s min-[600px]:text-sm md:text-lm lg:text-[22px] font-semibold text-gray-900">
               {plan}
             </p>
           </div>

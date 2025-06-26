@@ -20,7 +20,7 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false, findEmail }: Prop
   const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>('');
   const { showToast } = useToast();
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const isValidPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/;
+  const isValidPassword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,20}$/;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isSubmmited, SetIsSubmmited] = useState<boolean>(false);

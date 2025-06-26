@@ -24,6 +24,7 @@ export default function ChatbotInput({
   const [isRecording, setIsRecording] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
 
   // ✅ 처음 접속 시 툴팁 보여줄지 결정
   useEffect(() => {
@@ -84,7 +85,7 @@ export default function ChatbotInput({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
       e.preventDefault();
       if (value.trim() && !disabled) onSend();
     }
@@ -125,6 +126,8 @@ export default function ChatbotInput({
           onKeyDown={handleKeyPress}
           placeholder={placeholder}
           disabled={disabled}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
           className="flex-1 bg-transparent border-none outline-none text-gray-800 placeholder-gray-500 text-sm"
         />
 

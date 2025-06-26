@@ -19,7 +19,7 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidPhone = /^\d{10,11}$/;
-  const isValidPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/;
+  const isValidPassword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,20}$/;
   const { showToast } = useToast();
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
   const dispatch = useDispatch();
