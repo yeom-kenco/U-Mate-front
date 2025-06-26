@@ -147,7 +147,10 @@ const LoginPage = () => {
           </Button>
         </form>
         <div className="flex pt-8 justify-center gap-4 text-sm text-zinc-500 md:text-m lg:text-m mb-6">
-          <span onClick={() => dispatch(openModal())} className="pr-4 border-r border-gray-300">
+          <span
+            onClick={() => dispatch(openModal())}
+            className="pr-4 border-r border-gray-300 cursor-pointer"
+          >
             아이디 / 비밀번호 찾기
           </span>
           <Link to="/signup" className="mr-4">

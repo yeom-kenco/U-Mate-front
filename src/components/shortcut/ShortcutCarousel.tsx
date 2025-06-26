@@ -76,7 +76,7 @@ const ShortcutCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(initialSlideIndex);
 
   return (
-    <div className="w-screen flex justify-center items-center relative py-8 overflow-x-clip">
+    <div className="style={{ overflow: 'hidden' }} flex justify-center items-center relative py-8 overflow-x-clip">
       {/* 화살표 */}
       <button
         ref={prevRef}

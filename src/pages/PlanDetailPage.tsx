@@ -167,7 +167,7 @@ const PlanDetailPage = () => {
         discountedPrice={discounted}
       />
 
-      <section className="mt-10 ml-[5%] md:mx-52 md:mt-20">
+      <section className="mt-10 md:mt-20 px-4 lg:px-20">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-lg font-semibold">후기로 보는 요금제 ({reviews.length})</h2>
           <button
@@ -199,7 +199,9 @@ const PlanDetailPage = () => {
             </div>
           </div>
         ) : (
-          <p className="text-left text-zinc-400 text-sm mt-6">아직 리뷰가 한 개도 없어요🥲</p>
+          <p className="text-left text-zinc-400 text-sm mt-6 p-10 bg-white rounded-2xl leading-none">
+            아직 리뷰가 한 개도 없어요🥲
+          </p>
         )}
       </section>
 
@@ -211,7 +213,7 @@ const PlanDetailPage = () => {
         />
       )}
 
-      <section className="mt-10 px-6 md:px-52 mb-20 md:mt-20 md:mb-32">
+      <section className="mt-10 mb-20 md:mt-20 md:mb-32 px-4 lg:px-20">
         <BenefitDropBar label="할인혜택" indexes={discountBenefitIndexes} data={benefitList} />
         <BenefitDropBar label="기본혜택" indexes={basicBenefitIndexes} data={benefitList} />
       </section>

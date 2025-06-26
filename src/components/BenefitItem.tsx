@@ -22,10 +22,10 @@ interface BenefitItemProps {
 const BenefitItem: React.FC<BenefitItemProps> = ({ title, description, icon }) => {
   return (
     <div className="flex items-start gap-5 mb-8">
-      <img src={icon} alt={title} className="w-16 h-16 object-contain mt-1 " />
+      <img src={icon} alt={title} className="w-16 h-16 object-contain mt-1" />
       <div>
-        <h3 className="font-semibold text-m mb-1">{title}</h3>
-        <ul className="list-disc list-outside pl-4 pr-2 text-s text-zinc-600 space-y-1">
+        <h3 className="font-semibold text-m mb-1 lg:text-lm">{title}</h3>
+        <ul className="list-disc list-outside pl-4 pr-2 text-s text-zinc-600 space-y-1 lg:text-m">
           {description.map((text, idx) => (
             <li key={idx}>{text}</li>
           ))}

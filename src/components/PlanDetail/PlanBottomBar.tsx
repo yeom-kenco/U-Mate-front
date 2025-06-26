@@ -100,7 +100,7 @@ const PlanBottomBar = ({ planId, price, discountedPrice }: PlanBottomBarProps) =
     <>
       <div className="w-full px-4">
         {/* lg 이상일 때는 가로 배치, 이하일 때는 세로 배치 */}
-        <div className="flex flex-col lg:flex-row justify-between gap-4 items-start lg:items-end lg:px-44 lg:justify-end lg:gap-12">
+        <div className="flex flex-col lg:flex-row justify-between gap-4 items-start lg:items-end lg:justify-between lg:px-10">
           {/* 좌측: 가격 정보 */}
           <div className="flex flex-col gap-1 w-full lg:w-96">
             <div className="flex justify-between items-center w-full">
@@ -116,14 +116,14 @@ const PlanBottomBar = ({ planId, price, discountedPrice }: PlanBottomBarProps) =
           </div>
 
           {/* 우측: 버튼 영역 */}
-          <div className="flex w-full lg:w-fit gap-2">
+          <div className="flex flex-1 w-full lg:w-fit gap-2">
             <Button
               variant="outline"
               color="gray"
               size="xl"
               rounded="2xl"
               onClick={handleCompareClick}
-              className="rounded-lg w-[100px]"
+              className="rounded-lg w-[100px] lg:h-[70px] lg:mb-1 g:w-full"
             >
               비교
             </Button>
@@ -133,7 +133,7 @@ const PlanBottomBar = ({ planId, price, discountedPrice }: PlanBottomBarProps) =
               size="xl"
               rounded="2xl"
               onClick={handleRequest}
-              className="rounded-lg w-full lg:w-[250px]"
+              className="rounded-lg w-full lg:w-[250px] lg:h-[70px] lg:mb-1 lg:flex-1"
             >
               신청하기
             </Button>

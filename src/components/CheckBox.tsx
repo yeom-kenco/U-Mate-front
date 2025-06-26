@@ -24,19 +24,19 @@ const CheckBox = ({
   const matchedAgreement = agreements.find((a) => a.id === id);
 
   return (
-    <div className=" border border-zinc-300 rounded-sm">
-      <div className="flex justify-between items-center text-m pt-[5px]  bg-background h-9 w-full">
+    <div className="border border-pink-300 rounded-lg">
+      <div className="flex justify-between items-center text-m pt-[5px] bg-pink-50 h-9 w-full rounded-lg">
         <div className="flex gap-2 items-center pb-2">
           <div
             onClick={() => onChange(id, !checked)}
-            className={`w-6 h-6 ml-1 rounded-md cursor-pointer border 
+            className={`w-6 h-6 ml-1 mt-1 rounded-md cursor-pointer border 
               flex items-center justify-center text-s 
               transition-all duration-150
               ${checked ? 'bg-pink-500 text-white border-pink-500' : 'bg-white text-gray-400 border-gray-400'}`}
           >
             ✔
           </div>
-          <p className={clsx('text-sm mt-2', !showButton && 'font-bold')}>{title}</p>
+          <p className={clsx('text-sm mt-1', !showButton && 'font-bold')}>{title}</p>
         </div>
         {/* 오른쪽: 화살표 */}
         {showButton && (

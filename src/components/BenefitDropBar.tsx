@@ -10,7 +10,7 @@ interface BenefitDropProps {
 }
 
 const BenefitDropBar = ({ label, indexes, data }: BenefitDropProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggle = () => setIsOpen((prev) => !prev);
 
