@@ -133,9 +133,11 @@ const Header = ({
                 <NavigationLinks isLoggedIn={user?.name ? true : false} />
               </div>
               <div className="flex md:hidden items-center gap-5">
-                <Link to="/mypage" className="flex items-center text-black hover:text-pink-500">
-                  <FiUser className="w-6 h-6" strokeWidth={1.5} />
-                </Link>
+                {user?.name && (
+                  <Link to="/mypage" className="flex items-center text-black hover:text-pink-500">
+                    <FiUser className="w-6 h-6" strokeWidth={1.5} />
+                  </Link>
+                )}
                 <button
                   className="flex items-center"
                   onClick={() => setIsMenuOpen(true)}
