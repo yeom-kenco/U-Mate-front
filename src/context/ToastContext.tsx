@@ -1,5 +1,5 @@
 import { createContext, ReactNode } from 'react';
-import { Slide, toast, ToastContainer, ToastPosition, ToastOptions } from 'react-toastify';
+import { Slide, toast, ToastContainer, ToastPosition } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 type ToastType = 'success' | 'error' | 'violet' | 'black';

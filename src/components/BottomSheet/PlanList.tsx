@@ -38,18 +38,16 @@ const PlanList: React.FC<PlanListProps> = ({ onSelect, selected, plans }) => {
       </li>
       {plans &&
         plans.map((plan: Plan) => (
-          <>
-            <li
-              key={plan.PLAN_ID}
-              className={`py-2 cursor-pointer text-sm ${
-                selected === plan.PLAN_ID ? 'text-gray-900 font-bold' : 'text-gray-700'
-              }`}
-              onClick={() => onSelect(plan.PLAN_ID)}
-            >
-              {plan.PLAN_NAME}
-              {selected === plan.PLAN_ID && <span className="float-right text-pink-500 ">✔</span>}
-            </li>
-          </>
+          <li
+            key={plan.PLAN_ID}
+            className={`py-2 cursor-pointer text-sm ${
+              selected === plan.PLAN_ID ? 'text-gray-900 font-bold' : 'text-gray-700'
+            }`}
+            onClick={() => onSelect(plan.PLAN_ID)}
+          >
+            {plan.PLAN_NAME}
+            {selected === plan.PLAN_ID && <span className="float-right text-pink-500 ">✔</span>}
+          </li>
         ))}
     </ul>
   );

@@ -22,7 +22,6 @@ const Header = ({
   showBackButton = false,
   showSearch = false,
   title = '대표페이지',
-
   hasShadow = false,
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

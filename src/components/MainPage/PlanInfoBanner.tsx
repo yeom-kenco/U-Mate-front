@@ -1,6 +1,3 @@
-// src/components/PlanInfoBanner.tsx
-import React from 'react';
-
 interface PlanInfoBannerProps {
   planName: string;
   dataInfo: string;

@@ -1,12 +1,10 @@
 import Header from './components/Header';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Footer from './components/Footer';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChatbotButton from './components/ChatbotButton';
-import { useDispatch, useSelector } from 'react-redux';
 import { validateToken } from './apis/auth';
 import { clearUser, setUser } from './store/userSlice';
-import { useToast } from './hooks/useToast';
 import { formatToKST } from './utils/formatDate';
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks';
 import { Loading } from './components/Loading';
@@ -24,7 +22,6 @@ const Default = () => {
   const [checkOnboarding, setCheckOnboarding] = useState(false);
 
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
   const isLogin = useAppSelector((state) => state.user.isLogin);
 
   const { pathname } = useLocation();

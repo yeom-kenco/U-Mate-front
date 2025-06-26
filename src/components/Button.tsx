@@ -72,7 +72,11 @@ const Button = ({
 
   // 최종 스타일 조합
   const variantStyle =
-    variant === 'special' ? specialStyle : (variantMap[variant] as any)?.[color] || '';
+    variant === 'special'
+      ? specialStyle
+      : (variantMap[variant as keyof typeof variantMap]?.[
+          color as keyof (typeof variantMap)[typeof variant]
+        ] ?? '');
 
   const composedClassName = [
     'inline-flex items-center justify-center font-medium transition',

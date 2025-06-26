@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import DropdownSelector from '../components/DropdownSelector';
+import { useEffect, useState, useContext } from 'react';
 import { getPlanList, getPlanDetail, updatePlan } from '../apis/planApi';
-import PlanList from '../components/BottomSheet/PlanList';
-import BottomSheet from '../components/BottomSheet/BottomSheet';
 import PlanCompare from '../components/PlanCompare';
 import { useOutletContext, useSearchParams } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
@@ -11,7 +8,6 @@ import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
 import { updateUserPlan } from '../store/userSlice';
-
 import { ToastContext } from '../context/ToastContext';
 import CompareBottomBar from '../components/BottomSheet/CompareBottomBar';
 import { Plan, PlanDetail } from '../types/plan';
@@ -112,18 +108,18 @@ const Compare = () => {
     if (!selectedPlanId) return;
     setIsLoading(true);
     try {
-      const res = await updatePlan({
+      const data = await updatePlan({
         userId: user.id,
         newPlanId: selectedPlanId,
       });
 
-      if (res.success) {
+      if (data.success) {
         dispatch(updateUserPlan(selectedPlanId));
         showToast('해당 요금제가 변경되었습니다.', 'violet', 'bottom-center', {
           bottom: '220px',
         });
       } else {
-        showToast(res.message || '신청 실패', 'error', 'bottom-center', {
+        showToast(data.message || '신청 실패', 'error', 'bottom-center', {
           bottom: '220px',
         });
       }
