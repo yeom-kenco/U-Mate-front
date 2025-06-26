@@ -1,8 +1,7 @@
 import Button from '../../Button';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import ReviewTextarea from '../../ReviewTextarea';
-import { createReview, updateReview } from '../../../apis/ReviewApi';
-import { useDispatch, useSelector } from 'react-redux';
+import { createReview } from '../../../apis/ReviewApi';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useToast } from '../../../hooks/useToast';
 import ConfirmModal from '../ConfirmModal';
@@ -17,19 +16,22 @@ type ReviewWriteContentProps = {
   onClose: () => void;
   content: string;
   setContent: (value: string) => void;
-  rating: number;
+  rating?: number;
+  children: React.ReactNode;
   setRating: (value: number) => void;
 };
 
-const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWriteContentProps) => {
+const ReviewWriteContent = ({ planName, planPrice, onClose }: ReviewWriteContentProps) => {
   const user = useAppSelector((state) => state.user);
   const [content, setContent] = useState('');
+  const [isSubmmited, SetIsSubmmited] = useState<boolean>(false);
   const [ratingValue, setRatingValue] = useState<number>(0);
   const [isCancle, setIsCancle] = useState(false);
   const { showToast } = useToast();
   const dispatch = useDispatch();
   const handleCreateOrUpdateReview = async () => {
     try {
+      SetIsSubmmited(true);
       const res = await createReview({
         userId: user?.id,
         planId: user?.plan,
@@ -38,8 +40,10 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
       });
       showToast(res.message, 'success');
       onClose();
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      showToast(err.response.data.error, 'error');
+    } finally {
+      SetIsSubmmited(false);
     }
   };
 
@@ -90,7 +94,7 @@ const ReviewWriteContent = ({ planName, planPrice, onClose, rating }: ReviewWrit
             onClick={handleCreateOrUpdateReview}
             className="flex-1"
           >
-            작성하기
+            {isSubmmited ? '작성중..' : '작성하기'}
           </Button>
         </div>
       </div>
