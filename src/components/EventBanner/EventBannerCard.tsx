@@ -13,7 +13,7 @@ const EventBannerCard = ({ imageSrc, alt = '이벤트 배너', onClick }: EventB
              max-w-[317px] h-[257px] 
              max-[400px]:max-w-[280px] max-[400px]:h-[220px] 
              max-[360px]:max-w-[270px] max-[360px]:h-[210px] 
-             md:max-w-[450px] md:h-[350px] 
+             md:max-w-[500px] md:h-[400px] 
              rounded-[20px] overflow-hidden"
       onClick={onClick}
     >
