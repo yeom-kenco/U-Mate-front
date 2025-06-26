@@ -10,14 +10,14 @@ interface BenefitDropProps {
 }
 
 const BenefitDropBar = ({ label, indexes, data }: BenefitDropProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggle = () => setIsOpen((prev) => !prev);
 
   return (
     <div className="mb-6">
       <button
-        className="flex items-center justify-between w-full font-bold text-lg mb-6 lg:text-xl"
+        className="flex items-center justify-between w-full font-bold text-lg mb-6"
         onClick={toggle}
       >
         {label}
