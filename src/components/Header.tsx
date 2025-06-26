@@ -32,7 +32,6 @@ const Header = ({
   const user = useAppSelector((state) => state.user);
   const { showToast } = useToast();
   const dispatch = useDispatch();
-
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
@@ -64,32 +63,35 @@ const Header = ({
     }
   };
 
+  const commonLinkStyle =
+    'text-m hover:text-white hover:bg-black hover:rounded-full py-2 px-3 mt-1 max-[820px]:text-sm';
+
   const NavigationLinks = ({ isLoggedIn }: { isLoggedIn?: boolean }) => (
     <>
-      <Link to="/shortcut" className="hover:text-pink-500">
+      <Link to="/shortcut" className={commonLinkStyle}>
         바로가기페이지
       </Link>
-      <Link to="/plans" className="hover:text-pink-500">
+      <Link to="/plans" className={commonLinkStyle}>
         요금제 찾기
       </Link>
-      <Link to={`/compare?plan1=${user?.plan}`} className="hover:text-pink-500">
+      <Link to={`/compare?plan1=${user?.plan}`} className={commonLinkStyle}>
         요금제 비교하기
       </Link>
       {isLoggedIn ? (
         <>
-          <Link to="/mypage" className="hover:text-pink-500">
+          <Link to="/mypage" className={commonLinkStyle}>
             마이페이지
           </Link>
-          <button className="hover:text-pink-500" onClick={handleLogout}>
+          <button className={commonLinkStyle} onClick={handleLogout}>
             로그아웃
           </button>
         </>
       ) : (
         <>
-          <Link to="/login" className="hover:text-pink-500">
+          <Link to="/login" className={commonLinkStyle}>
             로그인
           </Link>
-          <Link to="/signup" className="hover:text-pink-500">
+          <Link to="/signup" className={commonLinkStyle}>
             회원가입
           </Link>
         </>
@@ -99,8 +101,8 @@ const Header = ({
 
   return (
     <header
-      className={`relative z-50 w-full h-16 flex justify-center items-center px-[5%] py-6 bg-white 
-        ${hasShadow ? 'shadow-header' : 'shadow-none'} md:shadow-none md:px-10`}
+      className={`relative z-50 w-full h-16 flex justify-center items-center px-3 py-6 bg-white 
+        ${hasShadow ? 'shadow-header' : 'shadow-none'} md:shadow-none lg:px-20`}
     >
       <div className="relative w-full h-full flex items-center justify-between">
         {/* 뒤로가기: md 미만에서만 */}
@@ -137,22 +139,13 @@ const Header = ({
             </>
           ) : (
             <>
-              <div className="hidden md:flex items-center gap-6 text-sm text-black">
+              <div className="hidden md:flex items-center gap-3 text-sm text-black">
                 <NavigationLinks isLoggedIn={user?.name ? true : false} />
               </div>
               <div className="flex md:hidden items-center gap-5">
-                <button
-                  onClick={() => {
-                    if (user?.name) {
-                      navigate('/mypage');
-                    } else {
-                      navigate('/login');
-                    }
-                  }}
-                  className="flex items-center text-black hover:text-pink-500"
-                >
+                <Link to="/mypage" className="flex items-center text-black hover:text-pink-500">
                   <FiUser className="w-6 h-6" strokeWidth={1.5} />
-                </button>
+                </Link>
                 <button
                   className="flex items-center"
                   onClick={() => setIsMenuOpen(true)}
@@ -222,10 +215,7 @@ const Header = ({
                   <span>요금제 찾아보기</span>
                   <SlArrowRight className="w-3 h-3 relative ml-[2px] mb-[1px]" />
                 </Link>
-                <Link
-                  to={`/compare?plan1=${user?.plan}`}
-                  className="flex px-3 items-center max-w-48 cursor-pointer"
-                >
+                <Link to="/compare" className="flex px-3 items-center max-w-48 cursor-pointer">
                   <span>요금제 비교하기</span>
                   <SlArrowRight className="w-3 h-3 relative ml-[2px] mb-[1px]" />
                 </Link>

@@ -10,6 +10,8 @@ import LoginBanner from '../components/LoginBanner';
 import ResearchBanner from '../components/ResearchBanner';
 import Research from '../components/BottomSheet/Research';
 import { useAppSelector } from '../hooks/reduxHooks';
+import { resetHistory } from '../apis/ChatApi';
+import Button from '../components/Button';
 
 /* 타입 선언 */
 type Message = { type: 'user' | 'bot'; content: string; time?: string };
@@ -23,9 +25,7 @@ export default function ChatbotMain() {
   }, [setHeaderConfig]);
 
   /* 전역 상태 */
-  const { email: userEmail } = useAppSelector((state) => {
-    return state.user;
-  });
+  const { email: userEmail } = useAppSelector((state) => state.user);
 
   /* 로컬 상태 */
   const [email, setEmail] = useState<string>('');
@@ -173,6 +173,17 @@ export default function ChatbotMain() {
     send();
   };
 
+  // 리셋 버튼 클릭 시 실행될 함수
+  const handleReset = async () => {
+    if (!userEmail) return;
+    try {
+      await resetHistory({ email: userEmail }); // 리셋 요청
+      window.location.reload(); // 한 번만 리로드
+    } catch (e) {
+      console.error('리셋 실패:', e);
+    }
+  };
+
   return (
     <div
       className="w-full md:flex md:flex-row overflow-hidden"
@@ -180,17 +191,19 @@ export default function ChatbotMain() {
     >
       {/* 좌측 배경 */}
       <aside
-        className="hidden md:flex md:w-1/2 h-full items-center justify-center"
+        className="hidden md:flex md:w-1/3 h-full flex-col justify-between items-center py-10"
         style={{ background: 'linear-gradient(105deg,#BA0087 9.18%,#33059C 59.8%)' }}
       >
-        <h2 className="font-bold leading-tight text-white text-[32px] lg:text-[48px] lg:leading-[64px] px-10">
-          요금제, 고민하지 말고
-          <br />
-          <span className="text-pink-400">
-            U:<span className="text-white">Mate</span>
-          </span>{' '}
-          하세요.
-        </h2>
+        <div className="flex-1 flex items-center justify-center w-full px-10">
+          <h2 className="font-bold leading-tight text-white text-[32px] lg:text-[48px] lg:leading-[64px]">
+            요금제, 고민하지 말고
+            <br />
+            <span className="text-pink-400">
+              U:<span className="text-white">Mate</span>
+            </span>{' '}
+            하세요.
+          </h2>
+        </div>
       </aside>
 
       {/* 우측 챗봇 */}
@@ -199,7 +212,7 @@ export default function ChatbotMain() {
         {!surveyDone && <ResearchBanner onSurveyClick={() => setShowResearch(true)} />}
 
         {/* 채팅창 */}
-        <div className="flex-grow overflow-y-auto w-full px-0 pb-32 space-y-4">
+        <div className="flex-grow overflow-y-auto w-full p-4 pb-32 space-y-4">
           <ChatBubble from="bot" variant="first" time={timeFmt()}>
             <FirstMessage onQuestionClick={onPickQ} />
           </ChatBubble>
@@ -210,6 +223,14 @@ export default function ChatbotMain() {
 
           {isLoading && <ChatBubble from="bot" message="..." time={timeFmt()} />}
           <div ref={endRef} />
+          {/* 초기화 버튼 */}
+          <button
+            onClick={handleReset}
+            className="fixed bottom-28 right-6 z-50 w-12 h-12 text-s rounded-full bg-pink-500 text-white shadow-lg hover:bg-pink-600 transition"
+            aria-label="초기화"
+          >
+            초기화
+          </button>
         </div>
 
         {/* 빠른 질문 BottomSheet */}
@@ -229,7 +250,7 @@ export default function ChatbotMain() {
         )}
 
         {/* 입력창 */}
-        <div className="fixed bottom-0 left-0 md:left-1/2 right-0 z-10 p-4 bg-white border-t border-gray-200 shadow-[0_-3px_6px_rgba(0,0,0,0.1)]">
+        <div className="fixed bottom-0 left-0 md:left-1/3 right-0 z-10 p-4 bg-white border-t border-gray-200 shadow-[0_-3px_6px_rgba(0,0,0,0.1)]">
           <ChatbotInput
             value={input}
             onChange={setInput}
