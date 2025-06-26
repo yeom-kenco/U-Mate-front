@@ -23,6 +23,7 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false, findEmail }: Prop
   const isValidPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isSubmmited, SetIsSubmmited] = useState<boolean>(false);
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -63,10 +64,10 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false, findEmail }: Prop
   const handlePasswordReset = async () => {
     if (!validate()) return;
     try {
+      SetIsSubmmited(true);
       // 비밀번호 재설정에서
-      console.log(email, newPassword);
       if (!isLogin) {
-        const res = await resetPassword({ email: findEmail, password: newPassword });
+        const res = await resetPassword({ email: findEmail ?? '', password: newPassword });
         showToast(res.data.message, 'success');
       } else {
         const res = await changePassword({ email, password, newPassword });
@@ -80,6 +81,8 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false, findEmail }: Prop
       if (err.status === 404) {
         showToast(err.response.data.error, 'error');
       } else showToast('비밀번호 변경 실패', 'error');
+    } finally {
+      SetIsSubmmited(false);
     }
   };
   console.log(isLogin);
@@ -121,8 +124,14 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false, findEmail }: Prop
         <Button variant="fill" color="gray" size="lg" onClick={onCancel} className="flex-1">
           취소
         </Button>
-        <Button variant="fill" size="lg" onClick={handlePasswordReset} className="flex-1">
-          완료
+        <Button
+          variant="fill"
+          size="lg"
+          onClick={handlePasswordReset}
+          className="flex-1"
+          disabled={isSubmmited}
+        >
+          {isSubmmited ? '변경중..' : '완료'}
         </Button>
       </div>
     </>

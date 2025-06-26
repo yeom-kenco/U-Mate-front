@@ -9,7 +9,6 @@ import FindAccountModal from '../components/Modal/FindAccountModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, openModal } from '../store/modalSlice';
 import { RootState } from '../store/store';
-import { useAppSelector } from '../hooks/reduxHooks';
 import { setUser } from '../store/userSlice';
 
 const LoginPage = () => {
@@ -17,6 +16,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidPhone = /^\d{10,11}$/;
   const isValidPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/;
@@ -24,7 +24,6 @@ const LoginPage = () => {
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useAppSelector((state) => state.user);
   useEffect(() => {
     setHeaderConfig({
       title: '로그인',
@@ -67,6 +66,7 @@ const LoginPage = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
+      setIsLoading(true);
       const res = await login({ id: email, password });
       showToast(res.data.message, 'black');
       const token = await validateToken();
@@ -74,6 +74,8 @@ const LoginPage = () => {
       navigate('/');
     } catch (err: any) {
       showToast(err.response.data.error, 'error');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -139,8 +141,9 @@ const LoginPage = () => {
             size="xl"
             fullWidth
             className="mt-8 rounded-xl h-16 sm:text-lm w-full"
+            disabled={isLoading}
           >
-            로그인
+            {isLoading ? '로그인중..' : '로그인'}
           </Button>
         </form>
         <div className="flex pt-8 justify-center gap-4 text-sm text-zinc-500 md:text-m lg:text-m mb-6">

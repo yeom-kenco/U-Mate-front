@@ -20,8 +20,10 @@ const ResearchBanner = ({ onSurveyClick }: ResearchBannerProps) => {
               <span className="text-white text-sm">📝</span>
             </div>
             <div>
-              <h3 className="text-gray-800 text-sm font-semibold mb-1">만족도 조사 참여하기</h3>
-              <p className="text-gray-600 text-xs leading-relaxed">
+              <h3 className="text-gray-800 text-sm font-semibold mb-1 md:text-m">
+                만족도 조사 참여하기
+              </h3>
+              <p className="text-gray-600 text-xs leading-relaxed md:text-s">
                 유식이 챗봇 서비스 개선을 위해 여러분의 소중한 의견이 필요해요
               </p>
             </div>
@@ -30,7 +32,7 @@ const ResearchBanner = ({ onSurveyClick }: ResearchBannerProps) => {
           <Button
             onClick={handleSurveyClick}
             variant="fill"
-            className="text-xs px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-medium hover:from-pink-600 hover:to-purple-700 transition-all duration-200 flex-shrink-0"
+            className="text-xs px-4 py-2 mt-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-medium hover:from-pink-600 hover:to-purple-700 transition-all duration-200 flex-shrink-0 lg:text-s"
           >
             참여하기
           </Button>

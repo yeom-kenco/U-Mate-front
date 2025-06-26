@@ -114,10 +114,10 @@ const OnBoarding = () => {
     }
   };
 
-  const handleSkip = () => {
-    navigate('/');
+  const MoveShortCut = () => {
+    localStorage.setItem('onboarding', 'true');
+    navigate('/shortcut');
   };
-
   return (
     <div className="w-full h-screen flex justify-center items-center">
       {/* 모바일 사이즈 고정된 내부 컨테이너 */}
@@ -219,7 +219,7 @@ const OnBoarding = () => {
                 {/* 버튼 */}
                 <div className="w-full max-w-96 flex flex-col">
                   <Button
-                    onClick={handleNextClick}
+                    onClick={currentIndex === 3 ? MoveShortCut : handleNextClick}
                     variant="fill"
                     color="pink"
                     size="lg"
@@ -234,7 +234,7 @@ const OnBoarding = () => {
                       <Button
                         size="m"
                         variant="ghost"
-                        onClick={handleSkip}
+                        onClick={MoveShortCut}
                         className="text-zinc-400 underline text-center cursor-pointer font-normal hover:bg-transparent"
                       >
                         건너뛰기

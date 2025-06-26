@@ -11,11 +11,13 @@ const DropdownSelector: React.FC<DropdownSelectorProps> = ({ label, onClick, pla
     <div className="relative w-full" onClick={onClick}>
       <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 min-h-[110px] max-h-[110px]">
         <div className="flex justify-between items-center">
-          <div>
-            <p className="text-s md:text-sm text-gray-600 mb-1">{label}</p>
-            <p className="text-m md:text-lm font-semibold text-gray-900">{plan}</p>
+          <div className="flex flex-col gap-2">
+            <p className="text-xs min-[600px]:text-sm lg:text-lm text-gray-600 mb-1">{label}</p>
+            <p className="text-xs min-[600px]:text-sm md:text-lm lg:text-[22px] font-semibold text-gray-900">
+              {plan}
+            </p>
           </div>
-          <div>
+          <div className="w-6 h-6 flex-shrink-0 flex items-center justify-center ml-2">
             <svg
               width="24"
               height="24"
