@@ -159,7 +159,7 @@ const MyPage = () => {
                 onClick={() => navigate(`/plans/${myplan?.PLAN_ID}`)}
               >
                 <p>요금제 자세히보기</p>
-                <SlArrowRight className="w-2 h-2 mb-[0.75px]" />
+                <SlArrowRight className="w-2 h-2 mb-[2px]" />
               </div>
             </div>
           </div>
