@@ -38,6 +38,8 @@ const Default = () => {
           const { email, birthDay, id, membership, name, plan } = user;
           //한국 날짜로
           const korBirthDay = formatToKST(birthDay);
+          console.log('kor: ', korBirthDay);
+          console.log('birthDay: ', birthDay);
           dispatch(
             setUser({
               id,

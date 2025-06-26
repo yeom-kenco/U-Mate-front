@@ -71,8 +71,9 @@ const MyPage = () => {
     try {
       const res = await checkPassword({ email: user?.email, password });
       const userinfo = await getUserInfo({ email: user?.email, password });
-      setUserInfo(userinfo.data);
-      console.log('userInfo', userInfo);
+      console.log('userInfo', userinfo.data);
+      console.log('formatToKST', formatToKST(userinfo.data.birthDay));
+      setUserInfo({ ...userinfo.data, birthDay: formatToKST(userinfo.data.birthDay) });
       showToast(res.data.message, 'success');
       setIsCheckPassword(true);
       setPassword('');
@@ -190,7 +191,7 @@ const MyPage = () => {
               <div className="bg-white rounded-xl m-4 px-4 py-7 shadow-sm border border-zinc-200 w-full h-[90%] space-y-2 lg:space-y-3">
                 <div className={divClass}>
                   <span className={titleClass}>이름</span>
-                  <span className={contentClass}>{user?.name}</span>
+                  <span className={contentClass}>{userInfo?.name}</span>
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>성별</span>
@@ -198,15 +199,17 @@ const MyPage = () => {
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>생년월일</span>
-                  <span className={contentClass}>{user?.birthDay}</span>
+                  <span className={contentClass}>{userInfo?.birthDay}</span>
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>휴대폰 번호</span>
-                  <span className={contentClass}>{userInfo?.phoneNumber}</span>
+                  <span className={contentClass}>
+                    {userInfo?.phoneNumber?.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}
+                  </span>
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>이메일</span>
-                  <span className={contentClass}>{user.email}</span>
+                  <span className={contentClass}>{userInfo.email}</span>
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>비밀번호</span>
