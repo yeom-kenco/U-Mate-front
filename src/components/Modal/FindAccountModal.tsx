@@ -11,6 +11,7 @@ type ModalStep = 'findId' | 'getId' | 'verify' | 'reset';
 type Props = {
   onClose: () => void;
   initialStep?: ModalStep;
+  userEmail?: string;
 };
 
 const titleMap: Record<ModalStep, { title: string; subtitle?: string }> = {
@@ -32,7 +33,7 @@ const titleMap: Record<ModalStep, { title: string; subtitle?: string }> = {
   },
 };
 
-const FindAccountModal = ({ onClose, initialStep = 'findId' }: Props) => {
+const FindAccountModal = ({ onClose, initialStep = 'findId', userEmail }: Props) => {
   const [flow, setFlow] = useState<FlowType>('id');
   const [step, setStep] = useState<ModalStep>(initialStep);
   const [isCodeSent, setIsCodeSent] = useState(false);
@@ -96,6 +97,7 @@ const FindAccountModal = ({ onClose, initialStep = 'findId' }: Props) => {
           onNext={handleNext}
           onClose={onClose}
           setVerificationCodeComplete={setVerificationCodeComplete}
+          userEmail={userEmail}
         />
       </div>
     </BaseModal>

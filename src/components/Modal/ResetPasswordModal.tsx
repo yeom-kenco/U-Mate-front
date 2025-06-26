@@ -23,8 +23,6 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false }: Props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(isLogin, 'isLogin');
-
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
