@@ -80,6 +80,11 @@ const AccountStepContent = ({
     return () => clearInterval(countdown);
   }, [isCounting, timer]);
 
+  useEffect(() => {
+    setIsEmailClicked(false);
+  }, [email, verificationCode]);
+
+  const isLogin = flow === 'password' && step === 'reset';
   switch (step) {
     case 'findId':
       return (
@@ -137,6 +142,7 @@ const AccountStepContent = ({
                 isLogin={true}
               />
             }
+            disabled={isEmailClicked}
           />
 
           <InputField
@@ -155,7 +161,6 @@ const AccountStepContent = ({
                 }}
               />
             }
-            disabled={setIsEmailClicked}
             timer={isCounting ? `${formatTime(timer)}` : undefined}
             required
           />
@@ -169,7 +174,14 @@ const AccountStepContent = ({
       );
 
     case 'reset':
-      return <ResetPasswordForm onCancel={onClose} email={userEmail} isLogin={true} />;
+      return (
+        <ResetPasswordForm
+          onCancel={onClose}
+          email={userEmail}
+          findEmail={email}
+          isLogin={!isLogin}
+        />
+      );
 
     default:
       return null;
