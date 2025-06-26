@@ -4,7 +4,6 @@ import AccountToggleMenu from './AccountToggleMenu';
 import ResetPasswordForm from './ResetPasswordModal';
 import { useEffect, useState } from 'react';
 import { useToast } from '../../hooks/useToast';
-import { emit } from 'process';
 import { findEmailByPhone } from '../../apis/auth';
 import { CodeCheckButton, EmailSendButton } from '../suffixButtons';
 import { formatTime } from '../../utils/formatTimer';
@@ -15,10 +14,9 @@ type Props = {
   flow: 'id' | 'password';
   isCodeSent: boolean;
   onChangeFlow: (type: 'id' | 'password') => void;
-  onRequestAuth: () => void;
   onNext: () => void;
   onClose: () => void;
-  setVerificationCodeComplet: React.Dispatch<React.SetStateAction<boolean>>;
+  setVerificationCodeComplete: React.Dispatch<React.SetStateAction<boolean>>;
   userEmail?: string;
 };
 
@@ -27,14 +25,13 @@ const AccountStepContent = ({
   flow,
   isCodeSent,
   onChangeFlow,
-  onRequestAuth,
   onNext,
   onClose,
   setVerificationCodeComplete,
   userEmail,
 }: Props) => {
   const { showToast } = useToast();
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const user = useAppSelector((state) => state.user);
   const [findEmail, setFindEmail] = useState(user?.email || '');
   const isValidPhone = /^\d{10,11}$/;
@@ -43,7 +40,8 @@ const AccountStepContent = ({
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [timer, setTimer] = useState<number>(180);
   const [isCounting, setIsCounting] = useState<boolean>(false);
-  const Email = findEmail.split(' : ')[1];
+  const Email = findEmail.split(' : ')[1] ?? '';
+  const [isSubmmited, setIsSubmmited] = useState<boolean>(false);
   const handlefindEmailByPhone = async () => {
     if (!isValidPhone.test(phoneNumber)) {
       showToast('휴대폰 번호 형식이 유효하지 않습니다', 'error');
@@ -82,7 +80,7 @@ const AccountStepContent = ({
 
   useEffect(() => {
     setIsEmailClicked(false);
-  }, [email, verificationCode]);
+  }, [email]);
 
   const isLogin = flow === 'password' && step === 'reset';
   switch (step) {
@@ -140,6 +138,8 @@ const AccountStepContent = ({
                 Timer={setTimer}
                 Counting={setIsCounting}
                 isLogin={true}
+                setIsSubmmited={setIsSubmmited}
+                isSubmmited={isSubmmited}
               />
             }
             disabled={isEmailClicked}
@@ -155,6 +155,8 @@ const AccountStepContent = ({
                 email={email}
                 code={verificationCode}
                 Counting={setIsCounting}
+                setIsSubmmited={setIsSubmmited}
+                isSubmmited={isSubmmited}
                 setSuccessFlag={(success) => {
                   setVerificationCodeComplete(success);
                   if (success) setFindEmail(email);
@@ -177,7 +179,7 @@ const AccountStepContent = ({
       return (
         <ResetPasswordForm
           onCancel={onClose}
-          email={userEmail}
+          email={userEmail ?? ''}
           findEmail={email}
           isLogin={!isLogin}
         />

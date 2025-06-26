@@ -8,19 +8,20 @@ import { SlArrowRight } from 'react-icons/sl';
 import BottomSheet from '../components/BottomSheet/BottomSheet';
 import PlanList from '../components/BottomSheet/PlanList';
 import { signUp } from '../apis/auth';
-import { formatBirth } from '../utils/formatBirth';
 import { CodeCheckButton, EmailSendButton, PhoneCheckButton } from '../components/suffixButtons';
 import { ToastContext } from '../context/ToastContext';
 import { formatTime } from '../utils/formatTimer';
 import { getPlanList } from '../apis/planApi';
 import { Plan } from '../types/plan';
+
 const RegisterPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const navigate = useNavigate();
   const toastContext = useContext(ToastContext);
   const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
   const [plans, setPlans] = useState<Plan[]>([]);
-  const [isPlan, setisPlan] = useState(''); // 선택한 요금제
+  const [isPlan, setisPlan] = useState<number>(0); // 선택한 요금제
+  const [isSubmmited, SetIsSubmmited] = useState<boolean>(false);
   // 입력값
   const [formData, setFormData] = useState({
     name: '',
@@ -33,6 +34,13 @@ const RegisterPage = () => {
     confirmPassword: '',
   });
 
+  const selectedPlan =
+    isPlan === 0 ? plans[4] : plans.find((plan: Plan) => plan.PLAN_ID === isPlan);
+
+  const planName =
+    isPlan === 0
+      ? '유메이트가 추천한 요금제: ' + (plans[4]?.PLAN_NAME || '')
+      : (selectedPlan?.PLAN_NAME ?? '요금제를 선택해주세요');
   // 휴대폰 중복 확인 여부
   const [isPhoneChecked, setIsPhoneChecked] = useState(false);
 
@@ -109,7 +117,7 @@ const RegisterPage = () => {
   };
 
   // 요금제 선택 시 요금제 선택 및 바텀시트 닫힘
-  const handlePlanSelect = (value: string) => {
+  const handlePlanSelect = (value: number) => {
     setisPlan(value);
     setPlanOpen(false);
   };
@@ -133,7 +141,7 @@ const RegisterPage = () => {
     // 약관동의 모두 체크 안할 시 에러
     newErrors.agreements = agreements.all ? '' : '이용약관을 동의해주세요.';
     // 요금제 선택 안할 시 에러
-    newErrors.isPlan = isPlan === '' ? '요금제를 선택해주세요' : '';
+    newErrors.isPlan = planName === '' ? '요금제를 선택해주세요' : '';
 
     //휴대폰 중복,이메일 인증 클릭 이메일 인증 회원가입 시 확인
     if (!isPhoneChecked) {
@@ -168,6 +176,7 @@ const RegisterPage = () => {
       phonePlan: isPlan,
     };
     try {
+      SetIsSubmmited(true);
       const res = await signUp(requestData);
       console.log(res.data);
       //성공시
@@ -179,6 +188,8 @@ const RegisterPage = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      SetIsSubmmited(false);
     }
   };
 
@@ -212,7 +223,7 @@ const RegisterPage = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       const response = await getPlanList();
-      if (response.success) {
+      if (response) {
         setPlans(response.data);
       }
     };
@@ -360,9 +371,7 @@ const RegisterPage = () => {
       hover:bg-slate-200"
         onClick={() => setPlanOpen(true)}
       >
-        <p className="text-s max-w-[400px]:text-xs mt-[4px]">
-          {isPlan || '요금제를 선택해주세요.'}{' '}
-        </p>
+        <p className="text-s max-w-[400px]:text-xs mt-[4px]">{planName}</p>
         <SlArrowRight />
       </div>
       <p className="text-xs md:text-s text-pink-500 mb-2">{errors.isPlan}</p>
@@ -396,8 +405,8 @@ const RegisterPage = () => {
       </div>
       <p className="text-xs md:text-s text-pink-500 mb-2">{errors.agreements}</p>
 
-      <Button size="xl" fullWidth className="mt-6 rounded-xl h-14">
-        회원가입
+      <Button size="xl" fullWidth className="mt-6 rounded-xl h-14" disabled={isSubmmited}>
+        {isSubmmited ? '가입중..' : '회원가입'}
       </Button>
 
       <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="700px">
