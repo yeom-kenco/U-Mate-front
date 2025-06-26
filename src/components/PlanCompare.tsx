@@ -157,7 +157,7 @@ const PlanCompare = ({
   }, [planDetail, comparePlan]);
 
   return (
-    <div className="gap-4 mb-2 h-full flex flex-col justify-between text-[14px] md:text-base leading-relaxed">
+    <div className="gap-4 mb-2 h-full flex flex-col justify-between leading-relaxed">
       <div className="flex-1 min-h-[100px]">
         <DropdownSelector
           label={`선택한 요금제 ${count}`}
@@ -187,66 +187,84 @@ const PlanCompare = ({
         {/* 월정액 */}
         <div className="border-b border-gray-100 p-4 min-h-32 max-h-32">
           <div className="items-center mb-2">
-            <span className="text-sm text-gray-600">월정액</span>
-            <span className="text-xs ml-2 text-gray-500">부가세 포함 금액</span>
+            <span className="text-s sm:text-sm md:text-lm text-gray-600 lg:text-lm">월정액</span>
+            <span className="max-[400px]:text-[8px] min-[400px]:text-xs md:text-m ml-2 text-gray-500">
+              부가세 포함 금액
+            </span>
           </div>
           <div className="flex justify-between">
             <div className="text-left">
-              <span className={`text-lg font-bold ${isChanged[0] ? 'text-pink-500' : ''}`}>
+              <span
+                className={`lg:text-xl md:text-lg text-m font-bold ${isChanged[0] ? 'text-pink-500' : ''}`}
+              >
                 {plan[0]}
               </span>
-              <div className="text-xs text-gray-500">정상가</div>
+              <div className="text-xs text-gray-500 lg:text-sm">정상가</div>
             </div>
           </div>
         </div>
 
         {/* 최종 예상 할인 적용가 */}
         <div className="border-b border-gray-100 p-4 min-h-32 max-h-32">
-          <div className="text-sm text-gray-600 mb-2">최종 예상 할인 적용가</div>
+          <div className="text-s sm:text-sm md:text-lm text-gray-600 mb-2">
+            최종 예상 할인 적용가
+          </div>
           <div className="flex justify-between">
-            <span className={`text-lg font-bold ${isChanged[1] ? 'text-pink-500' : ''}`}>
+            <span
+              className={`lg:text-xl md:text-lg text-m font-bold ${isChanged[1] ? 'text-pink-500' : ''}`}
+            >
               월 {plan[1]}
             </span>
           </div>
         </div>
 
         {/* 선택 약정 할인 */}
-        <div className="border-b border-gray-100 p-4 min-h-32 max-h-32">
+        <div className="p-4 min-h-32 max-h-32">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-gray-600">선택 약정 할인</span>
+            <span className="text-s sm:text-sm md:text-lm text-gray-600">선택 약정 할인</span>
           </div>
           <div className="flex justify-between">
             <div className="text-left">
-              <span className={`text-lg font-bold ${isChanged[2] ? 'text-pink-500' : ''}`}>
+              <span
+                className={`lg:text-xl md:text-lg text-m font-bold ${isChanged[2] ? 'text-pink-500' : ''}`}
+              >
                 월 {plan[2]}
               </span>
-              <div className="text-xs text-gray-500">24개월</div>
+              <div className="lg:text-sm text-xs text-gray-500">24개월</div>
             </div>
           </div>
         </div>
 
         {/* 프리미어 요금제 약정 할인 */}
-        <div className="border-b border-gray-100 p-4 min-h-32 max-h-32">
-          <div className="text-sm text-gray-600 mb-2">프리미어 요금제 약정 할인</div>
+        <div className="border-b border-gray-100 px-4 min-h-32 max-h-32 mt-6 pb-6">
+          <div className="text-s sm:text-sm md:text-lm text-gray-600 mb-2">
+            프리미어 요금제 약정 할인
+          </div>
           <div className="flex justify-between">
             <div className="text-left">
-              <span className={`text-lg font-bold ${isChanged[3] ? 'text-pink-500' : ''}`}>
+              <span
+                className={`lg:text-xl md:text-lg text-m font-bold ${isChanged[3] ? 'text-pink-500' : ''}`}
+              >
                 {plan[3]}
               </span>
-              <div className="text-xs text-gray-500">24개월</div>
+              <div className="lg:text-sm text-xs text-gray-500">24개월</div>
             </div>
           </div>
         </div>
 
         {/* 데이터 */}
         <div className="border-b border-gray-100 p-4 min-h-32 max-h-32">
-          <div className="text-sm text-gray-600 mb-2">데이터</div>
+          <div className="text-s sm:text-sm md:text-lm text-gray-600 mb-2">데이터</div>
           <div className="flex justify-between">
             <div className="text-left">
-              <span className={`text-lg font-bold ${isChanged[4] ? 'text-pink-500' : ''}`}>
+              <span
+                className={`lg:text-xl md:text-lg text-m font-bold ${isChanged[4] ? 'text-pink-500' : ''}`}
+              >
                 {plan[4]}
               </span>
-              <div className={`text-xs text-gray-500 ${isChanged[5] ? 'text-pink-500' : ''}`}>
+              <div
+                className={`lg:text-s text-xs text-gray-500 ${isChanged[5] ? 'text-pink-500' : ''}`}
+              >
                 {plan[5]}
               </div>
             </div>
@@ -255,21 +273,27 @@ const PlanCompare = ({
 
         {/* 추가데이터 */}
         <div className="border-b border-gray-100 p-4 min-h-32 max-h-32">
-          <div className="text-sm text-gray-600 mb-2">추가데이터</div>
+          <div className="text-s sm:text-sm md:text-lm text-gray-600 mb-2">추가데이터</div>
           <div className="flex justify-between">
-            <span className={`text-sm ${isChanged[6] ? 'text-pink-500' : ''}`}>{plan[6]}</span>
+            <span className={`lg:text-m text-sm ${isChanged[6] ? 'text-pink-500' : ''}`}>
+              {plan[6]}
+            </span>
           </div>
         </div>
 
         {/* 음성통화 */}
         <div className="border-b border-gray-100 p-4 min-h-32 max-h-32">
-          <div className="text-sm text-gray-600 mb-2">음성통화</div>
+          <div className="text-s sm:text-sm md:text-lm text-gray-600 mb-2">음성통화</div>
           <div className="flex justify-between">
             <div className="text-left">
-              <span className={`text-sm font-bold ${isChanged[7] ? 'text-pink-500' : ''}`}>
+              <span
+                className={`text-s sm:text-sm md:text-lm font-bold ${isChanged[7] ? 'text-pink-500' : ''}`}
+              >
                 {plan[7]}
               </span>
-              <div className={`text-xs text-gray-500 ${isChanged[8] ? 'text-pink-500' : ''}`}>
+              <div
+                className={`lg:text-sm text-xs text-gray-500 ${isChanged[8] ? 'text-pink-500' : ''}`}
+              >
                 {plan[8]}
               </div>
             </div>
@@ -278,9 +302,11 @@ const PlanCompare = ({
 
         {/* 문자메시지 */}
         <div className="border-b border-gray-100 p-4 min-h-28 max-h-28">
-          <div className="text-sm text-gray-600 mb-2">문자메시지</div>
+          <div className="text-sm text-gray-600 mb-2 lg:text-lm">문자메시지</div>
           <div className="flex justify-between">
-            <span className={`text-sm font-bold ${isChanged[9] ? 'text-pink-500' : ''}`}>
+            <span
+              className={`text-s sm:text-sm md:text-lm font-bold ${isChanged[9] ? 'text-pink-500' : ''}`}
+            >
               {plan[9]}
             </span>
           </div>
@@ -288,9 +314,11 @@ const PlanCompare = ({
 
         {/* 프리미엄 혜택 */}
         <div className="border-b border-gray-100 p-4 min-h-28 max-h-28">
-          <div className="text-sm text-gray-600 mb-2">프리미엄 혜택</div>
+          <div className="text-sm text-gray-600 mb-2 lg:text-lm">프리미엄 혜택</div>
           <div className="">
-            <span className={`text-sm font-bold ${isChanged[10] ? 'text-pink-500' : ''}`}>
+            <span
+              className={`text-s sm:text-sm md:text-lm font-bold ${isChanged[10] ? 'text-pink-500' : ''}`}
+            >
               총 {plan[10]}개
             </span>
           </div>
@@ -298,9 +326,11 @@ const PlanCompare = ({
 
         {/* 미디어 혜택 */}
         <div className="border-b border-gray-100 p-4 min-h-28 max-h-28">
-          <div className="text-sm text-gray-600 mb-2">미디어 혜택</div>
+          <div className="text-sm text-gray-600 mb-2 lg:text-lm">미디어 혜택</div>
           <div className="">
-            <span className={`text-sm font-bold ${isChanged[11] ? 'text-pink-500' : ''}`}>
+            <span
+              className={`text-s sm:text-sm md:text-lm font-bold ${isChanged[11] ? 'text-pink-500' : ''}`}
+            >
               총 {plan[11]}개
             </span>
           </div>
@@ -308,16 +338,23 @@ const PlanCompare = ({
 
         {/* 기본혜택 */}
         <div className="p-4 border-gray-100 min-h-28 max-h-28">
-          <div className="text-sm text-gray-600 mb-2 ">기본혜택</div>
+          <div className="text-sm text-gray-600 mb-2 lg:text-lm">기본혜택</div>
           <div className="flex justify-between">
-            <span className={`text-sm ${isChanged[12] ? 'text-pink-500' : ''}`}>{plan[12]}</span>
+            <span
+              className={`text-s sm:text-sm md:text-lm ${isChanged[12] ? 'text-pink-500' : ''}`}
+            >
+              {plan[12]}
+            </span>
           </div>
         </div>
       </div>
 
       {/* 요금제 상세보기 링크 */}
-      <div className="mx-[5%] mt-4 mb-6">
-        <Link className="text-pink-500 text-sm underline" to={`/plans/${planDetail?.PLAN_ID}`}>
+      <div className="p-4 mt-4 mb-6 bg-pink-50 rounded-xl">
+        <Link
+          className="text-pink-500 text-sm lg:text-m underline"
+          to={`/plans/${planDetail?.PLAN_ID}`}
+        >
           요금제 상세보기
         </Link>
       </div>
