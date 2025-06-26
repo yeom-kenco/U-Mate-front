@@ -55,7 +55,7 @@ const PlanTopBanner = ({
       {/* 할인 적용 가격 */}
       <div className="mt-4 border-t border-gray-300 pt-4">
         <div className="flex justify-between">
-          <p className="text-black text-m font-semibold sm:text-lm mt-4">할인 시</p>
+          <p className="text-black text-m font-semibold sm:text-lm mt-2">할인 시</p>
           <p className="text-pink-500 text-lg font-semibold sm:text-xl">
             {discountedPrice.toLocaleString()}원
           </p>

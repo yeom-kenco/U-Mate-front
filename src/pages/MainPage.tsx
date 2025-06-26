@@ -85,19 +85,7 @@ const MainPage = () => {
         const birthday = user?.birthDay?.replace(/-/g, '');
 
         const res = await getRecommendedPlans(birthday.substring(0, 8));
-        const convertedPlans = res.map((plan) => ({
-          planId: plan.PLAN_ID,
-          name: plan.PLAN_NAME,
-          monthlyFee: plan.MONTHLY_FEE,
-          dataInfo: plan.DATA_INFO,
-          shareData: plan.SHARE_DATA,
-          avgRating:
-            typeof plan.RECEIVED_STAR_COUNT === 'string'
-              ? parseFloat(plan.RECEIVED_STAR_COUNT)
-              : plan.RECEIVED_STAR_COUNT,
-          reviewCount: plan.REVIEW_USER_COUNT,
-        }));
-        setAgePlans(convertedPlans);
+        setAgePlans(res.data);
       } catch (err) {
         // Error handled silently
       }

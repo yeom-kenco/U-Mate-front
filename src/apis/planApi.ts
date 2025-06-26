@@ -39,7 +39,7 @@ const getRecommendedPlans = async (birthday: string) => {
   const csrf = await axiosInstance.get('/csrf-token');
   const csrfToken = csrf.data.csrfToken;
 
-  const response = await axiosInstance.post<Plan[]>(
+  const response = await axiosInstance.post<any>(
     '/recommendPlansByAge',
     { birthday },
     {

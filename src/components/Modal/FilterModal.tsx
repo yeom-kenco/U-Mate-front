@@ -56,7 +56,7 @@ const FilterModal = ({
       onClose={onClose}
       className="z-50 rounded-none max-[500px]:min-h-full max-[500px]:min-w-full min-[500px]:rounded-2xl"
     >
-      <div className="flex flex-col px-5 pt-4 pb-6 min-[500px]:h-[70vh] h-screen">
+      <div className="flex flex-col px-5 pt-4 pb-6 h-screen">
         {/* 닫기 버튼 */}
         <div className="flex justify-end pt-4 shrink-0 mb-6">
           <button onClick={onClose} aria-label="닫기">

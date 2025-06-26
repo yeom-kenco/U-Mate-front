@@ -9,7 +9,7 @@ const sortLists = ['인기순', '높은 가격순', '낮은 가격순', '리뷰 
 
 const SortList: React.FC<SortListProps> = ({ onSelect, selected }) => {
   return (
-    <ul className="flex flex-col px-5 gap-1 max-h-max overflow-auto ml-16">
+    <ul className="flex flex-col px-5 gap-1 max-h-max overflow-auto md:ml-16">
       <p className="font-bold text-lg md:text-xl b-3">정렬 기준</p>
       {sortLists.map((sort) => (
         <li
