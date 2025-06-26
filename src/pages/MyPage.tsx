@@ -198,7 +198,7 @@ const MyPage = () => {
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>생년월일</span>
-                  <span className={contentClass}>{user?.birthDay}</span>
+                  <span className={contentClass}>{formatToKST(userInfo?.birthDay)}</span>
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>휴대폰 번호</span>
