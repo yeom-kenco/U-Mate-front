@@ -21,7 +21,7 @@ import Button from '../components/Button';
 
 // 요금제 리스트 불러오기
 import { getFilteredPlans, getPlanList, updatePlan } from '../apis/planApi';
-import { Plan, PlanFilterRequest } from '../types/plan';
+import { FilteredPlanPayload, Plan, PlanFilterRequest } from '../types/plan';
 import { setUser } from '../store/userSlice';
 
 const PricingPage = () => {
@@ -32,7 +32,7 @@ const PricingPage = () => {
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
   const [planList, setPlanList] = useState<Plan[]>([]);
-  const [filters, setFilters] = useState<PlanFilterRequest[]>({
+  const [filters, setFilters] = useState<PlanFilterRequest>({
     ageGroup: '',
     minFee: undefined,
     maxFee: undefined,
@@ -109,7 +109,7 @@ const PricingPage = () => {
 
     const payload = {
       ...filters,
-      benefitIds: filters.benefitIds.length ? filters.benefitIds.join(',') : '',
+      benefitIds: filters.benefitIds?.length ? filters.benefitIds.join(',') : '',
     };
 
     try {
@@ -135,9 +135,15 @@ const PricingPage = () => {
       // 초기 로드 시 요청 방지
       if (!shouldFetchData(filters)) return;
 
-      const payload = {
-        ...debouncedFilters,
-        benefitIds: filters.benefitIds.length ? filters.benefitIds.join(',') : '',
+      const payload: FilteredPlanPayload = {
+        ageGroup: debouncedFilters.ageGroup,
+        minFee: debouncedFilters.minFee,
+        maxFee: debouncedFilters.maxFee,
+        dataType: debouncedFilters.dataType,
+        benefitIds:
+          debouncedFilters.benefitIds && debouncedFilters.benefitIds.length > 0
+            ? debouncedFilters.benefitIds.join(',')
+            : undefined,
       };
       try {
         setLoading(true);
@@ -183,7 +189,7 @@ const PricingPage = () => {
   };
 
   // 비교하기 모달 열기
-  const openCompareModal = (e: React.MouseEvent, plan) => {
+  const openCompareModal = (e: React.MouseEvent, plan: Plan) => {
     e.stopPropagation();
     setSelectedPlan(plan);
     console.log('비교할 요금제', plan);
@@ -199,7 +205,7 @@ const PricingPage = () => {
   };
 
   // 신청하기 모달 열기
-  const openChangeModal = (e: React.MouseEvent, plan) => {
+  const openChangeModal = (e: React.MouseEvent, plan: Plan) => {
     e.stopPropagation();
     setModalType('change');
     console.log('신청할 요금제', plan);
@@ -269,7 +275,7 @@ const PricingPage = () => {
   };
 
   // 요금제명 클릭 시 상세 페이지로 이동
-  const goToDetailPage = (planId) => {
+  const goToDetailPage = (planId: number) => {
     navigate(`/plans/${planId}`);
   };
 
