@@ -64,13 +64,6 @@ const Default = () => {
     fetchUser();
   }, [dispatch, isLogin]);
 
-  if (userLoading) {
-    return (
-      <div className="text-center mt-10">
-        <Loading />
-      </div>
-    );
-  }
   // 온보딩 확인
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('onboarding');
