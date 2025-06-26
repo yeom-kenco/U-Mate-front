@@ -31,11 +31,12 @@ const InputField: React.FC<InputFieldProps> = ({
   timer,
   placeholderStyle = '',
 }) => {
-  const wrapperClass = variant === 'line' ? 'flex flex-col   w-full' : 'flex flex-col gap-2 w-full';
+  const wrapperClass =
+    variant === 'line' ? 'flex flex-col w-full gap-1' : 'flex flex-col gap-2 w-full';
   const inputWrapperClass =
     variant === 'line'
-      ? `border-b mb-2 px-2  pb-1 bg-transparent ${suffixButton ? 'pt-2' : 'pt-4'}`
-      : 'border  rounded-lg px-2 py-1 bg-white';
+      ? `border-b mb-2 pb-1 bg-transparent ${suffixButton ? 'pt-2' : 'pt-4'}`
+      : 'border rounded-lg px-2 py-1 bg-white';
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -44,7 +45,7 @@ const InputField: React.FC<InputFieldProps> = ({
       {label && (
         <label
           className={clsx(
-            'text-s mb-[-5px]',
+            'text-s mb-[-15px] mt-2',
             variant === 'line' ? 'text-gray-400' : 'text-gray-600 font-medium'
           )}
         >
@@ -92,7 +93,10 @@ const InputField: React.FC<InputFieldProps> = ({
             size="m"
             type="button"
             color="gray"
-            className={clsx('border-zinc-400 ml-2 bg-zinc-50', disabled ? 'hidden ' : '')}
+            className={clsx(
+              'border-zinc-400 ml-2 bg-zinc-50 min-w-[100px]',
+              disabled ? 'hidden ' : ''
+            )}
           >
             {suffixButton}
           </Button>

@@ -231,7 +231,7 @@ const RegisterPage = () => {
   }, []);
 
   return (
-    <form onSubmit={onSubmit} className=" w-[90%] max-w-[600px] mx-auto px-4 py-6">
+    <form onSubmit={onSubmit} className="px-4 max-w-[600px] mx-auto pt-6 pb-24">
       <p className="text-lg font-bold mb-4 w-40">본인인증 정보를 입력해주세요.</p>
       <InputField
         label="이름"
@@ -367,8 +367,8 @@ const RegisterPage = () => {
         </span>
       </label>
       <div
-        className="flex justify-between my-2 items-center w-full border border-zinc-300 rounded-lg px-2 py-2 bg-background cursor-pointer
-      hover:bg-slate-200"
+        className="flex justify-between my-2 items-center w-full border border-zinc-300 rounded-lg px-2 py-2 bg-zinc-50 cursor-pointer
+      hover:bg-zinc-100"
         onClick={() => setPlanOpen(true)}
       >
         <p className="text-s max-w-[400px]:text-xs mt-[4px]">{planName}</p>
