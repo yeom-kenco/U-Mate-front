@@ -3,7 +3,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 import ReviewListContent from './ReviewListContent';
 import ReviewWriteContent from './ReviewWriteContent';
 import AllReviewListContent from './AllReviewListContent';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // 리뷰 작성 모달 사용 예시
 // {isOpen && (
@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react';
 type ReviewModalProps = {
   type: 'reviewList' | 'reviewWrite' | 'allReviewList' | 'reviewEdit';
   onClose: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   rating?: number;
   planName?: string;
   reviews?: any[];
@@ -40,7 +40,6 @@ const ReviewModal = ({
   planName,
   planPrice,
   reviews,
-  question,
   initialContent,
   initialRating,
   reviewId,
@@ -69,8 +68,6 @@ const ReviewModal = ({
             setContent={setContent}
             rating={rating}
             setRating={setRating}
-            reviewId={reviewId}
-            isEdit={type === 'reviewEdit'}
           >
             {children}
           </ReviewWriteContent>

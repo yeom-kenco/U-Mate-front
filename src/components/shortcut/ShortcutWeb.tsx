@@ -1,11 +1,12 @@
 import ShortcutCard from './ShortcutCard';
 import Modal from '../CallModal';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ShortcutGrid = () => {
   /* 📌 모달 open 상태 */
   const [open, setOpen] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <>
       <div className="max-w-6xl mx-auto p-4 mb-10">
@@ -40,6 +41,7 @@ const ShortcutGrid = () => {
             showButton={false}
             titleClassName="mt-14 text-[40px]"
             descriptionClassName="mt-3 text-lm"
+            onClick={() => navigate('/')}
           />
 
           {/* (2) 우측 3개의 카드 */}

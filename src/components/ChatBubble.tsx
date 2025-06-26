@@ -30,7 +30,7 @@ export default function ChatBubble({
     .filter(Boolean)
     .join(' ');
 
-  const bubbleWidthClass = isFirst ? 'w-full max-w-sm' : 'w-fit max-w-64';
+  const bubbleWidthClass = isFirst ? 'w-full max-w-sm md:max-w-md' : 'w-fit max-w-64 md:max-w-md';
 
   const [isSpeaking, setIsSpeaking] = useState(false);
   const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
@@ -118,7 +118,7 @@ export default function ChatBubble({
               {isSpeaking ? (
                 <HiStop className="text-red-500 w-4 h-4 hover:text-red-700" />
               ) : (
-                <HiVolumeUp className="text-violet-400 w-4 h-4 hover:text-violet-600" />
+                <HiVolumeUp className="text-violet-400 w-4 h-4 hover:text-violet-600 mb-[1px]" />
               )}
             </button>
           )}

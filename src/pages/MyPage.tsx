@@ -1,6 +1,6 @@
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { HeaderProps } from '../components/Header';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SlArrowRight } from 'react-icons/sl';
 import Button from '../components/Button';
 import InputField from '../components/InputField';
@@ -13,21 +13,20 @@ import FindAccountModal from '../components/Modal/FindAccountModal';
 import ReviewModal from '../components/Modal/Review/ReviewModal';
 import { getPlanList } from '../apis/planApi';
 import { Plan } from '../types/plan';
-import { calculateDiscountedPrice } from '../utils/getDiscountFree';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 
 import myBear from '../assets/myPageBear.svg';
 import { useAppSelector } from '../hooks/reduxHooks';
 import { clearUser, setUser } from '../store/userSlice';
 import { formatToKST } from '../utils/formatDate';
-
+import { Loading } from '../components/Loading';
 interface userInfoProps {
   birthDay: string;
   email: string;
   gender: string;
   message: string;
   name: string;
-  phoneNumber: number;
+  phoneNumber: string;
   phonePlan: number;
   success: boolean;
 }
@@ -49,7 +48,7 @@ const MyPage = () => {
     gender: '',
     message: '',
     name: '',
-    phoneNumber: 0,
+    phoneNumber: '',
     phonePlan: 1,
     success: false,
   });
@@ -69,6 +68,7 @@ const MyPage = () => {
       return;
     }
     try {
+      setIsLoading(true);
       const res = await checkPassword({ email: user?.email, password });
       const userinfo = await getUserInfo({ email: user?.email, password });
       console.log('userInfo', userinfo.data);
@@ -81,6 +81,8 @@ const MyPage = () => {
       console.log(err);
       showToast('비밀번호가 맞지 않습니다.', 'error');
       setIsCheckPassword(false);
+    } finally {
+      setIsLoading(false);
     }
   };
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -103,12 +105,15 @@ const MyPage = () => {
 
   const handledeleteUser = async () => {
     try {
+      setIsLoading(true);
       const res = await deleteAccount({ email: userInfo.email, password });
       showToast(res.data.message, 'success');
       navigate('/');
     } catch (error) {
       console.log(error);
       showToast('비밀번호가 맞지 않습니다.', 'error');
+    } finally {
+      setIsLoading(false);
     }
   };
   // 내 요금제
@@ -116,7 +121,7 @@ const MyPage = () => {
 
   const divClass = 'flex items-center justify-between py-2 border-b';
   const titleClass = 'text-sm text-black font-semibold lg:text-lm lg:pl-4';
-  const contentClass = 'text-sm font-medium text-gray-800 mr-4 w-[60%] flex lg:text-lm';
+  const contentClass = 'text-sm font-medium text-gray-800  w-[63%] flex lg:text-lm';
 
   useEffect(() => {
     const checkToken = async () => {
@@ -133,6 +138,7 @@ const MyPage = () => {
       if (!user?.name) checkToken();
     };
   }, [user]);
+  if (isloading) return <Loading />;
   return (
     <div className="h-full pt-12 bg-white pb-20">
       <div className="h-full w-full lg:px-10 lg:gap-5">
@@ -159,7 +165,7 @@ const MyPage = () => {
                 onClick={() => navigate(`/plans/${myplan?.PLAN_ID}`)}
               >
                 <p>요금제 자세히보기</p>
-                <SlArrowRight className="w-2 h-2 mb-[0.75px]" />
+                <SlArrowRight className="w-2 h-2 mb-[2px]" />
               </div>
             </div>
           </div>
@@ -213,14 +219,14 @@ const MyPage = () => {
                 </div>
                 <div className={divClass}>
                   <span className={titleClass}>비밀번호</span>
-                  <span className={`${contentClass} flex gap-2 justify-between items-center`}>
+                  <span className={`${contentClass} flex gap-2  justify-between items-center`}>
                     <span className="">●●●●●●●</span>
                     <Button
                       variant="ghost"
                       size="m"
                       color="pink"
                       onClick={() => dispatch(openModal('findAccount'))}
-                      className="h-fit w-fit mb-1 px-1"
+                      className="h-fit w-fit mb-1 px-1 "
                     >
                       변경하기
                     </Button>

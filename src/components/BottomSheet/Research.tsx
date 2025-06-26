@@ -41,7 +41,7 @@ const Research: React.FC<ResearchProps> = ({ onSubmit, onClose }) => {
   const canSubmit = feedback.trim().length > 0;
 
   return (
-    <div className="relative w-full max-w-[412px] mx-auto bg-white rounded-t-[18px] px-4 py-4">
+    <div className="relative w-full mx-auto bg-white rounded-t-[18px] px-4 py-4">
       {/* 타이틀 영역 */}
       <div className="mb-5">
         <h1 className="text-[16px] font-semibold leading-5 mb-2">
