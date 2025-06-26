@@ -226,7 +226,7 @@ export default function ChatbotMain() {
           {/* 초기화 버튼 */}
           <button
             onClick={handleReset}
-            className="fixed bottom-28 right-6 z-50 w-12 h-12 text-s rounded-full bg-pink-500 text-white shadow-lg hover:bg-pink-600 transition"
+            className="fixed bottom-28 right-6 z-20 w-12 h-12 text-s rounded-full bg-pink-500 text-white shadow-lg hover:bg-pink-600 transition"
             aria-label="초기화"
           >
             초기화
