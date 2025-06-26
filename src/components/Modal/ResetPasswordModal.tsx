@@ -77,7 +77,6 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false, findEmail }: Prop
       }
       onCancel();
     } catch (err: any) {
-      console.log(err);
       if (err.status === 404) {
         showToast(err.response.data.error, 'error');
       } else showToast('비밀번호 변경 실패', 'error');
@@ -85,7 +84,7 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false, findEmail }: Prop
       SetIsSubmmited(false);
     }
   };
-  console.log(isLogin);
+
   return (
     <>
       <div className="max-h-32 flex flex-col justify-between flex-1">

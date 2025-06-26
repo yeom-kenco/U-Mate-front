@@ -47,7 +47,6 @@ const ReviewModal = ({
   const [content, setContent] = useState(initialContent ?? '');
   const [rating, setRating] = useState(initialRating ?? 0);
 
-  console.log(reviewId);
   return (
     <BaseModal onClose={onClose}>
       <div className="flex flex-col h-[70vh] max-h-[520px]">

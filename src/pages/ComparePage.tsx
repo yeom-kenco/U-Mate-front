@@ -93,7 +93,7 @@ const Compare = () => {
       try {
         const res = await validateToken();
         const { user } = res.data;
-        //  console.log(user);
+
         if (res && user) {
           const { email, birthDay, id, membership, name, plan } = user;
           //한국 날짜로
@@ -141,7 +141,6 @@ const Compare = () => {
       showToast('요금제 신청 중 오류가 발생했습니다.', 'error', 'bottom-center', {
         bottom: '220px',
       });
-      console.error(err);
     } finally {
       setIsLoading(false);
       setIsModalOpen(false);

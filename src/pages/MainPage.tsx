@@ -69,7 +69,7 @@ const MainPage = () => {
         const res = await getPlanList();
         setAllPlans(res?.data);
       } catch (err) {
-        console.error('요금제 목록 불러오기 실패:', err);
+        // Error handled silently
       }
     };
 
@@ -83,7 +83,7 @@ const MainPage = () => {
     const fetchRecommendedPlans = async () => {
       try {
         const birthday = user?.birthDay?.replace(/-/g, '');
-        console.log('연령대별 birthday', birthday.substring(0, 8));
+
         const res = await getRecommendedPlans(birthday.substring(0, 8));
         const convertedPlans = res.map((plan) => ({
           planId: plan.PLAN_ID,
@@ -99,7 +99,7 @@ const MainPage = () => {
         }));
         setAgePlans(convertedPlans);
       } catch (err) {
-        console.error('추천 요금제 불러오기 실패:', err);
+        // Error handled silently
       }
     };
 

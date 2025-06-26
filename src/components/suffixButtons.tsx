@@ -98,7 +98,6 @@ export const EmailSendButton = ({
           toastContext?.showToast(res.data.message, 'success');
           setSuccessFlag?.(true);
         } catch (err: any) {
-          console.error('이메일 인증코드 발송 에러:', err);
           toastContext?.showToast('이미 가입된 이메일이 존재합니다.', 'error');
           setSuccessFlag?.(false);
         } finally {
@@ -138,7 +137,6 @@ export const CodeCheckButton = ({
           setSuccessFlag?.(true);
           Counting?.(false);
         } catch (err: any) {
-          console.log(err);
           toastContext?.showToast(err.response?.data?.message || '인증 코드 실패', 'error');
           setSuccessFlag?.(false);
         } finally {

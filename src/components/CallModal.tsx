@@ -28,7 +28,7 @@ export default function CustomerServiceModal({ isOpen, onClose }: CustomerServic
       setCopiedNumber(number);
       setTimeout(() => setCopiedNumber(null), 2000);
     } catch (err) {
-      console.error('복사 실패:', err);
+      // Error handled silently
     }
   };
 

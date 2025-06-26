@@ -94,7 +94,7 @@ export default function ChatbotMain() {
           }
         }
       } catch (error) {
-        console.error(error);
+        // Error handled silently
       }
     };
   };
@@ -181,7 +181,7 @@ export default function ChatbotMain() {
       await resetHistory({ email: userEmail }); // 리셋 요청
       window.location.reload(); // 한 번만 리로드
     } catch (e) {
-      console.error('리셋 실패:', e);
+      // Error handled silently
     }
   };
 
@@ -268,7 +268,6 @@ export default function ChatbotMain() {
             <BottomSheet isOpen height="auto" alignRight onClose={() => setShowResearch(false)}>
               <Research
                 onSubmit={(rating, feedback) => {
-                  console.log('리서치 제출:', rating, feedback);
                   setSurveyDone(true);
                   setShowResearch(false);
                 }}

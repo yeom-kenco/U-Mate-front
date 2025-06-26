@@ -34,7 +34,7 @@ const Research: React.FC<ResearchProps> = ({ onSubmit, onClose }) => {
       setIsSubmitted(true);
       setTimeout(() => onClose?.(), 1500);
     } catch (error) {
-      console.error('설문 제출 실패:', error);
+      // Error handled silently
     }
   };
 

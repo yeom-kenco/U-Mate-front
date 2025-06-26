@@ -71,14 +71,12 @@ const MyPage = () => {
       setIsLoading(true);
       const res = await checkPassword({ email: user?.email, password });
       const userinfo = await getUserInfo({ email: user?.email, password });
-      console.log('userInfo', userinfo.data);
-      console.log('formatToKST', formatToKST(userinfo.data.birthDay));
+
       setUserInfo({ ...userinfo.data, birthDay: formatToKST(userinfo.data.birthDay) });
       showToast(res.data.message, 'success');
       setIsCheckPassword(true);
       setPassword('');
     } catch (err) {
-      console.log(err);
       showToast('비밀번호가 맞지 않습니다.', 'error');
       setIsCheckPassword(false);
     } finally {
@@ -95,7 +93,7 @@ const MyPage = () => {
         const res = await getPlanList();
         setPlans(res.data);
       } catch (error) {
-        console.log(error);
+        // Error handled silently
       } finally {
         setIsLoading(false);
       }
@@ -110,7 +108,6 @@ const MyPage = () => {
       showToast(res.data.message, 'success');
       navigate('/');
     } catch (error) {
-      console.log(error);
       showToast('비밀번호가 맞지 않습니다.', 'error');
     } finally {
       setIsLoading(false);

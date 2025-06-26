@@ -91,11 +91,10 @@ const PricingPage = () => {
       try {
         setLoading(true);
         const { data } = await getPlanList();
-        console.log('가져온 요금제', data);
         setPlanList(data);
         setFilteredCount(data.length);
       } catch (error) {
-        console.log(error);
+        // Error handled silently
       } finally {
         setLoading(false);
       }
@@ -115,7 +114,7 @@ const PricingPage = () => {
     try {
       setLoading(true);
       const { data, count } = await getFilteredPlans(payload);
-      console.log('가져온 필터 요금제', data);
+
       setPlanList(data);
       setFilteredCount(count); // 필터링된 개수 설정
       setVisibleCount((prev) => (prev > count ? count : prev)); // visibleCount 업데이트
@@ -149,9 +148,8 @@ const PricingPage = () => {
         setLoading(true);
         const { data } = await getFilteredPlans(payload);
         setFilteredCount(data.length); // 필터링된 개수만 업데이트
-        console.log('가져온 요금제', data);
       } catch (error) {
-        console.log(error);
+        // Error handled silently
       } finally {
         setLoading(false);
       }
@@ -192,7 +190,7 @@ const PricingPage = () => {
   const openCompareModal = (e: React.MouseEvent, plan: Plan) => {
     e.stopPropagation();
     setSelectedPlan(plan);
-    console.log('비교할 요금제', plan);
+
     setModalType('compare');
     dispatch(openModal());
   };
@@ -208,7 +206,7 @@ const PricingPage = () => {
   const openChangeModal = (e: React.MouseEvent, plan: Plan) => {
     e.stopPropagation();
     setModalType('change');
-    console.log('신청할 요금제', plan);
+
     setSelectedPlan(plan);
     dispatch(openModal());
   };
@@ -248,7 +246,6 @@ const PricingPage = () => {
       );
       toast?.showToast('해당 요금제로 신청되었습니다', 'black');
     } catch (error) {
-      console.log(error);
       toast?.showToast('요금제 신청에 실패하였습니다', 'error');
     } finally {
       dispatch(closeModal());

@@ -89,7 +89,6 @@ const PlanBottomBar = ({ planId, price, discountedPrice }: PlanBottomBarProps) =
       showToast('요금제 신청 중 오류가 발생했습니다.', 'error', 'bottom-center', {
         bottom: '220px',
       });
-      console.error(err);
     } finally {
       setIsLoading(false);
       setIsModalOpen(false);

@@ -45,7 +45,6 @@ const Header = ({
     try {
       navigate(-1);
     } catch (error) {
-      console.error('뒤로 가는 중 에러 발생:', error);
       navigate('/');
     }
   };
@@ -57,7 +56,7 @@ const Header = ({
       setIsMenuOpen(false);
       navigate('/');
     } catch (error) {
-      console.log(error);
+      // Error handled silently
     }
   };
 

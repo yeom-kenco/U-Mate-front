@@ -178,7 +178,7 @@ const RegisterPage = () => {
     try {
       SetIsSubmmited(true);
       const res = await signUp(requestData);
-      console.log(res.data);
+
       //성공시
       if (res.data.success) {
         toastContext?.showToast(res.data.message, 'black');
@@ -187,7 +187,7 @@ const RegisterPage = () => {
         toastContext?.showToast(res.data.message, 'error');
       }
     } catch (error) {
-      console.log(error);
+      // Error handled silently
     } finally {
       SetIsSubmmited(false);
     }

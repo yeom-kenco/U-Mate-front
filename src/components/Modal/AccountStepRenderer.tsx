@@ -56,7 +56,6 @@ const AccountStepContent = ({
         onNext(); // 성공했을 때만 다음 단계로 이동
       }
     } catch (err) {
-      console.log(err);
       showToast('등록된 이메일이 없습니다', 'black');
     }
     setPhoneNumber('');

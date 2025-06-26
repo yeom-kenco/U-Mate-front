@@ -7,19 +7,14 @@ const getPlanList = async (): Promise<{ data: Plan[] }> => {
 };
 
 const getPlanDetail = async (planId: number) => {
-  try {
-    const response = await axiosInstance.get(`/planDetail/${planId}`);
-    return response.data;
-  } catch (error) {
-    console.error('요금제 상세 정보 조회 실패:', error);
-    throw error;
-  }
+  const response = await axiosInstance.get(`/planDetail/${planId}`);
+  return response.data;
 };
 
 // 요금제 필터링 요청
 const getFilteredPlans = async (filteredPlan: FilteredPlanPayload) => {
   const response = await axiosInstance.post('/filterPlans', filteredPlan);
-  console.log('필터링 요청 성공', filteredPlan);
+
   return response.data;
 };
 
@@ -37,7 +32,6 @@ const updatePlan = async (planData: UpdatePlanRequest): Promise<UpdatePlanRespon
     withCredentials: true,
   });
 
-  console.log('변경 요청 성공');
   return response.data;
 };
 

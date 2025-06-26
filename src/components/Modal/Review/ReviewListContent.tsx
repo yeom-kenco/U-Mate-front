@@ -16,7 +16,7 @@ const ReviewListContent = () => {
       const res = await getMyReviews(user?.id);
       setReviews(res.reviews);
     } catch (err) {
-      console.log(err);
+      // Error handled silently
     }
   };
 
