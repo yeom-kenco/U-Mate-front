@@ -124,7 +124,13 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false, findEmail }: Prop
         <Button variant="fill" color="gray" size="lg" onClick={onCancel} className="flex-1">
           취소
         </Button>
-        <Button variant="fill" size="lg" onClick={handlePasswordReset} className="flex-1">
+        <Button
+          variant="fill"
+          size="lg"
+          onClick={handlePasswordReset}
+          className="flex-1"
+          disabled={isSubmmited}
+        >
           {isSubmmited ? '변경중..' : '완료'}
         </Button>
       </div>

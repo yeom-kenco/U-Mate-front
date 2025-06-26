@@ -99,6 +99,7 @@ const AccountStepContent = ({
             size="lg"
             fullWidth
             className="mt-4 max-[400px]:text-s"
+            disabled={isSubmmited}
           >
             아이디 찾기
           </Button>
