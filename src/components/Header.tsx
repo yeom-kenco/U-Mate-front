@@ -32,7 +32,6 @@ const Header = ({
   const user = useAppSelector((state) => state.user);
   const { showToast } = useToast();
   const dispatch = useDispatch();
-
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
@@ -144,18 +143,9 @@ const Header = ({
                 <NavigationLinks isLoggedIn={user?.name ? true : false} />
               </div>
               <div className="flex md:hidden items-center gap-5">
-                <button
-                  onClick={() => {
-                    if (user?.name) {
-                      navigate('/mypage');
-                    } else {
-                      navigate('/login');
-                    }
-                  }}
-                  className="flex items-center text-black hover:text-pink-500"
-                >
+                <Link to="/mypage" className="flex items-center text-black hover:text-pink-500">
                   <FiUser className="w-6 h-6" strokeWidth={1.5} />
-                </button>
+                </Link>
                 <button
                   className="flex items-center"
                   onClick={() => setIsMenuOpen(true)}
@@ -233,10 +223,7 @@ const Header = ({
                   <span>요금제 찾아보기</span>
                   <SlArrowRight className="w-3 h-3 relative ml-[2px] mb-[1px]" />
                 </Link>
-                <Link
-                  to={`/compare?plan1=${user?.plan}`}
-                  className="flex px-3 items-center max-w-48 cursor-pointer"
-                >
+                <Link to="/compare" className="flex px-3 items-center max-w-48 cursor-pointer">
                   <span>요금제 비교하기</span>
                   <SlArrowRight className="w-3 h-3 relative ml-[2px] mb-[1px]" />
                 </Link>
