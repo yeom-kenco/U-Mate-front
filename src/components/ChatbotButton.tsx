@@ -5,7 +5,7 @@ export default function ChatbotButton() {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed bottom-[5%] right-[5%] z-50 flex flex-col items-center gap-1">
+    <div className="fixed bottom-[6%] right-[5%] z-50 flex flex-col items-center gap-1">
       {/* 말풍선 */}
       <div className="relative hidden md:block mb-[-30px] right-[55px] px-3 py-1 bg-gray-700 text-white text-s rounded-full shadow-md animate-pulse">
         반가워요!
