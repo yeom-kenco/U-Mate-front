@@ -60,7 +60,7 @@ const ShortcutGrid = () => {
             {/* 2-2. 하단 두 개 */}
             <div className="flex-1 grid grid-cols-2 gap-4">
               <ShortcutCard
-                icon={<img src="/images/shortcut/shortcut-webchatbot.png" alt="상담봇" />}
+                icon={<img src="/images/shortcut/shortcut-webchatbot.svg" alt="상담봇" />}
                 title="상담봇과 대화하기"
                 description={'요금제부터 혜택까지\n궁금한 내용을 친절히 안내해 드려요.'}
                 route="/chatbot"

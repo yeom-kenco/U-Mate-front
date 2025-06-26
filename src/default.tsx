@@ -71,7 +71,7 @@ const Default = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh+1px)]">
+    <div className="flex flex-col min-h-[100vh]">
       {/* 헤더 */}
       <Header
         title={headerConfig.title}
