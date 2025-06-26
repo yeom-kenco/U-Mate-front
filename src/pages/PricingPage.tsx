@@ -279,7 +279,7 @@ const PricingPage = () => {
     <div className={`h-full ${loading ? 'min-h-screen' : ''} bg-background`}>
       {/* 만약 사용자가 로그인 상태가 아니라면 배너 띄우기 */}
       {(!user?.id || user?.id === null || user?.id === undefined) && <LoginBanner type="default" />}
-      <div className="h-full px-4 md:px-40">
+      <div className="h-full px-4 lg:px-20">
         {/* 필터 영역 */}
         <div className="flex items-center gap-4 py-4">
           <div className="flex gap-6 text-m">
@@ -293,7 +293,7 @@ const PricingPage = () => {
           </div>
         </div>
         {/* 요금제 카드 영역 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 min-[900px]:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 min-[1200px]:grid-cols-3 gap-4">
           {sortedPlans.slice(0, visibleCount).map((plan) => (
             <PlanCardMemo
               key={plan.PLAN_ID}

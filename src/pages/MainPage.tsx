@@ -16,8 +16,7 @@ import HeroSection from '../components/MainPage/HeroSection';
 import '../index.css';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { getPlanList, getRecommendedPlans } from '../apis/planApi';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { useScrollFadeIn } from '../hooks/useScrollFadeIn';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -143,9 +142,9 @@ const MainPage = () => {
     <div className="bg-background md:bg-horizontal">
       {/* 하얀색 배너 영역 */}
       <div className="relative">
-        <div className="bg-white rounded-b-[32px] lg:rounded-none lg:shadow-none lg:h-screen lg:pt-4 shadow-[0_8px_15px_-4px_rgba(0,0,0,0.1)] w-full lg:px-40 px-4 pt-2 pb-8 md:rounded-b-[60px]">
+        <div className="bg-white rounded-b-[32px] md:rounded-none md:shadow-none lg:h-screen md:pt-4 shadow-[0_8px_15px_-4px_rgba(0,0,0,0.1)] w-full lg:px-20 px-4 pt-2 pb-8">
           {/* lg 이상일 때: HeroSection 내용 (대표페이지용 문구와 버튼) */}
-          <div className="hidden lg:block">
+          <div className="hidden md:block">
             <HeroSection
               isLoggedIn={isLoggedIn}
               userName={user?.name}
@@ -162,7 +161,7 @@ const MainPage = () => {
             />
           </div>
           {/* lg 미만일 때: 기존 모바일 전용 내용 */}
-          <div className="lg:hidden">
+          <div className="md:hidden">
             {user?.name && myPlan ? (
               <>
                 <PlanInfoBanner
@@ -186,14 +185,14 @@ const MainPage = () => {
       </div>
 
       {/* 이벤트 영역 */}
-      <div className="pt-9 md:mt-16 lg:pt-0 lg:px-40">
+      <div className="pt-9 md:mt-16 lg:pt-0 lg:px-20">
         <EventBannerCarousel />
       </div>
 
       {/* 맞춤 요금제 (로그인한 경우에만) */}
       {user?.birthDay && (
         <section className="pt-6 md:mt-28 md:ml-0">
-          <div className="lg:px-40 md:mx-auto">
+          <div className="lg:px-20 md:mx-auto">
             <h2 className="text-lg font-semibold mb-1 lg:text-4xl lg:mb-5 px-4 lg:px-0">
               <span className="text-pink-500">{user.name}</span>님을 위한 맞춤 요금제
             </h2>
@@ -201,7 +200,8 @@ const MainPage = () => {
             {ageplans.length > 0 ? (
               <>
                 <p className="text-m mb-1 text-zinc-700 md:text-lm md:mb-6 px-4 lg:px-0">
-                  {getAgeGroup(user.birthDay)}가 선호하는 요금제를 모아봤어요
+                  <span className="font-semibold">{getAgeGroup(user.birthDay)}</span>가 선호하는
+                  요금제를 모아봤어요!
                 </p>
                 {/* 요금제 카드 좌측 shadow 가려지는 효과를 막기위한 마진과 패딩 추가(피그마 시안과 동일한 여백은 유지하도록) */}
                 <div
@@ -230,9 +230,9 @@ const MainPage = () => {
                 </p>
               </>
             ) : (
-              <div className="w-full text-center py-10 text-zinc-500 md:py-20">
-                <p className="text-m  md:text-lg font-medium">현재 맞춤 추천 요금제가 없어요.</p>
-                <p className="text-sm md:text-m mt-2">
+              <div className="lg:w-full text-center py-10 text-zinc-300 md:py-20 bg-white rounded-3xl my-4 mx-4">
+                <p className="text-m md:text-lg font-medium">현재 맞춤 추천 요금제가 없어요.</p>
+                <p className="text-sm md:text-m mt-4">
                   생년월일 정보에 맞는 요금제를 준비 중이에요.😊
                   <br />
                   잠시 후 다시 확인해주세요!
@@ -244,7 +244,7 @@ const MainPage = () => {
       )}
 
       {/* 추천 요금제 영역 */}
-      <section className="px-4 pt-2 md:mt-28 md:ml-0 md:px-20 lg:px-40">
+      <section className="px-4 pt-2 md:mt-28 md:ml-0 lg:px-20">
         <div className="md:mx-auto">
           <h2 className="text-lg font-semibold mb-2 max-[400px]:text-[20px] md:mb-7 lg:text-4xl">
             추천 요금제
@@ -297,15 +297,15 @@ const MainPage = () => {
       </section>
 
       {/* 멤버십 혜택 영역 */}
-      <div className="px-4 mx-auto pt-3 pb-16 md:mt-32 md:pb-36 md:px-20 md:w-full lg:px-40">
+      <div className="px-4 mx-auto pt-3 pb-16 md:mt-32 md:pb-36 md:w-full lg:px-20">
         <div className="bg-horizontal md:bg-none md:bg-fuchsia-100 rounded-[20px] lg:rounded-[36px] shadow-[0_0_12px_rgba(0,0,0,0.08)] pb-5">
           {/* 헤더: 타이틀 + 뱃지 */}
-          <div className="bg-white w-full p-4 rounded-t-[20px]">
+          <div className="bg-white w-full p-3 rounded-t-[20px]">
             <div className="flex items-center justify-start">
-              <h2 className="text-lg font-bold px-2 max-[400px]:text-[20px] md:text-xxl md:px-14 md:py-4">
+              <h2 className="text-lg font-bold px-2 max-[400px]:text-[20px] md:text-xxl md:pl-14 md:py-3 mt-2">
                 나의 멤버십
               </h2>
-              <div className="flex gap-2 ml-1">
+              <div className="flex gap-2 ml-1 mt-1">
                 {membershipLabel && (
                   <span className="inline-flex items-center bg-pink-500 text-white text-m max-[400px]:text-sm font-normal px-3 rounded-full leading-none h-7 md:text-lg md:h-10 md:px-5">
                     {membershipLabel}
@@ -327,22 +327,33 @@ const MainPage = () => {
             </p>
 
             <div className="relative">
-              {/* ✅ 비로그인일 경우 블러 레이어 표시 */}
+              {/* 비로그인일 경우 블러 레이어 표시 */}
               {!isLoggedIn && (
                 <>
-                  <div className="absolute inset-0 z-20 backdrop-blur-sm bg-white/60 rounded-[12px] pointer-events-none" />
-                  <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
-                    <p className="text-sm md:text-m text-zinc-700 font-semibold bg-white/80 px-4 py-2 rounded-full shadow">
+                  <div className="absolute inset-0 z-20 backdrop-blur-[8px] bg-white/60 rounded-[12px] pointer-events-none" />
+                  <div className="absolute inset-0 z-30 flex flex-col items-center justify-center pointer-events-none">
+                    <p className="text-sm md:text-m text-zinc-700 px-4 py-2">
                       로그인 후 확인할 수 있어요
                     </p>
+                    <Button
+                      variant="fill"
+                      color="pink"
+                      rounded="full"
+                      className="pointer-events-auto mt-2"
+                      onClick={() => {
+                        navigate('/login');
+                      }}
+                    >
+                      로그인
+                    </Button>
                   </div>
                 </>
               )}
 
               {/* ✅ 혜택 카드 리스트 */}
-              <div className="flex flex-col gap-4 relative z-10">
+              <div className="flex flex-col gap-4 relative z-10 lg:py-5 md:h-[450px]">
                 {/* 유튜브 프리미엄 */}
-                <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px] md:h-[100px]">
+                <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px] md:h-[140px]">
                   <img
                     src="/images/membership/youtube.png"
                     alt="유튜브"
@@ -357,7 +368,7 @@ const MainPage = () => {
                 </div>
 
                 {/* CGV */}
-                <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px] md:h-[100px]">
+                <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px] md:h-[140px]">
                   <img
                     src="/images/membership/cgv.png"
                     alt="CGV"
@@ -372,7 +383,7 @@ const MainPage = () => {
                 </div>
 
                 {/* 롯데시네마 */}
-                <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px] md:h-[100px]">
+                <div className="flex items-center bg-white px-4 py-3 rounded-[8px] h-[81px] md:h-[140px]">
                   <img
                     src="/images/membership/lotte-cinema.png"
                     alt="롯데시네마"
