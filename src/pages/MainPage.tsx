@@ -14,9 +14,8 @@ import PlanCardSmall from '../components/PlanCardSmall';
 import PlanInfoBanner from '../components/MainPage/PlanInfoBanner';
 import HeroSection from '../components/MainPage/HeroSection';
 import '../index.css';
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { useAppSelector } from '../hooks/reduxHooks';
 import { getPlanList, getRecommendedPlans } from '../apis/planApi';
-import { useScrollFadeIn } from '../hooks/useScrollFadeIn';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
 type Category = (typeof CATEGORIES)[number];

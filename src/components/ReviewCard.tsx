@@ -2,7 +2,6 @@ import { AiFillStar } from 'react-icons/ai';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { deleteReview, updateReview } from '../apis/ReviewApi';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import ConfirmModal from './Modal/ConfirmModal';
 import { useToast } from '../hooks/useToast';
@@ -39,7 +38,6 @@ const ReviewCard = ({
   const [editedContent, setEditedContent] = useState(content);
   const [editedRating, setEditedRating] = useState(rating);
   const [isOpen, setIsOpen] = useState(false);
-  const dispatch = useDispatch();
   const { showToast } = useToast();
   const handleUpdateReview = async () => {
     try {
