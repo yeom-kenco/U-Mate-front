@@ -17,7 +17,7 @@ const BenefitDropBar = ({ label, indexes, data }: BenefitDropProps) => {
   return (
     <div className="mb-6">
       <button
-        className="flex items-center justify-between w-full font-bold text-lg mb-6"
+        className="flex items-center justify-between w-full font-bold text-lg mb-6 lg:text-xl"
         onClick={toggle}
       >
         {label}

@@ -167,9 +167,9 @@ const PlanDetailPage = () => {
         discountedPrice={discounted}
       />
 
-      <section className="mt-10 ml-[5%] md:mx-52 md:mt-20">
+      <section className="mt-10 px-4 lg:px-20 md:mt-20">
         <div className="flex justify-between items-center mb-3">
-          <h2 className="text-lg font-semibold">후기로 보는 요금제 ({reviews.length})</h2>
+          <h2 className="text-m md:text-lg font-semibold">후기로 보는 요금제 ({reviews.length})</h2>
           <button
             className="text-sm text-zinc-500 flex items-center gap-1 mr-[5%] md:text-m md:mr-0 hover:text-pink-500 active:text-pink-500"
             onClick={() => setIsReviewModalOpen(true)}
@@ -211,9 +211,15 @@ const PlanDetailPage = () => {
         />
       )}
 
-      <section className="mt-10 px-6 md:px-52 mb-20 md:mt-20 md:mb-32">
-        <BenefitDropBar label="할인혜택" indexes={discountBenefitIndexes} data={benefitList} />
-        <BenefitDropBar label="기본혜택" indexes={basicBenefitIndexes} data={benefitList} />
+      <section className="mt-10 px-4 lg:px-20 mb-20 md:mt-20 md:mb-32">
+        {!benefitList ? (
+          <div>할인 혜택이 없어요</div>
+        ) : (
+          <>
+            <BenefitDropBar label="할인혜택" indexes={discountBenefitIndexes} data={benefitList} />
+            <BenefitDropBar label="기본혜택" indexes={basicBenefitIndexes} data={benefitList} />
+          </>
+        )}
       </section>
 
       <PlanBottomSheet
