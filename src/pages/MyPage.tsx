@@ -152,9 +152,9 @@ const MyPage = () => {
           </p>
           <div className="flex flex-col bg-diagonal w-full h-32 rounded-xl p-4">
             <p className="text-sm text-zinc-800">사용하고 있는 요금제 (관심 요금제)</p>
-            <p className="text-lg font-semibold text-violet-500">{myplan?.PLAN_NAME}</p>
+            <p className="text-lm font-semibold text-violet-500">{myplan?.PLAN_NAME}</p>
             <div className="flex items-end ">
-              <p className="text-lg font-semibold flex-1 pt-2">
+              <p className="text-lm font-semibold flex-1 pt-2">
                 {myplan?.MONTHLY_FEE.toLocaleString()}원
               </p>
               <div
