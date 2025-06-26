@@ -32,12 +32,12 @@ const PricingPage = () => {
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기
   const [planList, setPlanList] = useState<Plan[]>([]);
-  const [filters, setFilters] = useState<PlanFilterRequest[]>({
+  const [filters, setFilters] = useState<PlanFilterRequest>({
     ageGroup: '',
     minFee: undefined,
     maxFee: undefined,
     dataType: '상관없어요',
-    benefitIds: [],
+    benefitIds: '',
   });
   const [loading, setLoading] = useState(true);
 
@@ -137,7 +137,10 @@ const PricingPage = () => {
 
       const payload = {
         ...debouncedFilters,
-        benefitIds: filters.benefitIds.length ? filters.benefitIds.join(',') : '',
+        benefitIds:
+          filters.benefitIds && (filters.benefitIds as any).length
+            ? (filters.benefitIds as any).join(',')
+            : '',
       };
       try {
         setLoading(true);
@@ -183,7 +186,7 @@ const PricingPage = () => {
   };
 
   // 비교하기 모달 열기
-  const openCompareModal = (e: React.MouseEvent, plan) => {
+  const openCompareModal = (e: React.MouseEvent, plan: any) => {
     e.stopPropagation();
     setSelectedPlan(plan);
     console.log('비교할 요금제', plan);
@@ -199,7 +202,7 @@ const PricingPage = () => {
   };
 
   // 신청하기 모달 열기
-  const openChangeModal = (e: React.MouseEvent, plan) => {
+  const openChangeModal = (e: React.MouseEvent, plan: any) => {
     e.stopPropagation();
     setModalType('change');
     console.log('신청할 요금제', plan);
@@ -269,7 +272,7 @@ const PricingPage = () => {
   };
 
   // 요금제명 클릭 시 상세 페이지로 이동
-  const goToDetailPage = (planId) => {
+  const goToDetailPage = (planId: any) => {
     navigate(`/plans/${planId}`);
   };
 
@@ -358,8 +361,8 @@ const PricingPage = () => {
         )}
         {modalType === 'filter' && isOpen && (
           <FilterModal
-            filters={filters} // 필터된 상태 관리
-            onChange={setFilters} // 변경 핸들러
+            filters={filters as any} // 필터된 상태 관리
+            onChange={setFilters as any} // 변경 핸들러
             onReset={handleResetFilter} // 초기화
             onClose={closeFilterModal}
             onApply={handleSelect}

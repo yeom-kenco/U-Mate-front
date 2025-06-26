@@ -14,9 +14,8 @@ import PlanCardSmall from '../components/PlanCardSmall';
 import PlanInfoBanner from '../components/MainPage/PlanInfoBanner';
 import HeroSection from '../components/MainPage/HeroSection';
 import '../index.css';
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { useAppSelector } from '../hooks/reduxHooks';
 import { getPlanList, getRecommendedPlans } from '../apis/planApi';
-import { useScrollFadeIn } from '../hooks/useScrollFadeIn';
 
 const CATEGORIES = ['청년', '청소년', '시니어', '일반'] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -68,9 +67,7 @@ const MainPage = () => {
     const fetchAllPlans = async () => {
       try {
         const res = await getPlanList();
-        if (res.success) {
-          setAllPlans(res.data);
-        }
+        setAllPlans(res?.data);
       } catch (err) {
         console.error('요금제 목록 불러오기 실패:', err);
       }
@@ -88,9 +85,19 @@ const MainPage = () => {
         const birthday = user?.birthDay?.replace(/-/g, '');
         console.log('연령대별 birthday', birthday.substring(0, 8));
         const res = await getRecommendedPlans(birthday.substring(0, 8));
-        if (res.success) {
-          setAgePlans(res.data);
-        }
+        const convertedPlans = res.map((plan) => ({
+          planId: plan.PLAN_ID,
+          name: plan.PLAN_NAME,
+          monthlyFee: plan.MONTHLY_FEE,
+          dataInfo: plan.DATA_INFO,
+          shareData: plan.SHARE_DATA,
+          avgRating:
+            typeof plan.RECEIVED_STAR_COUNT === 'string'
+              ? parseFloat(plan.RECEIVED_STAR_COUNT)
+              : plan.RECEIVED_STAR_COUNT,
+          reviewCount: plan.REVIEW_USER_COUNT,
+        }));
+        setAgePlans(convertedPlans);
       } catch (err) {
         console.error('추천 요금제 불러오기 실패:', err);
       }
@@ -134,7 +141,6 @@ const MainPage = () => {
   // 2. 표기용 이름 (우측 뱃지에 보일 텍스트)
   const membershipLabel = membershipBadge; // 멤버십은 항상 표기
   const showYouth = isYouthPlan; // 유쓰는 해당할 경우만 표시
-  const showMembership = Boolean(membershipLabel || showYouth);
 
   const filteredPlans = filterPlansByCategory(selectedCategory, allPlans);
   const isLoggedIn = Boolean(user?.name && user?.plan && allPlans.length > 0 && myPlan);

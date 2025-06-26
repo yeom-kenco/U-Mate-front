@@ -410,7 +410,7 @@ const RegisterPage = () => {
       </Button>
 
       <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="700px">
-        <PlanList onSelect={handlePlanSelect} selected={isPlan} plans={plans} />
+        <PlanList onSelect={handlePlanSelect} selected={isPlan} plans={plans as any} />
       </BottomSheet>
     </form>
   );

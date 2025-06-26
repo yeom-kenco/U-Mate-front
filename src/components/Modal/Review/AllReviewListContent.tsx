@@ -75,6 +75,7 @@ const AllReviewListContent = ({ reviews }: AllReviewListContentProps) => {
           {reviews.filter(filterReviews).map((review) => (
             <ReviewCard
               key={review.REVIEW_ID}
+              reviewId={review.REVIEW_ID}
               writerName={review.USER_NAME}
               writerAge={`${review.USER_BIRTHDAY}대`}
               content={review.REVIEW_CONTENT}

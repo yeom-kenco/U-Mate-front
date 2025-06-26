@@ -22,7 +22,7 @@ import fourthBear from '../assets/onBoarding_4_bear.svg';
 import fourthPhone from '../assets/onBoarding_4_phone.webp';
 
 type OnboardingSlide = {
-  title: JSX.Element;
+  title: React.ReactElement;
   phoneImg: string;
   bearImg: string;
   slideImg?: string;
@@ -98,13 +98,13 @@ const onboardingSlides: OnboardingSlide[] = [
 ];
 
 const OnBoarding = () => {
-  const swiperRef = useRef(null);
+  const swiperRef = useRef<any>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
 
   const handleNextClick = () => {
     if (swiperRef.current) {
-      const swiper = swiperRef.current;
+      const swiper = swiperRef.current as any;
       if (swiper.activeIndex === swiper.slides.length - 1) {
         // 마지막 슬라이드 → 페이지 이동
         navigate('/');
@@ -127,7 +127,7 @@ const OnBoarding = () => {
           <div className="custom-pagination flex justify-center mt-8" />
 
           <Swiper
-            onSwiper={(swiper) => {
+            onSwiper={(swiper: any) => {
               swiperRef.current = swiper;
             }}
             onSlideChange={(swiper) => {

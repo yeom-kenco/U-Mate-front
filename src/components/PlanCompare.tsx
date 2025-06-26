@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import DropdownSelector from './DropdownSelector';
 import BottomSheet from './BottomSheet/BottomSheet';
 import PlanList from './BottomSheet/PlanList';
-import { getPlanDetail } from '../apis/planApi';
+
 import { formatCurrency } from '../utils/formatNumber';
 import { Link } from 'react-router-dom';
 

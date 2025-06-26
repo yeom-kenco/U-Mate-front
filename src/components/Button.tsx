@@ -6,7 +6,7 @@ type ButtonProps = {
   color?: 'pink' | 'gray' | 'violet' | 'black' | 'white';
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
   size?: 's' | 'sm' | 'm' | 'lg' | 'xl';
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
@@ -71,7 +71,8 @@ const Button = ({
   const disabledStyle = 'bg-zinc-200 text-white cursor-not-allowed pointer-events-none';
 
   // 최종 스타일 조합
-  const variantStyle = variant === 'special' ? specialStyle : variantMap[variant]?.[color] || '';
+  const variantStyle =
+    variant === 'special' ? specialStyle : (variantMap[variant] as any)?.[color] || '';
 
   const composedClassName = [
     'inline-flex items-center justify-center font-medium transition',

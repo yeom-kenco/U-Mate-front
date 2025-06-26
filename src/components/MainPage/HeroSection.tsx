@@ -1,7 +1,7 @@
 // components/HeroSection.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PlanInfoBanner from './PlanInfoBanner';
+
 import { FiChevronRight } from 'react-icons/fi';
 
 interface HeroSectionProps {

@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { useToast } from '../hooks/useToast';
 
 // 📌사용법
@@ -26,7 +26,6 @@ interface ReviewTextareaProps {
 const ReviewTextarea = ({
   maxLength = 100,
   minLength = 10,
-  placeholder = '리뷰를 작성해주세요',
   value = '',
   width,
   onChange,

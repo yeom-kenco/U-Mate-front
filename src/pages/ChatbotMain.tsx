@@ -93,7 +93,9 @@ export default function ChatbotMain() {
             localStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
           }
         }
-      } catch {}
+      } catch (error) {
+        console.error(error);
+      }
     };
   };
   const connect = (emailForWS?: string) => {

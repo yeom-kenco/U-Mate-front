@@ -11,7 +11,7 @@ import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
 import { updateUserPlan } from '../store/userSlice';
-import axiosInst from '../apis/axiosInst';
+
 import { ToastContext } from '../context/ToastContext';
 import CompareBottomBar from '../components/BottomSheet/CompareBottomBar';
 import { Plan, PlanDetail } from '../types/plan';
@@ -52,9 +52,14 @@ const Compare = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       const response = await getPlanList();
-      if (response.success) {
-        setPlans(response.data);
-      }
+      const convertedPlans = response.data.map((plan) => ({
+        ...plan,
+        RECEIVED_STAR_COUNT:
+          typeof plan.RECEIVED_STAR_COUNT === 'string'
+            ? plan.RECEIVED_STAR_COUNT
+            : plan.RECEIVED_STAR_COUNT.toString(),
+      }));
+      setPlans(convertedPlans as unknown as Plan[]);
     };
     fetchPlans();
   }, []);
@@ -63,7 +68,10 @@ const Compare = () => {
     const fetchDetail = async () => {
       const response = await getPlanDetail(plan1Id);
       if (response.success) {
-        setPlan1Detail({ ...response.data.plan, benefits: response.data.benefits });
+        setPlan1Detail({
+          ...response.data.plan,
+          benefits: response.data.benefits,
+        } as unknown as PlanDetail);
       }
     };
     if (plan1Id) fetchDetail();
@@ -73,7 +81,10 @@ const Compare = () => {
     const fetchDetail = async () => {
       const response = await getPlanDetail(plan2Id);
       if (response.success) {
-        setPlan2Detail({ ...response.data.plan, benefits: response.data.benefits });
+        setPlan2Detail({
+          ...response.data.plan,
+          benefits: response.data.benefits,
+        } as unknown as PlanDetail);
       }
     };
     if (plan2Id) fetchDetail();
@@ -106,14 +117,13 @@ const Compare = () => {
         newPlanId: selectedPlanId,
       });
 
-      const data = res.data;
-      if (data.success) {
+      if (res.success) {
         dispatch(updateUserPlan(selectedPlanId));
         showToast('해당 요금제가 변경되었습니다.', 'violet', 'bottom-center', {
           bottom: '220px',
         });
       } else {
-        showToast(data.message || '신청 실패', 'error', 'bottom-center', {
+        showToast(res.message || '신청 실패', 'error', 'bottom-center', {
           bottom: '220px',
         });
       }
@@ -135,8 +145,8 @@ const Compare = () => {
           <div className="w-1/2 flex-col items-stretch">
             <PlanCompare
               count={1}
-              plans={plans}
-              planDetail={plan1Detail}
+              plans={plans as unknown as any[]}
+              planDetail={plan1Detail as unknown as any}
               comparePlan={undefined}
               setPlanId={setPlan1Id}
             />
@@ -144,9 +154,9 @@ const Compare = () => {
           <div className="w-1/2 flex-col items-stretch">
             <PlanCompare
               count={2}
-              plans={plans}
-              planDetail={plan2Detail}
-              comparePlan={plan1Detail}
+              plans={plans as unknown as any[]}
+              planDetail={plan2Detail as unknown as any}
+              comparePlan={plan1Detail as unknown as any}
               setPlanId={setPlan2Id}
             />
           </div>

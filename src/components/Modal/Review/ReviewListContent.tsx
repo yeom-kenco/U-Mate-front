@@ -10,7 +10,7 @@ type ReviewListContentProps = {
   children: React.ReactNode;
 };
 
-const ReviewListContent = ({ children }: ReviewListContentProps) => {
+const ReviewListContent = (props: ReviewListContentProps) => {
   const user = useSelector((state: RootState) => state.user);
   const [reviews, setReviews] = useState<Review[]>([]);
 

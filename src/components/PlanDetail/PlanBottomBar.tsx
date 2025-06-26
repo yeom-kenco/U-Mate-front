@@ -17,7 +17,7 @@ interface PlanBottomBarProps {
   discountedPrice: number;
 }
 
-const PlanBottomBar = ({ planId, planName, price, discountedPrice }: PlanBottomBarProps) => {
+const PlanBottomBar = ({ planId, price, discountedPrice }: PlanBottomBarProps) => {
   const navigate = useNavigate();
   const { showToast } = useContext(ToastContext)!;
   const [isModalOpen, setIsModalOpen] = useState(false);
