@@ -10,6 +10,7 @@ import { useToast } from './hooks/useToast';
 import { formatToKST } from './utils/formatDate';
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks';
 import { Loading } from './components/Loading';
+import ScrollToTop from './components/scrollToTop';
 
 const Default = () => {
   const [headerConfig, setHeaderConfig] = useState({
@@ -85,6 +86,7 @@ const Default = () => {
 
   return (
     <div className="flex flex-col min-h-[100vh]">
+      <ScrollToTop />
       {/* 헤더 */}
       <Header
         title={headerConfig.title}
