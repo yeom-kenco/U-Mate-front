@@ -1,28 +1,12 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Button from '../Button';
+import { Plan } from '../../types/plan';
 
 interface PlanListProps {
   onSelect: (id: number) => void;
   selected: number;
   plans: Plan[];
-}
-
-interface Plan {
-  PLAN_ID: number;
-  PLAN_NAME: string;
-  MONTHLY_FEE: number;
-  CALL_INFO: string;
-  CALL_INFO_DETAIL: string;
-  DATA_INFO: string;
-  DATA_INFO_DETAIL: string;
-  SHARE_DATA: string;
-  SMS_INFO: string;
-  USER_COUNT: number;
-  RECEIVED_STAR_COUNT: string;
-  REVIEW_USER_COUNT: number;
-  AGE_GROUP: string;
-  CATEGORY: string;
 }
 
 const PlanList: React.FC<PlanListProps> = ({ onSelect, selected, plans }) => {

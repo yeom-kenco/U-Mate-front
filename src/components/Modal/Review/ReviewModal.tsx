@@ -30,7 +30,6 @@ type ReviewModalProps = {
   planPrice?: number;
   initialContent?: string;
   initialRating?: number;
-  reviewId?: number;
 };
 
 const ReviewModal = ({
@@ -42,7 +41,6 @@ const ReviewModal = ({
   reviews,
   initialContent,
   initialRating,
-  reviewId,
 }: ReviewModalProps) => {
   const [content, setContent] = useState(initialContent ?? '');
   const [rating, setRating] = useState(initialRating ?? 0);

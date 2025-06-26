@@ -267,7 +267,7 @@ export default function ChatbotMain() {
           <div className="fixed bottom-20 inset-x-0 px-4 z-30">
             <BottomSheet isOpen height="auto" alignRight onClose={() => setShowResearch(false)}>
               <Research
-                onSubmit={(rating, feedback) => {
+                onSubmit={() => {
                   setSurveyDone(true);
                   setShowResearch(false);
                 }}

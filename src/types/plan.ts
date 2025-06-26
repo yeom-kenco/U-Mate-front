@@ -45,6 +45,7 @@ export interface Plan {
   RECEIVED_STAR_COUNT: number;
   REVIEW_USER_COUNT: number;
   AGE_GROUP: string;
+  CATEGORY: string;
 }
 
 export interface PlanDetail extends Plan {

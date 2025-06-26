@@ -5,22 +5,7 @@ import PlanList from './BottomSheet/PlanList';
 
 import { formatCurrency } from '../utils/formatNumber';
 import { Link } from 'react-router-dom';
-
-interface Plan {
-  PLAN_ID: number;
-  PLAN_NAME: string;
-  MONTHLY_FEE: number;
-  CALL_INFO: string;
-  CALL_INFO_DETAIL: string;
-  DATA_INFO: string;
-  DATA_INFO_DETAIL: string;
-  SHARE_DATA: string;
-  SMS_INFO: string;
-  USER_COUNT: number;
-  RECEIVED_STAR_COUNT: string;
-  REVIEW_USER_COUNT: number;
-  AGE_GROUP: string;
-}
+import { Plan } from '../types/plan';
 
 interface PlanDetail {
   PLAN_ID: number;
