@@ -14,7 +14,6 @@ import PlanCardSmall from '../components/PlanCardSmall';
 import PlanInfoBanner from '../components/MainPage/PlanInfoBanner';
 import HeroSection from '../components/MainPage/HeroSection';
 import '../index.css';
-import { useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { getPlanList, getRecommendedPlans } from '../apis/planApi';
 
@@ -45,10 +44,7 @@ type RecommendedPlan = {
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
-  const isLogin = useAppSelector((state) => state.user.isLogin);
-
   const scrollRef = useHorizontalScroll();
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [allPlans, setAllPlans] = useState<PlanListItem[]>([]);
