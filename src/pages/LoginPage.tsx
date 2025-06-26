@@ -74,7 +74,7 @@ const LoginPage = () => {
       navigate('/');
     } catch (err: any) {
       console.log(err);
-      //showToast(err.response.data.error, 'error');
+      showToast(err.request.data.error, 'error');
     }
   };
 
