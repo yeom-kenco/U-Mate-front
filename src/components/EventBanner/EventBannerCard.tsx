@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface EventBannerCardProps {
   imageSrc: string;
   alt?: string;

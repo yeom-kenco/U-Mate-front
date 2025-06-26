@@ -71,7 +71,12 @@ const Button = ({
   const disabledStyle = 'bg-zinc-200 text-white cursor-not-allowed pointer-events-none';
 
   // 최종 스타일 조합
-  const variantStyle = variant === 'special' ? specialStyle : variantMap[variant]?.[color] || '';
+  const variantStyle =
+    variant === 'special'
+      ? specialStyle
+      : (variantMap[variant as keyof typeof variantMap]?.[
+          color as keyof (typeof variantMap)[typeof variant]
+        ] ?? '');
 
   const composedClassName = [
     'inline-flex items-center justify-center font-medium transition',
