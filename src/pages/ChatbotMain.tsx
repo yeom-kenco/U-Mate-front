@@ -9,148 +9,183 @@ import SolutionList from '../components/BottomSheet/SolutionList';
 import LoginBanner from '../components/LoginBanner';
 import ResearchBanner from '../components/ResearchBanner';
 import Research from '../components/BottomSheet/Research';
+import { useAppSelector } from '../hooks/reduxHooks';
 
-type Message = {
-  type: 'user' | 'bot';
-  content: string;
-  time?: string;
-};
-
-type GuestEntry = {
-  MESSAGE_TYPE: 'user' | 'assistant';
-  MESSAGE: string;
-  CREATED_AT: string;
-};
+/* 타입 선언 */
+type Message = { type: 'user' | 'bot'; content: string; time?: string };
+type GuestEntry = { MESSAGE_TYPE: 'user' | 'assistant'; MESSAGE: string; CREATED_AT: string };
 
 export default function ChatbotMain() {
+  /* 헤더 */
   const setHeaderConfig = useOutletContext<(c: HeaderProps) => void>();
   useEffect(() => {
-    setHeaderConfig({
-      title: 'U:M 상담챗봇',
-      showBackButton: true,
-      showSearch: true,
-    });
+    setHeaderConfig({ title: 'U:M 상담챗봇', showBackButton: true, showSearch: true });
   }, [setHeaderConfig]);
 
+  /* 전역 상태 */
+  const { email: userEmail } = useAppSelector((state) => {
+    return state.user;
+  });
+
+  /* 로컬 상태 */
   const [email, setEmail] = useState<string>('');
-  const [connected, setConnected] = useState<boolean>(false);
+  const [connected, setConnected] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState<string>('');
+  const [input, setInput] = useState('');
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showResearch, setShowResearch] = useState(false);
+  const [surveyDone, setSurveyDone] = useState(
+    () => localStorage.getItem('surveySubmitted') === 'true'
+  );
+  const isConnecting = useRef(false);
 
   const ws = useRef<WebSocket | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
-
   const guestHistoryRef = useRef<GuestEntry[]>(
     JSON.parse(localStorage.getItem('guestChat') || '[]')
   );
 
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  const timeFmt = (d = new Date()) =>
+    d.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false });
 
-  const formatTime = (date: Date) =>
-    date.toLocaleTimeString('ko-KR', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-
-  const pushMsg = (type: Message['type'], content: string, time?: string) => {
+  const pushMsg = (type: Message['type'], content: string, time = timeFmt()) =>
     setMessages((m) => [...m, { type, content, time }]);
-  };
 
-  const connect = () => {
-    if (email && !email.includes('@')) {
-      alert('올바른 이메일을 입력해주세요');
-      return;
-    }
+  /* ───────────────── WebSocket open/close ───────────────── */
+  const openWS = (addr: string) => {
+    ws.current = new WebSocket(addr);
 
-    if (!email && guestHistoryRef.current.length) {
-      guestHistoryRef.current.forEach((entry) => {
-        const from: Message['type'] = entry.MESSAGE_TYPE === 'assistant' ? 'bot' : 'user';
-        pushMsg(from, entry.MESSAGE, formatTime(new Date(entry.CREATED_AT)));
-      });
-    }
-
-    const query = email ? `email=${encodeURIComponent(email)}&history=true` : 'history=false';
-    ws.current = new WebSocket(`wss://seungwoo.i234.me:3333/realtime-chat?${query}`);
-
-    ws.current.onopen = () => console.log('WebSocket 연결됨');
-    ws.current.onmessage = (ev) => {
-      let data;
-      try {
-        data = JSON.parse(ev.data);
-      } catch {
-        return;
-      }
-      if (data.type === 'text_done') {
-        pushMsg('bot', data.text, formatTime(new Date()));
-        setIsLoading(false);
-        if (!email) {
-          const entry: GuestEntry = {
-            MESSAGE_TYPE: 'assistant',
-            MESSAGE: data.text,
-            CREATED_AT: new Date().toISOString(),
-          };
-          guestHistoryRef.current.push(entry);
-          localStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
-        }
-      }
+    ws.current.onopen = () => {
+      setConnected(true);
     };
 
-    ws.current.onclose = () => console.log('WebSocket 연결 해제');
-    ws.current.onerror = (e) => console.error('WebSocket 에러', e);
+    ws.current.onclose = () => {
+      setConnected(false);
+    };
 
-    console.log(email ? `${email} 연결 시도중…` : '게스트 모드 연결 시도중…');
-    setConnected(true);
+    ws.current.onerror = (e) => console.error('WS error', e);
+
+    ws.current.onmessage = (ev) => {
+      try {
+        const data = JSON.parse(ev.data);
+
+        /* 최초 connection : 서버가 보낸 chatHistory 렌더링 */
+        if (data.type === 'connection' && Array.isArray(data.chatHistory)) {
+          data.chatHistory.forEach((row: any) => {
+            const from: Message['type'] = row.MESSAGE_TYPE === 'user' ? 'user' : 'bot';
+            pushMsg(from, row.MESSAGE, timeFmt(new Date(row.CREATE_AT)));
+          });
+          return;
+        }
+
+        /* AI 답변 완료 */
+        if (data.type === 'text_done') {
+          pushMsg('bot', data.text);
+          setIsLoading(false);
+
+          // 게스트일 때만 localStorage 저장
+          if (!email) {
+            guestHistoryRef.current.push({
+              MESSAGE_TYPE: 'assistant',
+              MESSAGE: data.text,
+              CREATED_AT: new Date().toISOString(),
+            });
+            localStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
+          }
+        }
+      } catch {}
+    };
+  };
+  const connect = (emailForWS?: string) => {
+    if (isConnecting.current || (ws.current && ws.current.readyState < WebSocket.CLOSING)) {
+      return;
+    }
+    isConnecting.current = true;
+    setConnected(false);
+
+    const usedEmail = emailForWS ?? '';
+    const query = usedEmail
+      ? `email=${encodeURIComponent(usedEmail)}&history=true`
+      : 'history=false';
+    const url = `wss://seungwoo.i234.me:3333/realtime-chat?${query}`;
+
+    // 게스트: localStorage 히스토리 먼저 출력
+    if (!usedEmail && guestHistoryRef.current.length) {
+      guestHistoryRef.current.forEach(({ MESSAGE_TYPE, MESSAGE, CREATED_AT }) =>
+        pushMsg(
+          MESSAGE_TYPE === 'assistant' ? 'bot' : 'user',
+          MESSAGE,
+          timeFmt(new Date(CREATED_AT))
+        )
+      );
+    }
+
+    openWS(url);
   };
 
+  /* 로그인·로그아웃 / email 변경 감시 */
+  useEffect(() => {
+    // 로그인
+    if (userEmail) {
+      setEmail(userEmail);
+      if (ws.current?.readyState === WebSocket.OPEN) ws.current.close(); // ①
+      connect(userEmail); // ②
+    }
+    // 게스트
+    else {
+      if (ws.current?.readyState === WebSocket.OPEN) ws.current.close();
+      connect();
+    }
+  }, [userEmail]);
+
+  /* 최신 메시지 스크롤 */
+  useEffect(() => endRef.current?.scrollIntoView({ behavior: 'smooth' }), [messages]);
+
+  /*  메시지 전송  */
   const send = () => {
     if (!input.trim() || !connected) return;
-    const now = formatTime(new Date());
-    pushMsg('user', input.trim(), now);
+
+    const trimmed = input.trim();
+    pushMsg('user', trimmed);
     setIsLoading(true);
 
+    // 게스트 localStorage 저장
     if (!email) {
-      const entry: GuestEntry = {
+      guestHistoryRef.current.push({
         MESSAGE_TYPE: 'user',
-        MESSAGE: input.trim(),
+        MESSAGE: trimmed,
         CREATED_AT: new Date().toISOString(),
-      };
-      guestHistoryRef.current.push(entry);
+      });
       localStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
     }
 
-    ws.current?.send(JSON.stringify({ type: 'user_message', message: input.trim() }));
+    const payload = email
+      ? { type: 'user_message', message: trimmed, email }
+      : { type: 'user_message', message: trimmed };
+
+    ws.current?.send(JSON.stringify(payload));
     setInput('');
   };
 
-  const handleQuestionClick = (q: string) => {
+  const onPickQ = (q: string) => {
     setInput(q);
     send();
   };
 
-  const [surveyDone, setSurveyDone] = useState<boolean>(
-    () => localStorage.getItem('surveySubmitted') === 'true'
-  );
-
   return (
-    /* 화면 전체 래퍼 */
     <div
       className="w-full md:flex md:flex-row overflow-hidden"
-      /*  header(h-16=4rem) 만큼 높이 보정  */
       style={{ height: 'calc(100vh - 4rem)' }}
     >
-      {/* 왼쪽 그라데이션 영역 */}
+      {/* 좌측 배경 */}
       <aside
-        className="hidden md:flex md:w-1/2 h-full flex-none items-center justify-center"
+        className="hidden md:flex md:w-1/2 h-full items-center justify-center"
         style={{ background: 'linear-gradient(105deg,#BA0087 9.18%,#33059C 59.8%)' }}
       >
         <h2 className="font-bold leading-tight text-white text-[32px] lg:text-[48px] lg:leading-[64px] px-10">
-          요금제, 고민하지 말고 <br />
+          요금제, 고민하지 말고
+          <br />
           <span className="text-pink-400">
             U:<span className="text-white">Mate</span>
           </span>{' '}
@@ -158,55 +193,29 @@ export default function ChatbotMain() {
         </h2>
       </aside>
 
-      {/* ② – 오른쪽 : 챗봇 UI */}
+      {/* 우측 챗봇 */}
       <div className="flex flex-col h-full flex-1 bg-background overflow-hidden">
-        {/* 로그인/리서치 배너 */}
-        <LoginBanner type="chatbot" />
+        {!userEmail && <LoginBanner type="chatbot" />}
         {!surveyDone && <ResearchBanner onSurveyClick={() => setShowResearch(true)} />}
-
-        {/* 이메일 입력 영역 (연결 전) */}
-        {!connected && (
-          <div className="p-4 bg-purple-600 border-b border-gray-200">
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="이메일 입력 (빈칸=게스트)"
-                className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-xl focus:border-blue-500 outline-none"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && connect()}
-              />
-              <button
-                onClick={connect}
-                className="px-5 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600"
-              >
-                연결하기
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* 채팅창 */}
         <div className="flex-grow overflow-y-auto w-full px-0 pb-32 space-y-4">
-          <ChatBubble from="bot" variant="first" time={formatTime(new Date())}>
-            <FirstMessage onQuestionClick={handleQuestionClick} />
+          <ChatBubble from="bot" variant="first" time={timeFmt()}>
+            <FirstMessage onQuestionClick={onPickQ} />
           </ChatBubble>
+
           {messages.map((m, i) => (
-            <ChatBubble key={i} from={m.type} message={m.content} time={m.time ?? ''} />
+            <ChatBubble key={i} from={m.type} message={m.content} time={m.time} />
           ))}
-          {isLoading && <ChatBubble from="bot" message="..." time={formatTime(new Date())} />}
+
+          {isLoading && <ChatBubble from="bot" message="..." time={timeFmt()} />}
           <div ref={endRef} />
         </div>
 
-        {/* 솔루션 리스트 BottomSheet */}
+        {/* 빠른 질문 BottomSheet */}
         {showBottomSheet && (
-          <div className="fixed bottom-20 left-0 right-0 flex justify-end px-4 z-20">
-            <BottomSheet
-              isOpen={showBottomSheet}
-              onClose={() => setShowBottomSheet(false)}
-              height="auto"
-              alignRight={true}
-            >
+          <div className="fixed bottom-20 inset-x-0 flex justify-end px-4 z-20">
+            <BottomSheet isOpen height="auto" alignRight onClose={() => setShowBottomSheet(false)}>
               <SolutionList
                 onSelect={(q) => {
                   setInput(q);
@@ -233,16 +242,11 @@ export default function ChatbotMain() {
 
         {/* 리서치 BottomSheet */}
         {showResearch && (
-          <div className="fixed bottom-20 left-0 right-0 flex justify-end px-4 z-20">
-            <BottomSheet
-              isOpen={showResearch}
-              onClose={() => setShowResearch(false)}
-              height="auto"
-              alignRight
-            >
+          <div className="fixed bottom-20 inset-x-0 flex justify-end px-4 z-20">
+            <BottomSheet isOpen height="auto" alignRight onClose={() => setShowResearch(false)}>
               <Research
                 onSubmit={(rating, feedback) => {
-                  console.log('제출됨:', rating, feedback);
+                  console.log('리서치 제출:', rating, feedback);
                   setSurveyDone(true);
                   setShowResearch(false);
                 }}
