@@ -57,7 +57,7 @@ const ReviewModal = ({
           </button>
         </div>
 
-        {type === 'reviewList' && <ReviewListContent>{children}</ReviewListContent>}
+        {type === 'reviewList' && <ReviewListContent />}
         {type === 'allReviewList' && <AllReviewListContent reviews={reviews ?? []} />}
         {(type === 'reviewWrite' || type === 'reviewEdit') && (
           <ReviewWriteContent

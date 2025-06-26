@@ -1,4 +1,4 @@
-import { Plan } from '../apis/PlansApi';
+import { Plan } from '../types/plan';
 
 export const sortPlans = (plans: Plan[], criteria: string): Plan[] => {
   switch (criteria) {

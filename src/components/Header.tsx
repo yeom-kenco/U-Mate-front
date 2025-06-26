@@ -4,7 +4,7 @@ import { FiUser, FiMenu } from 'react-icons/fi';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import { IoMdClose } from 'react-icons/io';
 import Button from './Button';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout } from '../apis/auth';
 import { useToast } from '../hooks/useToast';
 import { clearUser } from '../store/userSlice';
@@ -22,7 +22,6 @@ const Header = ({
   showBackButton = false,
   showSearch = false,
   title = '대표페이지',
-  isLoggedIn = false,
   hasShadow = false,
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -67,9 +66,6 @@ const Header = ({
 
   const NavigationLinks = ({ isLoggedIn }: { isLoggedIn?: boolean }) => (
     <>
-      <Link to="/shortcut" className={commonLinkStyle}>
-        바로가기페이지
-      </Link>
       <Link to="/plans" className={commonLinkStyle}>
         요금제 찾기
       </Link>

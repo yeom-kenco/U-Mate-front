@@ -1,4 +1,3 @@
-// EventBannerCarousel.tsx
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -7,6 +6,10 @@ import './../../index.css';
 import EventBannerCard from './EventBannerCard';
 
 const images = [
+  '/images/eventBanner/event-1.png',
+  '/images/eventBanner/event-2.png',
+  '/images/eventBanner/event-3.png',
+  '/images/eventBanner/event-4.png',
   '/images/eventBanner/event-1.png',
   '/images/eventBanner/event-2.png',
   '/images/eventBanner/event-3.png',

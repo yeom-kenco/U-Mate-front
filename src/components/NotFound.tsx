@@ -9,7 +9,7 @@ const NotFound = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-full bg-white h-screen px-4">
+    <div className="flex flex-col justify-center items-center bg-white h-screen px-4">
       <div className="flex justify-center space-x-[-40px] max-[768px]:space-x-[-30px]">
         <h1 className="text-[25vw] text-pink-500 font-bold leading-none max-[768px]:text-[180px] mt-4 max-[350px]:text-[150px]">
           4

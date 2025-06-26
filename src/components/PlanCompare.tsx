@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import DropdownSelector from './DropdownSelector';
 import BottomSheet from './BottomSheet/BottomSheet';
 import PlanList from './BottomSheet/PlanList';
-import { getPlanDetail } from '../apis/planApi';
+
 import { formatCurrency } from '../utils/formatNumber';
 import { Link } from 'react-router-dom';
 
@@ -51,12 +51,14 @@ const PlanCompare = ({
   planDetail,
   comparePlan,
   setPlanId,
+  planId,
 }: {
   count: number;
   plans: Plan[];
   planDetail: PlanDetail | undefined;
   comparePlan: PlanDetail | undefined;
   setPlanId: (id: number) => void;
+  planId: number;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handlePlanClick = () => {
@@ -177,7 +179,7 @@ const PlanCompare = ({
             setIsOpen(false);
             setPlanId(id);
           }}
-          selected={0}
+          selected={planId}
           plans={plans || []}
         />
       </BottomSheet>

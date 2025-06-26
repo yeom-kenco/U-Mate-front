@@ -173,7 +173,7 @@ const RegisterPage = () => {
       phoneNumber: formData.phone,
       email: formData.email,
       password: formData.password,
-      phonePlan: isPlan,
+      phonePlan: isPlan === 0 ? 4 : isPlan,
     };
     try {
       SetIsSubmmited(true);
@@ -410,7 +410,7 @@ const RegisterPage = () => {
       </Button>
 
       <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="700px">
-        <PlanList onSelect={handlePlanSelect} selected={isPlan} plans={plans} />
+        <PlanList onSelect={handlePlanSelect} selected={isPlan} plans={plans as any} />
       </BottomSheet>
     </form>
   );

@@ -48,7 +48,6 @@ body {
   margin: auto;
   font-size: inherit; /* 16px */
   overflow-x: hidden;
-  max-width: 1800px;
 }
 
 /*스크롤바 안보이게 */
@@ -76,4 +75,18 @@ body {
 }
 .swiper-pagination-bullet-active {
   background-color: #ec4899 !important; /* pink-500 */
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.floating {
+  animation: float 2.5s ease-in-out infinite;
 }

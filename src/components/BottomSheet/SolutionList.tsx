@@ -16,7 +16,7 @@ const solutions = [
   '실제 상담원 연결하기',
 ]; // 예시 확장
 
-const SolutionList: React.FC<PlanListProps> = ({ onSelect, selected, onSendMessage }) => {
+const SolutionList: React.FC<PlanListProps> = ({ onSelect }) => {
   return (
     <ul className="flex flex-wrap px-3 py-2 gap-2 ">
       <p className="font-bold text-lg mb-4 w-full">원하는 질문을 찾아보세요</p>

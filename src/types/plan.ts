@@ -42,7 +42,7 @@ export interface Plan {
   SHARE_DATA: string;
   SMS_INFO: string;
   USER_COUNT: number;
-  RECEIVED_STAR_COUNT: string;
+  RECEIVED_STAR_COUNT: number;
   REVIEW_USER_COUNT: number;
   AGE_GROUP: string;
 }
@@ -56,7 +56,15 @@ export interface PlanFilterRequest {
   minFee?: number;
   maxFee?: number;
   dataType?: string;
-  benefitIds?: string; // "1,2,3" 형식
+  benefitIds?: string[]; // "1,2,3" 형식
+}
+
+export interface FilteredPlanPayload {
+  ageGroup?: string;
+  minFee?: number;
+  maxFee?: number;
+  dataType?: string;
+  benefitIds?: string; // 문자열로 변환된 값
 }
 
 export interface UpdatePlanRequest {

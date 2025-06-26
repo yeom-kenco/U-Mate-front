@@ -3,15 +3,10 @@ import { benefitCards } from '../../data/benefitsCard';
 import BaseModal from './BaseModal';
 import Button from '../Button';
 import { IoCloseOutline } from 'react-icons/io5';
+import { PlanFilterRequest } from '../../types/plan';
 
 type FilterModalProps = {
-  filters: {
-    ageGroup?: string;
-    minFee?: number;
-    maxFee?: number;
-    dataType?: string;
-    benefitIds?: number[];
-  };
+  filters: PlanFilterRequest;
   onChange: (newFilters: FilterModalProps['filters']) => void;
   onApply: () => void;
   onReset: () => void;
@@ -145,26 +140,26 @@ const FilterModal = ({
               <div className="grid grid-cols-3 gap-4">
                 {benefitCards.map((card) => {
                   const selectedIds = filters.benefitIds || [];
-                  const isSelected = selectedIds.includes(card.id);
+                  const isSelected = selectedIds.includes(String(card.id));
 
                   const handleClick = () => {
-                    let updated: number[] = [];
+                    let updated: string[] = [];
 
-                    if (card.id === 15) {
-                      updated = isSelected ? [] : [15];
+                    if (String(card.id) === '15') {
+                      updated = isSelected ? [] : ['15'];
                     } else {
-                      if (selectedIds.includes(15)) {
-                        updated = [card.id];
+                      if (selectedIds.includes('15')) {
+                        updated = [String(card.id)];
                       } else if (isSelected) {
-                        updated = selectedIds.filter((id) => id !== card.id);
+                        updated = selectedIds.filter((id) => id !== String(card.id));
                       } else {
-                        updated = [...selectedIds, card.id];
+                        updated = [...selectedIds, String(card.id)];
                       }
                     }
 
                     onChange({
                       ...filters,
-                      benefitIds: updated,
+                      benefitIds: updated.map(String),
                     });
                   };
 

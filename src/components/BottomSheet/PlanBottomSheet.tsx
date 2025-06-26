@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx'; // Tailwind 조건부 클래스용 유틸 (선택)
 import { SlArrowUp, SlArrowDown } from 'react-icons/sl';
 

@@ -9,7 +9,6 @@ import {
   LoginProps,
   SignUpRequest,
 } from '../types/member';
-import axios from 'axios';
 
 export const signUp = (data: SignUpRequest) => axiosInst.post('/signUp', data);
 
