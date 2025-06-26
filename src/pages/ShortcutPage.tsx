@@ -5,8 +5,8 @@ import ShortcutGrid from '../components/shortcut/ShortcutWeb';
 
 const ShortCutPage: React.FC = () => {
   return (
-    <div className="relative">
-      <div className="fixed top-0 left-0 w-screen h-[300px] md:h-[500px] z-[-1] overflow-hidden  md:overflow-visible">
+    <div className="relative overflow-x-hidden">
+      <div className="absolute top-0 left-0 w-full h-[300px] md:h-[500px] z-[-1] overflow-hidden">
         {/* 왼쪽 원 */}
         <img
           src="/images/login/big-circle-2.png"
@@ -61,10 +61,8 @@ const ShortCutPage: React.FC = () => {
               LG U+ 요금제 도우미 유메이트
             </p>
           </div>
-          <div className="relative w-full overflow-x-visible">
-            <div className="relative left-1/2 -translate-x-1/2 w-screen">
-              <ShortcutCarousel />
-            </div>
+          <div className="relative w-full overflow-x-hidden">
+            <ShortcutCarousel />
           </div>
         </div>
         <div className="mt-6 mb-6 flex justify-center">
@@ -77,7 +75,7 @@ const ShortCutPage: React.FC = () => {
       </div>
 
       {/* 데스크탑 전용: 웹 그리드 */}
-      <div className="hidden md:flex h-screen flex-col overflow-hidden">
+      <div className="hidden md:flex h-full flex-col overflow-hidden">
         <ShortcutGrid />
       </div>
     </div>
