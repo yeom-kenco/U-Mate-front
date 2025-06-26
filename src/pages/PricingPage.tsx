@@ -27,7 +27,7 @@ import { setUser } from '../store/userSlice';
 const PricingPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const [sortOpen, setSortOpen] = useState(false); // 정렬 시트 토글
-  const [isSorted, setIsSorted] = useState(''); // 선택된 정렬 기준
+  const [isSorted, setIsSorted] = useState('인기순'); // 선택된 정렬 기준
   const [filteredCount, setFilteredCount] = useState(0); // 사용자 맞춤 필터링된 요금제 개수
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null); // 선택된 요금제 (비교 또는 변경)
   const [visibleCount, setVisibleCount] = useState(6); // 초반에 요금제 6개만 보여주기

@@ -173,7 +173,7 @@ const RegisterPage = () => {
       phoneNumber: formData.phone,
       email: formData.email,
       password: formData.password,
-      phonePlan: isPlan,
+      phonePlan: isPlan === 0 ? 4 : isPlan,
     };
     try {
       SetIsSubmmited(true);

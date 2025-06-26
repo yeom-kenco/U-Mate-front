@@ -48,7 +48,6 @@ body {
   margin: auto;
   font-size: inherit; /* 16px */
   overflow-x: hidden;
-  max-width: 1800px;
 }
 
 /*스크롤바 안보이게 */

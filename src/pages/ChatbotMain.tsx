@@ -35,14 +35,14 @@ export default function ChatbotMain() {
   const [isLoading, setIsLoading] = useState(false);
   const [showResearch, setShowResearch] = useState(false);
   const [surveyDone, setSurveyDone] = useState(
-    () => localStorage.getItem('surveySubmitted') === 'true'
+    () => sessionStorage.getItem('surveySubmitted') === 'true'
   );
   const isConnecting = useRef(false);
 
   const ws = useRef<WebSocket | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const guestHistoryRef = useRef<GuestEntry[]>(
-    JSON.parse(localStorage.getItem('guestChat') || '[]')
+    JSON.parse(sessionStorage.getItem('guestChat') || '[]')
   );
 
   const timeFmt = (d = new Date()) =>
@@ -83,14 +83,14 @@ export default function ChatbotMain() {
           pushMsg('bot', data.text);
           setIsLoading(false);
 
-          // 게스트일 때만 localStorage 저장
+          // 게스트일 때만 sessionStorage 저장
           if (!email) {
             guestHistoryRef.current.push({
               MESSAGE_TYPE: 'assistant',
               MESSAGE: data.text,
               CREATED_AT: new Date().toISOString(),
             });
-            localStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
+            sessionStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
           }
         }
       } catch (error) {
@@ -111,7 +111,7 @@ export default function ChatbotMain() {
       : 'history=false';
     const url = `wss://seungwoo.i234.me:3333/realtime-chat?${query}`;
 
-    // 게스트: localStorage 히스토리 먼저 출력
+    // 게스트: sessionStorage 히스토리 먼저 출력
     if (!usedEmail && guestHistoryRef.current.length) {
       guestHistoryRef.current.forEach(({ MESSAGE_TYPE, MESSAGE, CREATED_AT }) =>
         pushMsg(
@@ -151,14 +151,14 @@ export default function ChatbotMain() {
     pushMsg('user', trimmed);
     setIsLoading(true);
 
-    // 게스트 localStorage 저장
+    // 게스트 sessionStorage 저장
     if (!email) {
       guestHistoryRef.current.push({
         MESSAGE_TYPE: 'user',
         MESSAGE: trimmed,
         CREATED_AT: new Date().toISOString(),
       });
-      localStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
+      sessionStorage.setItem('guestChat', JSON.stringify(guestHistoryRef.current));
     }
 
     const payload = email

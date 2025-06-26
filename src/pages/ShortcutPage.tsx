@@ -6,7 +6,7 @@ import ShortcutGrid from '../components/shortcut/ShortcutWeb';
 const ShortCutPage: React.FC = () => {
   return (
     <div className="relative">
-      <div className="fixed top-0 left-0 w-screen h-[300px] md:h-[500px] z-[-1] overflow-hidden  md:overflow-visible">
+      <div className="absolute top-0 left-0 w-screen h-[300px] md:h-[500px] z-[-1] overflow-hidden  md:overflow-visible">
         {/* 왼쪽 원 */}
         <img
           src="/images/login/big-circle-2.png"

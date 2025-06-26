@@ -10,6 +10,10 @@ const images = [
   '/images/eventBanner/event-2.png',
   '/images/eventBanner/event-3.png',
   '/images/eventBanner/event-4.png',
+  '/images/eventBanner/event-1.png',
+  '/images/eventBanner/event-2.png',
+  '/images/eventBanner/event-3.png',
+  '/images/eventBanner/event-4.png',
 ];
 
 const EventBannerCarousel = () => {

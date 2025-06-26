@@ -66,9 +66,6 @@ const Header = ({
 
   const NavigationLinks = ({ isLoggedIn }: { isLoggedIn?: boolean }) => (
     <>
-      <Link to="/shortcut" className={commonLinkStyle}>
-        바로가기페이지
-      </Link>
       <Link to="/plans" className={commonLinkStyle}>
         요금제 찾기
       </Link>

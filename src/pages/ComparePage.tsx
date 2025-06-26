@@ -7,10 +7,12 @@ import BaseModal from '../components/Modal/BaseModal';
 import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
-import { updateUserPlan } from '../store/userSlice';
+import { clearUser, setUser, updateUserPlan } from '../store/userSlice';
 import { ToastContext } from '../context/ToastContext';
 import CompareBottomBar from '../components/BottomSheet/CompareBottomBar';
 import { Plan, PlanDetail } from '../types/plan';
+import { validateToken } from '../apis/auth';
+import { formatToKST } from '../utils/formatDate';
 
 const Compare = () => {
   const [searchParams] = useSearchParams();
@@ -29,7 +31,7 @@ const Compare = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
+  const [selectedPlanId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const user = useSelector((state: RootState) => state.user);
@@ -86,23 +88,35 @@ const Compare = () => {
     if (plan2Id) fetchDetail();
   }, [plan2Id]);
 
-  const handleRequest = async (planId: number) => {
-    const res = await fetch(`https://seungwoo.i234.me:3333/tokenCheck`, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    const isLoggedIn = res.ok;
-
-    if (!isLoggedIn) {
-      showToast('로그인 후 이용 가능한 서비스입니다.', 'error', 'bottom-center', {
-        bottom: '220px',
-      });
-      return;
-    }
-
-    setSelectedPlanId(planId);
-    setIsModalOpen(true);
-  };
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const res = await validateToken();
+        const { user } = res.data;
+        //  console.log(user);
+        if (res && user) {
+          const { email, birthDay, id, membership, name, plan } = user;
+          //한국 날짜로
+          const korBirthDay = formatToKST(birthDay);
+          dispatch(
+            setUser({
+              id,
+              name,
+              birthDay: korBirthDay,
+              email,
+              plan,
+              membership,
+            })
+          );
+        } else {
+          dispatch(clearUser());
+        }
+      } catch (err) {
+        dispatch(clearUser());
+      }
+    };
+    checkToken();
+  }, []);
 
   const handleConfirmRequest = async () => {
     if (!selectedPlanId) return;
@@ -145,6 +159,7 @@ const Compare = () => {
               planDetail={plan1Detail as unknown as any}
               comparePlan={undefined}
               setPlanId={setPlan1Id}
+              planId={plan1Id}
             />
           </div>
           <div className="w-1/2 flex-col items-stretch">
@@ -154,6 +169,7 @@ const Compare = () => {
               planDetail={plan2Detail as unknown as any}
               comparePlan={plan1Detail as unknown as any}
               setPlanId={setPlan2Id}
+              planId={plan2Id}
             />
           </div>
         </div>

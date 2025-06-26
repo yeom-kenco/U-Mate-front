@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getMyReviews } from '../../../apis/ReviewApi';
 import { useSelector } from 'react-redux';
 import { Review } from '../../../types/review';
@@ -6,11 +6,7 @@ import { RootState } from '../../../store/store';
 import ReviewCard from '../../ReviewCard';
 import { formatToShortKoreanDate } from '../../../utils/formatDate';
 
-type ReviewListContentProps = {
-  children: React.ReactNode;
-};
-
-const ReviewListContent = (props: ReviewListContentProps) => {
+const ReviewListContent = () => {
   const user = useSelector((state: RootState) => state.user);
   const [reviews, setReviews] = useState<Review[]>([]);
 
