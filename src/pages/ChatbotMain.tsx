@@ -11,7 +11,6 @@ import ResearchBanner from '../components/ResearchBanner';
 import Research from '../components/BottomSheet/Research';
 import { useAppSelector } from '../hooks/reduxHooks';
 import { resetHistory } from '../apis/ChatApi';
-import Button from '../components/Button';
 
 /* 타입 선언 */
 type Message = { type: 'user' | 'bot'; content: string; time?: string };
@@ -263,7 +262,7 @@ export default function ChatbotMain() {
 
         {/* 리서치 BottomSheet */}
         {showResearch && (
-          <div className="fixed bottom-20 inset-x-0 flex justify-end px-4 z-20">
+          <div className="fixed bottom-20 inset-x-0 px-4 z-30">
             <BottomSheet isOpen height="auto" alignRight onClose={() => setShowResearch(false)}>
               <Research
                 onSubmit={(rating, feedback) => {
