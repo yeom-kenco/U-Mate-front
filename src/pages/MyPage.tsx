@@ -106,6 +106,7 @@ const MyPage = () => {
       setIsLoading(true);
       const res = await deleteAccount({ email: userInfo.email, password });
       showToast(res.data.message, 'success');
+      dispatch(clearUser());
       navigate('/');
     } catch (error) {
       showToast('비밀번호가 맞지 않습니다.', 'error');
