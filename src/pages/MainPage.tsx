@@ -88,7 +88,8 @@ const MainPage = () => {
     const fetchRecommendedPlans = async () => {
       try {
         const birthday = user?.birthDay?.replace(/-/g, '');
-        const res = await getRecommendedPlans(birthday);
+        console.log('연령대별 birthday', birthday.substring(0, 8));
+        const res = await getRecommendedPlans(birthday.substring(0, 8));
         if (res.success) {
           setAgePlans(res.data);
         }

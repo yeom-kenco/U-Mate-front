@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FiUser, FiMenu } from 'react-icons/fi';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
-import { IoIosSearch } from 'react-icons/io';
 import { IoMdClose } from 'react-icons/io';
 import Button from './Button';
 import { useDispatch, useSelector } from 'react-redux';
@@ -129,10 +128,6 @@ const Header = ({
             <>
               <div className="hidden md:flex items-center gap-6 text-sm text-black">
                 <NavigationLinks isLoggedIn={user?.name ? true : false} />
-                <IoIosSearch className="w-6 h-6 ml-2" />
-              </div>
-              <div className="md:hidden">
-                <IoIosSearch className="w-6 h-6" />
               </div>
             </>
           ) : (
