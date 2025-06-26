@@ -73,8 +73,7 @@ const LoginPage = () => {
       dispatch(setUser(token.data.user));
       navigate('/');
     } catch (err: any) {
-      console.log(err);
-      //showToast(err.response.data.error, 'error');
+      showToast(err.response.data.error, 'error');
     }
   };
 

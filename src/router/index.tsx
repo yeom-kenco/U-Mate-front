@@ -96,10 +96,6 @@ const router = createBrowserRouter([
         element: <MainPage />, // 대표 페이지
       },
       {
-        path: '/shortcut',
-        element: <ShortcutPage />, // 바로가기 페이지
-      },
-      {
         path: '/test',
         element: <TempPage />, // 테스트용 페이지 라우터 재정의
       },
@@ -120,6 +116,10 @@ const router = createBrowserRouter([
   {
     path: '/onboarding',
     element: <OnBoarding />,
+  },
+  {
+    path: '/shortcut',
+    element: <ShortcutPage />,
   },
 ]);
 

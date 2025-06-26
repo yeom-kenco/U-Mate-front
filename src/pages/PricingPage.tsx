@@ -198,16 +198,16 @@ const PricingPage = () => {
     navigate(`/compare?plan1=${user?.plan}&plan2=${selectedPlan?.PLAN_ID}`);
   };
 
-  // 변경하기 모달 열기
+  // 신청하기 모달 열기
   const openChangeModal = (e: React.MouseEvent, plan) => {
     e.stopPropagation();
     setModalType('change');
-    console.log('변경할 요금제', plan);
+    console.log('신청할 요금제', plan);
     setSelectedPlan(plan);
     dispatch(openModal());
   };
 
-  // 변경하기 확인 버튼 로직 (사용자 요금제 변경 필요)
+  // 신청하기 확인 버튼 로직 (사용자 요금제 변경 필요)
   const handleChangePlans = async () => {
     if (!user || user?.id === 0 || user?.id === null) {
       toast?.showToast('로그인 후 이용해 주세요', 'black');
@@ -240,10 +240,10 @@ const PricingPage = () => {
           plan: selectedPlan?.PLAN_ID,
         })
       );
-      toast?.showToast('해당 요금제로 변경되었습니다', 'black');
+      toast?.showToast('해당 요금제로 신청되었습니다', 'black');
     } catch (error) {
       console.log(error);
-      toast?.showToast('요금제 변경에 실패하였습니다', 'error');
+      toast?.showToast('요금제 신청에 실패하였습니다', 'error');
     } finally {
       dispatch(closeModal());
     }
@@ -340,8 +340,8 @@ const PricingPage = () => {
         {/* 변경하기 모달 (만약 현재 사용하고 있는 요금제가 없다면 신청하기로 띄우기?) */}
         {modalType === 'change' && isOpen && (
           <ConfirmModal
-            title="해당 요금제로 변경하시겠습니까?"
-            confirmText="변경"
+            title="해당 요금제로 신청하시겠습니까?"
+            confirmText="신청"
             onConfirm={handleChangePlans}
             onClose={() => dispatch(closeModal())}
           />

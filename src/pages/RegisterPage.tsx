@@ -12,11 +12,14 @@ import { formatBirth } from '../utils/formatBirth';
 import { CodeCheckButton, EmailSendButton, PhoneCheckButton } from '../components/suffixButtons';
 import { ToastContext } from '../context/ToastContext';
 import { formatTime } from '../utils/formatTimer';
+import { getPlanList } from '../apis/planApi';
+import { Plan } from '../types/plan';
 const RegisterPage = () => {
   const setHeaderConfig = useOutletContext<(config: HeaderProps) => void>();
   const navigate = useNavigate();
   const toastContext = useContext(ToastContext);
   const [planopen, setPlanOpen] = useState(false); // 정렬 시트 토글
+  const [plans, setPlans] = useState<Plan[]>([]);
   const [isPlan, setisPlan] = useState(''); // 선택한 요금제
   // 입력값
   const [formData, setFormData] = useState({
@@ -162,7 +165,7 @@ const RegisterPage = () => {
       phoneNumber: formData.phone,
       email: formData.email,
       password: formData.password,
-      phonePlan: 1,
+      phonePlan: isPlan,
     };
     try {
       const res = await signUp(requestData);
@@ -205,6 +208,16 @@ const RegisterPage = () => {
 
     return () => clearInterval(countdown);
   }, [isCounting, timer]);
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      const response = await getPlanList();
+      if (response.success) {
+        setPlans(response.data);
+      }
+    };
+    fetchPlans();
+  }, []);
 
   return (
     <form onSubmit={onSubmit} className=" w-[90%] max-w-[600px] mx-auto px-4 py-6">
@@ -388,7 +401,7 @@ const RegisterPage = () => {
       </Button>
 
       <BottomSheet isOpen={planopen} onClose={() => setPlanOpen(false)} height="700px">
-        <PlanList onSelect={handlePlanSelect} selected={isPlan} />
+        <PlanList onSelect={handlePlanSelect} selected={isPlan} plans={plans} />
       </BottomSheet>
     </form>
   );

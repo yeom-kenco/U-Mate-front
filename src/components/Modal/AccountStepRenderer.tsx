@@ -19,6 +19,7 @@ type Props = {
   onNext: () => void;
   onClose: () => void;
   setVerificationCodeComplet: React.Dispatch<React.SetStateAction<boolean>>;
+  userEmail?: string;
 };
 
 const AccountStepContent = ({
@@ -30,6 +31,7 @@ const AccountStepContent = ({
   onNext,
   onClose,
   setVerificationCodeComplete,
+  userEmail,
 }: Props) => {
   const { showToast } = useToast();
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -49,7 +51,6 @@ const AccountStepContent = ({
     }
     try {
       const res = await findEmailByPhone({ phoneNumber });
-      console.log(res);
       if (res.data.success === false) {
         showToast('등록된 이메일이 없습니다', 'black');
       } else {
@@ -79,6 +80,11 @@ const AccountStepContent = ({
     return () => clearInterval(countdown);
   }, [isCounting, timer]);
 
+  useEffect(() => {
+    setIsEmailClicked(false);
+  }, [email, verificationCode]);
+
+  const isLogin = flow === 'password' && step === 'reset';
   switch (step) {
     case 'findId':
       return (
@@ -136,6 +142,7 @@ const AccountStepContent = ({
                 isLogin={true}
               />
             }
+            disabled={isEmailClicked}
           />
 
           <InputField
@@ -167,7 +174,14 @@ const AccountStepContent = ({
       );
 
     case 'reset':
-      return <ResetPasswordForm onCancel={onClose} email={findEmail} isLogin={true} />;
+      return (
+        <ResetPasswordForm
+          onCancel={onClose}
+          email={userEmail}
+          findEmail={email}
+          isLogin={!isLogin}
+        />
+      );
 
     default:
       return null;

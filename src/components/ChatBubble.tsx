@@ -7,7 +7,7 @@ import type React from 'react';
 type ChatBubbleProps = {
   from: 'user' | 'bot';
   message?: string;
-  time: string;
+  time?: string;
   variant?: 'default' | 'first';
   children?: React.ReactNode;
 };

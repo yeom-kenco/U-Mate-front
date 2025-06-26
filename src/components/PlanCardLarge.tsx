@@ -20,9 +20,11 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
   return (
     <div
       className={clsx(
-        'rounded-xl cursor-pointer border bg-white p-4 shadow-sm flex flex-col gap-2 min-h-[325px]',
+        'rounded-xl cursor-pointer border bg-white p-4 flex flex-col gap-2 min-h-[325px] transition-all duration-200 ease-in-out',
+        'hover:shadow-lg hover:-translate-y-1 active:translate-y-0.5 active:shadow-sm',
         highlight && 'border-pink-500'
       )}
+      onClick={onClick}
     >
       {rating && (
         <div className="text-sm flex items-center gap-[1px]">
@@ -32,7 +34,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
         </div>
       )}
 
-      <div className="flex text-base cursor-pointer" onClick={onClick}>
+      <div className="flex text-base cursor-pointer">
         {name}
         <span className="text-sm mt-1">
           <SlArrowRight />
@@ -70,7 +72,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
             size="lg"
             className="flex-1 font-semibold"
           >
-            변경하기
+            신청하기
           </Button>
         </div>
       )}

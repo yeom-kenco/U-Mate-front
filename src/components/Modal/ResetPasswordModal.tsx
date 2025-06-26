@@ -11,9 +11,10 @@ type Props = {
   onCancel: () => void;
   email: string;
   isLogin?: boolean;
+  findEmail?: string;
 };
 
-const ResetPasswordForm = ({ onCancel, email, isLogin = false }: Props) => {
+const ResetPasswordForm = ({ onCancel, email, isLogin = false, findEmail }: Props) => {
   const [password, setPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>('');
@@ -22,8 +23,6 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false }: Props) => {
   const isValidPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  console.log(isLogin, 'isLogin');
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -65,8 +64,9 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false }: Props) => {
     if (!validate()) return;
     try {
       // 비밀번호 재설정에서
+      console.log(email, newPassword);
       if (!isLogin) {
-        const res = await resetPassword({ email, password: newPassword });
+        const res = await resetPassword({ email: findEmail, password: newPassword });
         showToast(res.data.message, 'success');
       } else {
         const res = await changePassword({ email, password, newPassword });
@@ -78,11 +78,11 @@ const ResetPasswordForm = ({ onCancel, email, isLogin = false }: Props) => {
     } catch (err: any) {
       console.log(err);
       if (err.status === 404) {
-        showToast('현재 비밀번호가 일치하지 않습니다', 'error');
+        showToast(err.response.data.error, 'error');
       } else showToast('비밀번호 변경 실패', 'error');
     }
   };
-
+  console.log(isLogin);
   return (
     <>
       <div className="max-h-32 flex flex-col justify-between flex-1">
