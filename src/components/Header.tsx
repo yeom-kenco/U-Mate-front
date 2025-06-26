@@ -99,7 +99,7 @@ const Header = ({
 
   return (
     <header
-      className={`relative z-50 w-full h-16 flex justify-center items-center px-[5%] py-6 bg-white 
+      className={`fixed z-50 w-full h-16 flex justify-center items-center px-[5%] py-6 bg-white 
         ${hasShadow ? 'shadow-header' : 'shadow-none'} md:shadow-none md:px-10`}
     >
       <div className="relative w-full h-full flex items-center justify-between">
@@ -194,9 +194,17 @@ const Header = ({
               안녕하세요
             </span>
             <div className="flex items-center mb-[-20px] ml-4">
-              <Link to="/mypage">
+              <button
+                onClick={() => {
+                  if (user?.name) {
+                    navigate('/mypage');
+                  } else {
+                    navigate('/login');
+                  }
+                }}
+              >
                 <p className="text-sm">마이페이지 및 설정</p>
-              </Link>
+              </button>
               <SlArrowRight className="w-[10px] h-[10px] ml-[2px]" />
             </div>
           </div>
