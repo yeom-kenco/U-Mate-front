@@ -70,7 +70,7 @@ const PlanCardLarge: React.FC<PlanCardProps> = ({
             size="lg"
             className="flex-1 font-semibold"
           >
-            변경하기
+            신청하기
           </Button>
         </div>
       )}
