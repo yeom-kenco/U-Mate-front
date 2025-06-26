@@ -27,10 +27,13 @@ const EventBannerCarousel = () => {
           disableOnInteraction: false,
         }}
         pagination={{ clickable: true }}
-        className="w-full pb-10"
+        className="w-full pb-14"
       >
         {images.map((src, i) => (
-          <SwiperSlide key={i} className="!w-[80%] sm:!w-[400px] md:!w-[520px] flex justify-center">
+          <SwiperSlide
+            key={i}
+            className="!w-[80%] sm:!w-[400px] md:!w-[520px] flex justify-center lg:w-full"
+          >
             <EventBannerCard imageSrc={src} />
           </SwiperSlide>
         ))}
