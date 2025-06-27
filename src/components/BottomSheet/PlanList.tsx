@@ -23,12 +23,12 @@ const PlanList: React.FC<PlanListProps> = ({ onSelect, selected, plans }) => {
   return (
     <>
       <ul className="flex flex-col px-3 py-2  gap-1 md:ml-20">
-        <p className="font-bold text-lg md:text-xxl flex items-center">
-          정렬 기준
+        <p className="font-bold text-lg md:text-xxl flex items-center">정렬 기준</p>
+        <div className="flex items-center mt-2 mb-2">
           <Button
             variant={categoryType === '일반' ? 'fill' : 'outline'}
             size="sm"
-            className="ml-5 text-lm"
+            className="text-lm"
             onClick={() => handleCategory('일반')}
           >
             일반
@@ -57,7 +57,7 @@ const PlanList: React.FC<PlanListProps> = ({ onSelect, selected, plans }) => {
           >
             시니어
           </Button>
-        </p>
+        </div>
         {location.pathname === '/signup' && (
           <li
             key="recommended"
