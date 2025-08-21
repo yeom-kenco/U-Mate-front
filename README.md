@@ -67,11 +67,11 @@ U\:Mate (유메이트)는 통신사 요금제를 쉽고 빠르게 탐색하고, 
 
 | 온보딩 1                              | 온보딩 2                              |
 | ---------------------------------- | ---------------------------------- |
-| ![](./docs/images/onboarding1.png) | ![](./docs/images/onboarding2.png) |
+| ![](./docs/onboarding1.png) | ![](./docs/onboarding2.png) |
 
 | 온보딩 3                              | 온보딩 4                              |
 | ---------------------------------- | ---------------------------------- |
-| ![](./docs/images/onboarding3.png) | ![](./docs/images/onboarding4.png) |
+| ![](./docs/onboarding3.png) | ![](./docs/onboarding4.png) |
 
 ---
 
